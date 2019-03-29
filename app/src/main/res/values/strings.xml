@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cassete App</string>
+    <string name="artist">Artist</string>
 </resources>

@@ -11,61 +11,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
+            android:hint="@android:string/search_go"
             android:ems="10"
-            android:id="@+id/senderIdEditText"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="32dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/trackEditText" android:hint="Sender Id"/>
-
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Track"
-            android:ems="10"
-            android:id="@+id/trackEditText"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/senderIdEditText" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/commentEditText"/>
-
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/commentEditText"
-            android:hint="Comment"
-            app:layout_constraintTop_toBottomOf="@+id/trackEditText"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/genreEditText" android:layout_marginTop="16dp" android:text="E-mail"/>
-
-    <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="Genre"
-            android:ems="10"
-            android:id="@+id/genreEditText"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/commentEditText"
+            android:id="@+id/searchEditText"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="32dp" app:layout_constraintBottom_toTopOf="@+id/button"/>
+            android:layout_marginBottom="32dp" app:layout_constraintBottom_toTopOf="@+id/trackButton"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"/>
 
     <Button
-            android:text="Button"
+            android:text="Search Track"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button"
+            android:id="@+id/trackButton"
             android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/genreEditText" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="64dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchEditText"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/artistButton"/>
+    <Button
+            android:text="Search Artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/artistButton"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/trackButton" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/resultsButton"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/artistButton" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:id="@+id/resultsButton" android:text="See Results"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
