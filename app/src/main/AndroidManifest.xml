@@ -3,6 +3,9 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.syroniko.casseteapp">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -22,6 +25,15 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+
+        <activity android:name=".SpotifyArtistResultActivity">
+        </activity>
+        <activity android:name=".SpotifyResultActivity">
+        </activity>
+        <activity android:name=".MainActivity">
+
+        </activity>
         <activity android:name=".PickGenresSignUpActivity">
         </activity>
         <activity android:name=".SignUpActivity">
@@ -32,8 +44,9 @@
         </activity>
         <activity android:name=".LoginActivity">
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity
+                android:name="com.spotify.sdk.android.authentication.LoginActivity"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
     </application>
 
 </manifest>
