@@ -11,10 +11,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class User(
     var name: String?,
-    var surname: String?,
     var email: String,
 //    var image: Bitmap? = null,
 //    val uid: String,
-    val genres: ArrayList<String>,
-    var locationId: String?,
-    val friends: ArrayList<String>) : Parcelable
+    val country:String?,
+    val genres: ArrayList<String>?,
+    val friends: ArrayList<String>?) : Parcelable
