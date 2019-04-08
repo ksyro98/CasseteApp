@@ -18,7 +18,7 @@ public class TokenRequest extends Request<String> {
     private Response.Listener<String> listener;
 //    private String authToken = null;
 //    private Map<String, String> params;
-
+ 
     public TokenRequest(int method, String url,
                          Response.Listener<String> listener,
                          @Nullable Response.ErrorListener errorListener) {
