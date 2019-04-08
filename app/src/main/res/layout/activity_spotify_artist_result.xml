@@ -8,7 +8,7 @@
         tools:context=".SpotifyArtistResultActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/spotifyArtistResultsRecyclerView"
+            android:id="@+id/spotifyAlbumRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

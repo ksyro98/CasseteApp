@@ -1,23 +1,19 @@
 package com.syroniko.casseteapp
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_spotify_artist_result.*
-import kotlinx.android.synthetic.main.activity_spotify_result.*
 import org.json.JSONObject
 
 class SpotifyArtistResultActivity : AppCompatActivity() {
 
-    private val artistResultList = arrayListOf<SpotifyResult>()
+    private val albumList = arrayListOf<SpotifyAlbum>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +23,12 @@ class SpotifyArtistResultActivity : AppCompatActivity() {
             return;
         }
 
-        val artistId = intent.getStringExtra(spotifyArtistResultExtraName)
+        val artistName = intent.getStringExtra(spotifyArtistResultExtraName).replace(" ", "%20")
         val token = intent.getStringExtra(tokenExtraName)
 
-        val query = "https://api.spotify.com/v1/search?q=*&artist=$artistId&type=track"
+        val query = "https://api.spotify.com/v1/search?q=artist%3A$artistName&type=album"
+
+        val albumAdapter = AlbumAdapter(this, albumList, token)
 
         val context = this
 
@@ -43,7 +41,17 @@ class SpotifyArtistResultActivity : AppCompatActivity() {
             Response.Listener<JSONObject> { response ->
 
                 Log.d("ArtistResult", response.toString())
-                toast(response.toString())
+//                toast(response.toString())
+
+                for(i in 0 until response.getJSONObject("albums").getJSONArray("items").length()){
+                    val item: JSONObject = response.getJSONObject("albums").getJSONArray("items").getJSONObject(i)
+                    val albumName = item.getString("name")
+                    val imageUrl = item.getJSONArray("images").getJSONObject(0).getString("url")
+
+                    albumList.add(SpotifyAlbum(albumName, imageUrl))
+                }
+
+                albumAdapter.notifyDataSetChanged()
 
             },
             Response.ErrorListener { error -> toast("Error. :("); Log.d("ArtistResult", error.toString()); toast(error.toString())})
@@ -51,16 +59,10 @@ class SpotifyArtistResultActivity : AppCompatActivity() {
         queue.add(searchRequest)
 
 
-        spotifyArtistResultsRecyclerView.layoutManager = LinearLayoutManager(this)
-        spotifyArtistResultsRecyclerView.setHasFixedSize(true)
+        spotifyAlbumRecyclerView.layoutManager = GridLayoutManager(this, 2)
+        spotifyAlbumRecyclerView.setHasFixedSize(true)
 
-
-        val spotifyAdapter = SpotifyAdapter(this, artistResultList, token)
-
-        spotifyArtistResultsRecyclerView.adapter = spotifyAdapter
-
-
-
+        spotifyAlbumRecyclerView.adapter = albumAdapter
 
     }
 

@@ -56,7 +56,7 @@ class SpotifyAdapter(private val context: Context, private val spotifyItemsList:
                 Glide.with(context).load(artist.imageUrl).apply(RequestOptions.circleCropTransform()).into(holder.itemView.spotifyImageView)
                 holder.itemView.setOnClickListener {
                     val artistIntent = Intent(context, SpotifyArtistResultActivity::class.java)
-                    artistIntent.putExtra(spotifyArtistResultExtraName, artist.artistId)
+                    artistIntent.putExtra(spotifyArtistResultExtraName, artist.artistName)
                     artistIntent.putExtra(tokenExtraName, token)
                     context.startActivity(artistIntent)
                 }

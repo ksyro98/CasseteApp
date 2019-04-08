@@ -17,13 +17,7 @@
         <activity android:name=".CountrySelectActivitySignUp">
         </activity>
         <activity
-                android:name=".SplashActivity"
-                android:theme="@style/AppTheme.Launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+                android:name=".SplashActivity">
         </activity>
 
 
@@ -32,7 +26,11 @@
         <activity android:name=".SpotifyResultActivity">
         </activity>
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".PickGenresSignUpActivity">
         </activity>
