@@ -18,7 +18,7 @@ public class SearchRequest extends Request<JSONObject> {
     private Response.Listener<JSONObject> listener;
     private String authToken = null;
 //    private Map<String, String> params;
- 
+
     public SearchRequest(int method, String url, String authToken,
 //                         Map<String, String> params,
                          Response.Listener<JSONObject> listener,
