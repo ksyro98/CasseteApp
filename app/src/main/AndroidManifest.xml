@@ -14,16 +14,35 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SpotifyArtistResultActivity">
+        <activity android:name=".CountrySelectActivitySignUp">
         </activity>
-        <activity android:name=".SpotifyResultActivity">
-        </activity>
-        <activity android:name=".MainActivity">
+        <activity
+                android:name=".SplashActivity"
+                android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+
+
+        <activity android:name=".SpotifyArtistResultActivity">
+        </activity>
+        <activity android:name=".SpotifyResultActivity">
+        </activity>
+        <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".PickGenresSignUpActivity">
+        </activity>
+        <activity android:name=".SignUpActivity">
+        </activity>
+        <activity android:name=".ResetPasswordActivity">
+        </activity>
+        <activity android:name=".WelcomingActivity">
+        </activity>
+        <activity android:name=".LoginActivity">
         </activity>
         <activity
                 android:name="com.spotify.sdk.android.authentication.LoginActivity"
