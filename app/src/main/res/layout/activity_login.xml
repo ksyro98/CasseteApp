@@ -4,11 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
     tools:context=".MainClasses.MainActivity">
-=======
-    tools:context=".MainActivity">
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
 
 
 
@@ -39,19 +35,11 @@
             android:layout_width="300dp"
             android:layout_height="44dp"
             android:layout_marginTop="16dp"
-<<<<<<< HEAD
-=======
-            android:editable="true"
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
             android:ems="10"
             android:backgroundTint="#9E9E9E"
             android:gravity="center_vertical"
             android:hint="Password"
-<<<<<<< HEAD
             android:inputType="textPassword"
-=======
-            android:inputType="textEmailAddress"
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
             android:paddingLeft="8dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/login_email"

@@ -5,11 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         tools:context=".LogInSignUp.PickGenresSignUpActivity">
-=======
-        tools:context=".PickGenresSignUpActivity">
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
 
     <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
                                                        android:outlineProvider="bounds"

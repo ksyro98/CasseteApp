@@ -27,9 +27,7 @@
         <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity"/>
         <activity android:name=".TrackSearchFlow.SpotifyResultActivity"/>
         <activity android:name=".MainClasses.MainActivity">
-=======
-        <activity android:name=".CountrySelectActivitySignUp">
-        </activity>
+        =======
         <activity
                 android:name=".SplashActivity">
         </activity>
@@ -52,19 +50,11 @@
         <activity android:name=".LogInSignUp.SignUpActivity"/>
         <activity android:name=".LogInSignUp.ResetPasswordActivity"/>
         <activity android:name=".LogInSignUp.WelcomingActivity"/>
-        <activity android:name=".LogInSignUp.LoginActivity"/>
+        <activity android:name=".LogInSignUp.LoginActivity"/><![CDATA[
 =======
-        <activity android:name=".PickGenresSignUpActivity">
-        </activity>
-        <activity android:name=".SignUpActivity">
-        </activity>
-        <activity android:name=".ResetPasswordActivity">
-        </activity>
-        <activity android:name=".WelcomingActivity">
-        </activity>
-        <activity android:name=".LoginActivity">
-        </activity>
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
+
+        >>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
+        ]]>
         <activity
                 android:name="com.spotify.sdk.android.authentication.LoginActivity"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar"/>

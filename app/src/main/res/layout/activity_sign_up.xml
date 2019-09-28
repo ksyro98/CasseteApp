@@ -53,11 +53,7 @@
                 android:textSize="16sp"
                 android:gravity="center_vertical"
                 android:hint="Confirm Password"
-<<<<<<< HEAD
                 android:inputType="textPassword"
-=======
-                android:inputType="textEmailAddress"
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
                 android:paddingLeft="8dp"
                 android:textColor="#90a4ae"
                 app:layout_constraintEnd_toEndOf="@+id/password_et_signup"
@@ -72,11 +68,7 @@
                 android:textSize="16sp"
                 android:gravity="center_vertical"
                 android:hint="Password"
-<<<<<<< HEAD
                 android:inputType="textPassword"
-=======
-                android:inputType="textEmailAddress"
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
                 android:paddingLeft="8dp"
                 android:textColor="#90a4ae"
                 app:layout_constraintEnd_toEndOf="@+id/email_et_signup1"
