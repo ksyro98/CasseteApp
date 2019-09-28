@@ -54,10 +54,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-<<<<<<< HEAD
     implementation 'com.github.yesterselga:country-picker-android:1.0'
-=======
->>>>>>> 415e912e3e2ac13015dea7bf47f7b4b4fa06b3fe
 }
 
 apply plugin: 'com.google.gms.google-services'
