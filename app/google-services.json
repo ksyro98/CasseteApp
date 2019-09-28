@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "326084018432",
+    "firebase_url": "https://cassette-app-11739.firebaseio.com",
+    "project_id": "cassette-app-11739",
+    "storage_bucket": "cassette-app-11739.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326084018432:android:4d85b43536de7128",
+        "android_client_info": {
+          "package_name": "com.syroniko.casseteapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326084018432-hfcv8535bg624b9u61fjl6dp1ui3bjgi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.syroniko.casseteapp",
+            "certificate_hash": "1aabf09c17d5e52e413766fca6e4b71044bf6662"
+          }
+        },
+        {
+          "client_id": "326084018432-a7s4a4drb2ccvh5kmh0t66pavofesphp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIGz-SX-QQWbzTWLlcRBkVDeSI8kNxYT0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326084018432-a7s4a4drb2ccvh5kmh0t66pavofesphp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
