@@ -22,7 +22,7 @@
         <activity android:name=".StartingActivities.SplashActivity"/>
         <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity"/>
         <activity android:name=".TrackSearchFlow.SpotifyResultActivity"/>
-        <activity android:name=".ProfileActivity"> </activity>
+        <activity android:name=".ProfileActivity"/>
         <activity android:name=".MainClasses.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
