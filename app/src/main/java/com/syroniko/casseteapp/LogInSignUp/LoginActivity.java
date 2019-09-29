@@ -1,6 +1,6 @@
 
 
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.LogInSignUp;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +31,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.syroniko.casseteapp.MainClasses.MainActivity;
+import com.syroniko.casseteapp.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(LoginActivity.this,ResetPasswordActivity.class);
+                Intent i=new Intent(LoginActivity.this, ResetPasswordActivity.class);
                 startActivity(i);
             }
         });
@@ -98,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
                 if(loginEmail.getText().toString().equals("")|| loginPass.getText().toString().equals("")){
                     Toast.makeText(LoginActivity.this, "Please fill your account details", Toast.LENGTH_SHORT).show();
                     return;
-
                 }
                 mAuth.signInWithEmailAndPassword(loginEmail.getText().toString(), loginPass.getText().toString())
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
@@ -149,7 +149,8 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(Email, mAuth.getCurrentUser().getEmail());
         editor.apply();
-        Intent i=new Intent(LoginActivity.this,MainActivity.class);
+        Intent i=new Intent(LoginActivity.this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         finish();
     }

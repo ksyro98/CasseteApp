@@ -1,4 +1,4 @@
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.LogInSignUp;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.syroniko.casseteapp.R;
 
 public class WelcomingActivity extends AppCompatActivity {
 
@@ -17,10 +18,9 @@ public class WelcomingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcoming);
 
 
-
         TextView tx = (TextView)findViewById(R.id.app_quote_textview);
 
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/montsextrathic.ttf");
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/montsextrathic.ttf");
 
         tx.setTypeface(custom_font);
 
@@ -30,15 +30,19 @@ public class WelcomingActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(WelcomingActivity.this,LoginActivity.class);
-                startActivity(i);
+                Intent intent =new Intent(WelcomingActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(WelcomingActivity.this,SignUpActivity.class);
-                startActivity(i);
+                Intent intent = new Intent(WelcomingActivity.this, SignUpActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
     }

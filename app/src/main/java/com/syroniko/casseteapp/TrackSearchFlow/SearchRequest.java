@@ -1,4 +1,4 @@
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.TrackSearchFlow;
 
 import android.content.pm.PackageManager;
 import androidx.annotation.Nullable;

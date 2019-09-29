@@ -1,4 +1,4 @@
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.LogInSignUp;
 
 import android.graphics.Bitmap;
 

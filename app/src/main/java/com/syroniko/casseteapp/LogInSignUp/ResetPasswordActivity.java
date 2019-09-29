@@ -1,4 +1,4 @@
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.LogInSignUp;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.syroniko.casseteapp.R;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 

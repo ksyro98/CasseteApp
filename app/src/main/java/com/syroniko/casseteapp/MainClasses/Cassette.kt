@@ -1,6 +1,7 @@
-package com.syroniko.casseteapp
+package com.syroniko.casseteapp.MainClasses
 
 import android.os.Parcelable
+import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
@@ -8,11 +9,11 @@ import java.util.*
 
 @Parcelize
 class Cassette(
-    val senderId: String,
-    val track: String,
+    val senderId: String?,
+    val track: SpotifyTrack,
     val comment: String,
     val genre: String?,
-//    val timestamp: Long,
     val possibleReceivers: ArrayList<String>,
-    val alreadyReceived: ArrayList<String>
+    val restrictedReceivers: ArrayList<String?>,
+    var received: Boolean = false
 ) : Parcelable

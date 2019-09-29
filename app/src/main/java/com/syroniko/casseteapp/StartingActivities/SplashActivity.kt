@@ -1,9 +1,11 @@
-package com.syroniko.casseteapp
+package com.syroniko.casseteapp.StartingActivities
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.syroniko.casseteapp.LogInSignUp.WelcomingActivity
+import com.syroniko.casseteapp.R
 
 class SplashActivity: AppCompatActivity() {
 

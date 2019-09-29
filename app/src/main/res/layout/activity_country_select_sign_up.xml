@@ -5,21 +5,23 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".CountrySelectActivitySignUp">
+        tools:context=".LogInSignUp.CountrySelectActivitySignUp">
 
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-                                                       android:outlineProvider="bounds"
-                                                       android:layout_height="wrap_content"
-                                                       android:elevation="1dp"
-                                                       app:layout_constraintEnd_toEndOf="parent"
-                                                       app:layout_constraintStart_toStartOf="parent"
-                                                       app:layout_constraintBottom_toBottomOf="parent"
-                                                       app:layout_constraintTop_toTopOf="parent"
-                                                       app:layout_constraintHorizontal_bias="0.0"
-                                                       app:layout_constraintVertical_bias="0.0"
-                                                       android:id="@+id/constraintLayout">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:outlineProvider="bounds"
+            android:layout_height="wrap_content"
+            android:elevation="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0"
+            android:id="@+id/constraintLayout">
+
         <ImageView
                 android:layout_width="34dp"
                 android:layout_height="31dp" app:srcCompat="@drawable/music_note_green"
@@ -31,13 +33,13 @@
         <TextView
                 android:background="@drawable/bluegreenbutton"
                 android:gravity="center"
-                android:text="Next"
+                android:text="Finish"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
-                android:id="@+id/nextfromcountry_to_app" android:layout_marginTop="16dp"
+                android:id="@+id/finsihTextView" android:layout_marginTop="16dp"
                 app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.0"
                 android:layout_marginEnd="14dp" app:layout_constraintEnd_toEndOf="parent"
@@ -55,9 +57,10 @@
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" android:layout_marginStart="32dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             app:layout_constraintVertical_bias="0.009"/>
+
     <ImageView
             android:layout_width="215dp"
             android:layout_height="231dp" app:srcCompat="@drawable/earth_sign_up"
@@ -65,5 +68,35 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="68dp"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"/>
+
+    <TextView
+            android:id="@+id/location_text_view"
+            android:background="@drawable/bluegreenbutton"
+            android:gravity="center"
+            android:text="Choose Location"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingEnd="24dp"
+            android:paddingStart="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView4" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.25"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/countryTextView"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/location_text_view" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintVertical_bias="0.10"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

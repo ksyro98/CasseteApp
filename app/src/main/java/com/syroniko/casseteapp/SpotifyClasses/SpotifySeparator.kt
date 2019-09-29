@@ -1,4 +1,4 @@
-package com.syroniko.casseteapp
+package com.syroniko.casseteapp.SpotifyClasses
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

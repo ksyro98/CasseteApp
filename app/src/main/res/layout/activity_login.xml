@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainClasses.MainActivity">
 
 
 
@@ -35,12 +35,11 @@
             android:layout_width="300dp"
             android:layout_height="44dp"
             android:layout_marginTop="16dp"
-            android:editable="true"
             android:ems="10"
             android:backgroundTint="#9E9E9E"
             android:gravity="center_vertical"
             android:hint="Password"
-            android:inputType="textEmailAddress"
+            android:inputType="textPassword"
             android:paddingLeft="8dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/login_email"

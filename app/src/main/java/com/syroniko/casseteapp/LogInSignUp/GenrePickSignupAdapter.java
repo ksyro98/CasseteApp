@@ -1,4 +1,4 @@
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.LogInSignUp;
 
 
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+import com.syroniko.casseteapp.R;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -25,11 +27,11 @@ public class GenrePickSignupAdapter extends RecyclerView.Adapter<GenrePickSignup
 
     }
 
+    @NotNull
     @Override
-    public GenreViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public GenreViewHolder onCreateViewHolder(@NotNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.genre_signup_item,viewGroup,false );
-        GenreViewHolder viewHolder = new GenreViewHolder(view);
-        return viewHolder;
+        return new GenreViewHolder(view);
     }
 
 
@@ -39,7 +41,7 @@ public class GenrePickSignupAdapter extends RecyclerView.Adapter<GenrePickSignup
     }
 
     @Override
-    public void onBindViewHolder(GenreViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull GenreViewHolder holder, int position) {
 
         GenreNameImageForSignupAdapter genre=genreList.get(position);
         holder.textView.setText(genre.getGenre());
@@ -69,7 +71,7 @@ public class GenrePickSignupAdapter extends RecyclerView.Adapter<GenrePickSignup
            genreListClickListener.OnListItemClick(clickedPosition);
            genreList.get(clickedPosition).setClicked(!genreList.get(clickedPosition).getClicked());
            Boolean state=genreList.get(clickedPosition).getClicked();
-           if (state==false) {
+           if (!state) {
                imageView.setImageResource(genreList.get(clickedPosition).getGenreImageDefault());
            }
            else{

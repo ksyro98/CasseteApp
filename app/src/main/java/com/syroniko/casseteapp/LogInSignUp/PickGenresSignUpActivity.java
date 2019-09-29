@@ -1,9 +1,7 @@
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.LogInSignUp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +10,8 @@ import android.os.Bundle;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.syroniko.casseteapp.R;
+import com.syroniko.casseteapp.MainClasses.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class PickGenresSignUpActivity extends AppCompatActivity {
         final User user=intent.getParcelableExtra("User");
         final String password=intent.getStringExtra("Password");
 
-         list.add(new GenreNameImageForSignupAdapter("Blues",R.drawable.blues,R.drawable.bluesgreen));
+        list.add(new GenreNameImageForSignupAdapter("Blues",R.drawable.blues,R.drawable.bluesgreen));
         list.add(new GenreNameImageForSignupAdapter("Classical",R.drawable.classicalgray,R.drawable.classicalgreen));
         list.add(new GenreNameImageForSignupAdapter("Country",R.drawable.countrygray,R.drawable.countrygreen));
         list.add(new GenreNameImageForSignupAdapter("Electronic",R.drawable.electronic_gray,R.drawable.electronic_green));
@@ -52,15 +52,13 @@ public class PickGenresSignUpActivity extends AppCompatActivity {
             public void OnListItemClick(int clickedItemPosition) {
                 if(!list.get(clickedItemPosition).getClicked()){
                     genreList.add(list.get(clickedItemPosition).getGenre());
-
                 }
                 else{
-                    for(int i=0;i<genreList.size();i++){
+                    for(int i=0; i<genreList.size(); i++){
                         if(list.get(clickedItemPosition).getGenre().equals(genreList.get(i))){
                             genreList.remove(i);
                         }
-
-                        }
+                    }
                 }
             }
         });
@@ -73,7 +71,7 @@ public class PickGenresSignUpActivity extends AppCompatActivity {
 
         tx.setTypeface(custom_font);
 
-        TextView next=findViewById(R.id.nextfromgenres_to);
+        TextView next = findViewById(R.id.nextfromgenres_to);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,10 +79,12 @@ public class PickGenresSignUpActivity extends AppCompatActivity {
                     Toast.makeText(PickGenresSignUpActivity.this, "Please pick a genre", Toast.LENGTH_SHORT).show();
                 else {
                     Intent intent = new Intent(PickGenresSignUpActivity.this, CountrySelectActivitySignUp.class);
+                    user.setGenres(genreList);
                     intent.putExtra("User", user);
                     intent.putExtra("Password", password);
-                    intent.putStringArrayListExtra("Genres",genreList);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

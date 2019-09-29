@@ -1,9 +1,7 @@
-package com.syroniko.casseteapp;
+package com.syroniko.casseteapp.LogInSignUp;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,16 +9,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.syroniko.casseteapp.R;
+import com.syroniko.casseteapp.MainClasses.User;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -67,12 +58,14 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Password must have at least 6 digits", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    User userInstance = new User(nameEditText.getText().toString(),  emailET.getText().toString(), null, null, null);
+                    User userInstance = new User(nameEditText.getText().toString(),  emailET.getText().toString(), null, null, null, null, null);
                     Intent intent = new Intent(SignUpActivity.this, PickGenresSignUpActivity.class);
                     intent.putExtra("User", userInstance);
                     intent.putExtra("Password", pass);
-                    startActivity(intent);                }
-
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 

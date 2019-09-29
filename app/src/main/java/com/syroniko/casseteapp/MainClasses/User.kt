@@ -1,6 +1,5 @@
-package com.syroniko.casseteapp
+package com.syroniko.casseteapp.MainClasses
 
-import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -13,7 +12,8 @@ class User(
     var name: String?,
     var email: String,
 //    var image: Bitmap? = null,
-//    val uid: String,
-    val country:String?,
-    val genres: ArrayList<String>?,
-    val friends: ArrayList<String>?) : Parcelable
+    var uid: String?,
+    var country:String?,
+    var genres: ArrayList<String>?,
+    var friends: ArrayList<String>?,
+    var cassettes: ArrayList<Cassette>?) : Parcelable
