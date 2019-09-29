@@ -14,25 +14,24 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ProfileActivity">
+        </activity>
         <activity android:name=".CountrySelectActivitySignUp">
         </activity>
         <activity
                 android:name=".SplashActivity"
                 android:theme="@style/AppTheme.Launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
-
-
         <activity android:name=".SpotifyArtistResultActivity">
         </activity>
         <activity android:name=".SpotifyResultActivity">
         </activity>
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".PickGenresSignUpActivity">
         </activity>
