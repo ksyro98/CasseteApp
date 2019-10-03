@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.syroniko.casseteapp.R;
 import com.syroniko.casseteapp.MainClasses.User;
 
+import java.util.Date;
+
 public class SignUpActivity extends AppCompatActivity {
 
     private static final int PLACE_PICKER_REQUEST_SIGN_UP = 271;
@@ -58,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Password must have at least 6 digits", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    User userInstance = new User(nameEditText.getText().toString(),  emailET.getText().toString(), null, null, null, null, null);
+                    User userInstance = new User(nameEditText.getText().toString(),  emailET.getText().toString(),System.currentTimeMillis(), null, null, null, null);
                     Intent intent = new Intent(SignUpActivity.this, PickGenresSignUpActivity.class);
                     intent.putExtra("User", userInstance);
                     intent.putExtra("Password", pass);

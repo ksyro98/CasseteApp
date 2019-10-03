@@ -61,7 +61,8 @@ class MainActivity : AppCompatActivity() {
         val context = this
 
         //Spotify Auth
-        val builder = AuthenticationRequest.Builder(clientId, AuthenticationResponse.Type.TOKEN, redirectUri)
+        val builder =
+            AuthenticationRequest.Builder(clientId, AuthenticationResponse.Type.TOKEN, redirectUri)
         val request = builder.build()
 
         AuthenticationClient.openLoginActivity(this, spotifyRequestCode, request)
@@ -83,15 +84,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         getCassettes()
-
+        receiverChooserBadedOnLastCassetteReceived()
     }
 
-    override fun onStart(){
+    override fun onStart() {
         super.onStart()
 
         //Firebase Auth
         val user = FirebaseAuth.getInstance().currentUser
-        if(user == null){
+        if (user == null) {
             val intent = Intent(this, WelcomingActivity::class.java)
             startActivity(intent)
         }
@@ -135,8 +136,8 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getCassettes(){
-        if(FirebaseAuth.getInstance().uid == null){
+    private fun getCassettes() {
+        if (FirebaseAuth.getInstance().uid == null) {
             return
         }
 
@@ -146,8 +147,8 @@ class MainActivity : AppCompatActivity() {
             .whereArrayContains("possibleReceivers", FirebaseAuth.getInstance().uid as String)
             .whereEqualTo("received", false)
             .get()
-            .addOnSuccessListener {documents ->
-                for (document in documents){
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
                     val casseteId = document.id
                     val trackMap = (document.data["track"] as Map<*, *>)
                     val trackName = trackMap["trackName"] as String
@@ -156,10 +157,12 @@ class MainActivity : AppCompatActivity() {
 
                     db.collection("cassettes")
                         .document(casseteId)
-                        .update(mapOf(
-                            "track.received" to true
-                        ))
-                    }
+                        .update(
+                            mapOf(
+                                "track.received" to true
+                            )
+                        )
+                }
 
             }
             .addOnFailureListener {
@@ -169,6 +172,19 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-}
+    private fun receiverChooserBadedOnLastCassetteReceived() {
+        val db = FirebaseFirestore.getInstance()
 
-fun Context.toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        val userReference = db.collection("users")
+        userReference.orderBy("receivedLastCassetteAt").limit(1).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val userId = document.id
+                    toast(userId)
+                }
+            }
+    }
+    }
+
+    fun Context.toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+

@@ -6,6 +6,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.syroniko.casseteapp.MainClasses.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Bitmap userProfileImage;
     private String description;
     private String country;
-    User user;
+    private User user;
 
 
     TextView nameTextView;
