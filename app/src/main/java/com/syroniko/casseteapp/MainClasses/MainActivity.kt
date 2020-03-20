@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         getCassettes()
-        receiverChooserBadedOnLastCassetteReceived()
+        receiverChooserBasedOnLastCassetteReceived()
     }
 
     override fun onStart() {
@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun receiverChooserBadedOnLastCassetteReceived() {
+    private fun receiverChooserBasedOnLastCassetteReceived() {
         val db = FirebaseFirestore.getInstance()
 
         val userReference = db.collection("users")

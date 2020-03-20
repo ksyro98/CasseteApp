@@ -83,7 +83,7 @@ public class CountrySelectActivitySignUp extends AppCompatActivity {
             public void onClick(View v) {
                 if (user.getCountry() != null) {
                     FirebaseAuth auth = FirebaseAuth.getInstance();
-//                    Log.d(TAG, user.getEmail());
+                  Log.d("ZA WARUDO", user.getEmail());
                     auth.createUserWithEmailAndPassword(user.getEmail(), password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override

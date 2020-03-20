@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.syroniko.casseteapp">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.syroniko.casseteapp">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
             android:allowBackup="true"
@@ -15,29 +15,30 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TrackSearchFlow.SendTrackActivity">
-        </activity>
-        <activity android:name=".TrackSearchFlow.SpotifyAlbumResultActivity"/>
-        <activity android:name=".LogInSignUp.CountrySelectActivitySignUp"/>
-        <activity android:name=".StartingActivities.SplashActivity"/>
-        <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity"/>
-        <activity android:name=".TrackSearchFlow.SpotifyResultActivity"/>
-        <activity android:name=".ProfileActivity"/>
-        <activity android:name=".MainClasses.MainActivity">
+        <activity android:name=".ChatAndMessages.ChatActivity"></activity>
+        <activity android:name=".MainClasses.CoreActivity" />
+        <activity android:name=".TrackSearchFlow.SendTrackActivity" />
+        <activity android:name=".TrackSearchFlow.SpotifyAlbumResultActivity" />
+        <activity android:name=".LogInSignUp.CountrySelectActivitySignUp" />
+        <activity android:name=".StartingActivities.SplashActivity" />
+        <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity" />
+        <activity android:name=".TrackSearchFlow.SpotifyResultActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".MainClasses.MainActivity"></activity>
+        <activity android:name=".LogInSignUp.PickGenresSignUpActivity" />
+        <activity android:name=".LogInSignUp.SignUpActivity"></activity>
+        <activity android:name=".LogInSignUp.ResetPasswordActivity" />
+        <activity android:name=".LogInSignUp.WelcomingActivity" />
+        <activity android:name=".LogInSignUp.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogInSignUp.PickGenresSignUpActivity"/>
-        <activity android:name=".LogInSignUp.SignUpActivity"/>
-        <activity android:name=".LogInSignUp.ResetPasswordActivity"/>
-        <activity android:name=".LogInSignUp.WelcomingActivity"/>
-        <activity android:name=".LogInSignUp.LoginActivity"/>
         <activity
                 android:name="com.spotify.sdk.android.authentication.LoginActivity"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

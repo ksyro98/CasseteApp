@@ -31,6 +31,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.syroniko.casseteapp.MainClasses.CoreActivity;
 import com.syroniko.casseteapp.MainClasses.MainActivity;
 import com.syroniko.casseteapp.R;
 
@@ -108,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("TAG", "signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    Toast.makeText(LoginActivity.this, user.getUid(), Toast.LENGTH_SHORT).show();
                                     LoginToAppIntent();
 
 
@@ -148,8 +150,10 @@ public class LoginActivity extends AppCompatActivity {
     private void LoginToAppIntent() {
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(Email, mAuth.getCurrentUser().getEmail());
+
         editor.apply();
-        Intent i=new Intent(LoginActivity.this, MainActivity.class);
+        Intent i=new Intent(LoginActivity.this, CoreActivity.class);
+        i.putExtra("USERID",mAuth.getCurrentUser().getUid());
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         finish();
