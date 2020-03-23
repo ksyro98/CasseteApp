@@ -1,0 +1,44 @@
+r&b
+contemporary r&b (modern r&b),soul,funk,disco,alternative r&b
+
+blues
+classic blues,city blues,country blues,electric blues,blues-rock,jazz blues,british blues
+
+country
+traditional country,contemporary country,roots rock (country rock),country pop,americana,bluegrass,alternative country
+
+folk
+celtic folk,nordic folk,african folk,asian folk,latin folk,folk rock,folk pop,folk jazz,indie folk,psychedelic folk,indie folk,british folk,folk metal,folk punk,folktronica,psychedelic folk
+
+hip-hop
+cloud rap,gangsta rap,old-school rap,grime,trap,freestyle rap,mumble rap,G-funk,trip hop,rap rock,rap metal,alternative hip hop,emo hip hop,experimental hip hop,pop rap,lo-fi beats,reggaeton
+
+jazz
+tradional jazz (new orleans),swing,bebop,cool jazz,jazz funk,free jazz,jazz fusion(jazz rock),jazz blues,jazz metal,nu jazz (jazztronica)
+
+pop
+singer-songwriter,synthpop,dream pop,dance pop,pop rap,country pop,folk pop,pop rock,electropop,pop punk,garage pop,indie pop,psych-pop,experimental pop,noise pop,alternative pop
+
+rock
+rock-and-roll,classic rock,hard rock,grunge,blues rock,fork rock,jazz fusion(jazz rock),stoner,pop rock,roots rock (country rock),rap rock,electronic rock,dream pop,post-punk,post-rock,singer-songwriter,garage rock,emo rock,dance rock,math rock,space rock,surf rock,indie rock,psychedelic rock,progressive rock,experimental rock,noise rock,alternative rock,glam rock
+
+metal
+heavy metal,metalcore,grindcore,black metal,death metal,doom metal,power metal,nu metal,thrash metal,symphonic metal,stoner,jazz metal,folk metal,rap metal,industrial metal,progressive metal,alternative metal,glam metal
+
+punk
+pop punk,post-punk,anarcho punk,emo punk,electropunk,folk punk,riot grrl,skate punk,folk punk,hardcore punk,horror punk,goth punk,new wave,garage punk,dance punk
+
+electronic
+techno,house,electro house,disco house,acid house,trance,vaporwave,chiptune,epic trance,psychedelic trance,nightcore,ambient,downtempo,chill-out,drum and bass,neurofunk,nu disco,breakbeat,dub,dubstep,brostep,trap,neurofunk,jungle,bounce,glitch,hardcore techno,EDM,new wave,folktronica,nu jazz (jazztronica),electronic rock,electropop,electropunk,trip hop
+
+
+classical
+opera,orchestra
+
+soundtrack
+movie tunes,video game music,musical,anime tunes
+
+J-K
+j-rock,j-pop,j-rap,j-indie,j-metal,k-rock,k-pop,k-indie,k-hop (k-rap),k-metal
+
+
