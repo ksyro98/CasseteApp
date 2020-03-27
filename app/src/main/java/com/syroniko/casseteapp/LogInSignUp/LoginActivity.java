@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(Email, mAuth.getCurrentUser().getEmail());
 
         editor.apply();
-        Intent i=new Intent(LoginActivity.this, CoreActivity.class);
+        Intent i=new Intent(LoginActivity.this, MainActivity.class);
         i.putExtra("USERID",mAuth.getCurrentUser().getUid());
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);

@@ -1,8 +1,8 @@
 package com.syroniko.casseteapp.TrackSearchFlow
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
@@ -59,6 +59,12 @@ class SpotifyAlbumResultActivity : AppCompatActivity() {
                         artistIds.add(artistsJsons.getJSONObject(j).getString("id"))
                     }
 
+                    val previewUrl: String? = if (items.getJSONObject(i).getString("preview_url") != null) {
+                        items.getJSONObject(i).getString("preview_url")
+                    }
+                    else{
+                        noPreviewUrl
+                    }
 //                    Log.d("SpotifyAlbumResultAct", artistNames.toString())
 //                    Log.d("SpotifyAlbumResultAct", artistIds.toString())
 //                    Log.d("SpotifyAlbumResultAct", "")
@@ -70,7 +76,8 @@ class SpotifyAlbumResultActivity : AppCompatActivity() {
                             artistIds,
                             artistNames,
                             albumImageUrl,
-                            null
+                            null,
+                            previewUrl
                         )
                     )
                 }

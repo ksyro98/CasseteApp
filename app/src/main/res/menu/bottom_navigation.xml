@@ -4,14 +4,11 @@
 
     <item
             android:id="@+id/bot_nav_cassette_case"
-            android:icon="@drawable/bottom_navigation_cassette_case"
             android:title="Cassette Case" />
     <item
             android:id="@+id/bot_nav_new_cassette"
-            android:icon="@drawable/bottom_navigation_new_cassette"
             android:title="New Cassette" />
     <item
             android:id="@+id/bot_nav_messages"
-            android:icon="@drawable/bottom_navigation_message"
             android:title="Messages" />
 </menu>

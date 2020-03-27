@@ -8,12 +8,12 @@ import java.util.*
 //import java.time.LocalDateTime
 
 @Parcelize
-class Cassette(
-    val senderId: String?,
-    val track: SpotifyTrack,
-    val comment: String,
-    val genre: String?,
-    val possibleReceivers: ArrayList<String>,
-    val restrictedReceivers: ArrayList<String?>,
+data class Cassette(
+    val senderId: String? = "",
+    val track: SpotifyTrack = SpotifyTrack(),
+    val comment: String = "",
+    val genre: String? = "",
+    val possibleReceivers: ArrayList<String> = arrayListOf(),
+    val restrictedReceivers: ArrayList<String?> = arrayListOf(),
     var received: Boolean = false
 ) : Parcelable

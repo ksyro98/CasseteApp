@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.syroniko.casseteapp.MainClasses.CoreActivity;
+import com.syroniko.casseteapp.MainClasses.MainActivity;
 import com.syroniko.casseteapp.MainClasses.User;
 import com.syroniko.casseteapp.R;
 
@@ -47,7 +48,7 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View view =inflater.inflate(R.layout.fragment_messages,container,false);
-       final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         recyclerView=view.findViewById(R.id.recycler_of_friends_message_fragment);
         recyclerView.setHasFixedSize(true);
@@ -70,18 +71,7 @@ public class MessagesFragment extends Fragment {
             }
         });
         list=new ArrayList<>();
-       uid=  ((CoreActivity) getActivity()).getUid();
-
-       /* User Mark=new User("Mark","mamamama",31131313,null,"1","Greece",
-                null,null);
-        User bob=new User("Bob","mamamama2",31131313,null,"2","Greece",
-                null,null);
-        User nick=new User("Nick","mamamam1",31131313,null,"3","Greece",
-                null,null);
-
-        list.add(Mark);
-        list.add(bob);
-        list.add(nick);*/
+        uid = ((MainActivity) getActivity()).getUid();
 
         DocumentReference docRef = db.collection("users").document(uid);
 

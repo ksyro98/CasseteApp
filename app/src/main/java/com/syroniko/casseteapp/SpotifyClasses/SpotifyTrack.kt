@@ -13,7 +13,7 @@ import kotlinx.android.parcel.Parcelize
 import org.json.JSONObject
 
 @Parcelize
-class SpotifyTrack(val trackName: String, val trackId: String, val artistIds: ArrayList<String>, val artistNames: ArrayList<String>, val imageUrl: String, var genre: String?) : Parcelable
+class SpotifyTrack(val trackName: String = "", val trackId: String = "", val artistIds: ArrayList<String> = arrayListOf(), val artistNames: ArrayList<String> = arrayListOf(), val imageUrl: String = "", var genre: String? = "", val previewUrl: String? = "") : Parcelable
     , SpotifyResult {
 
     private val genreMap = HashMap<String, Int>()

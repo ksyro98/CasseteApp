@@ -1,6 +1,5 @@
 package com.syroniko.casseteapp.TrackSearchFlow
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.MainClasses.spotifyArtistResultExtraName
 import com.syroniko.casseteapp.MainClasses.spotifyTrackResultExtraName
 import com.syroniko.casseteapp.MainClasses.tokenExtraName
+import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.*
 import kotlinx.android.synthetic.main.spotify_item.view.*
 

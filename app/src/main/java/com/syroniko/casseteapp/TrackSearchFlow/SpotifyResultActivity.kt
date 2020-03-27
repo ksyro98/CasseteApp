@@ -1,9 +1,9 @@
 package com.syroniko.casseteapp.TrackSearchFlow
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -22,6 +22,9 @@ import com.syroniko.casseteapp.SpotifyClasses.SpotifySeparator
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
 import kotlinx.android.synthetic.main.activity_spotify_result.*
 import org.json.JSONObject
+
+
+const val noPreviewUrl = ""
 
 class SpotifyResultActivity : AppCompatActivity() {
 
@@ -106,6 +109,17 @@ class SpotifyResultActivity : AppCompatActivity() {
                         (jsonTrack.getAsJsonObject("album").getAsJsonArray("images")[0] as JsonObject).get("url")
                             .asString
 
+                    Log.d(tag, jsonTrack.toString())
+
+                    //jsonTrack.get("preview_url").asString != null) doesn't work
+                    val previewUrl: String? = if (jsonTrack.get("preview_url").toString() != "null") {
+                        jsonTrack.get("preview_url").asString
+                    }
+                    else{
+                        noPreviewUrl
+                    }
+
+
                     val spotifyTrack =
                         SpotifyTrack(
                             trackName,
@@ -113,7 +127,8 @@ class SpotifyResultActivity : AppCompatActivity() {
                             artistIds,
                             artistNames,
                             imageUrl,
-                            null
+                            null,
+                            previewUrl
                         )
                     tracks.add(spotifyTrack)
 //                    resultsList.add(spotifyTrack)

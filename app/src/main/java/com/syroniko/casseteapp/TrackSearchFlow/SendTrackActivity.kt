@@ -1,19 +1,19 @@
 package com.syroniko.casseteapp.TrackSearchFlow
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.syroniko.casseteapp.MainClasses.*
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
 import com.syroniko.casseteapp.SpotifyClasses.genres
 import kotlinx.android.synthetic.main.activity_send_track.*
-import android.content.Intent
-import com.syroniko.casseteapp.MainClasses.*
 
 
 class SendTrackActivity : AppCompatActivity() {
@@ -35,6 +35,10 @@ class SendTrackActivity : AppCompatActivity() {
         Glide.with(this).load(track.imageUrl).into(trackImageView)
         trackTitleTextView.text = track.trackName
         artistNameTextView.text = track.artistNames.toString()
+
+        if (track.previewUrl == noPreviewUrl){
+            longToast("This track has no available preview, so only to people who use Spotify premium will be able to listen to it.")
+        }
 
         changeGenreTextView.setOnClickListener {
             val builder = AlertDialog.Builder(context)
@@ -76,7 +80,9 @@ class SendTrackActivity : AppCompatActivity() {
         val restrictedReceivers = arrayListOf(uid)
         val db = FirebaseFirestore.getInstance()
 
+
         db.collection("users")
+            .orderBy("receivedLastCassetteAt")
             .whereArrayContains("genres", genre)
             .limit(10)
             .get()
