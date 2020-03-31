@@ -1,13 +1,29 @@
 package com.syroniko.casseteapp.ChatAndMessages;
 
 public class Chat {
-    public String getSender() {
-        return sender;
-    }
+
+    private String sender;
+    private String receiver;
+    private String timestamp;
+    private String message;
+    private boolean isSeen;
+    private String chatId;
+
     public  Chat(){
 
     }
 
+    public Chat(String sender, String receiver, String message, boolean isSeen, String timestamp){
+        this.message=message;
+        this.receiver=receiver;
+        this.sender=sender;
+        this.timestamp=timestamp;
+        this.isSeen = isSeen;
+    }
+
+    public String getSender() {
+        return sender;
+    }
     public void setSender(String sender) {
         this.sender = sender;
     }
@@ -15,7 +31,6 @@ public class Chat {
     public String getReceiver() {
         return receiver;
     }
-
     public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
@@ -23,51 +38,28 @@ public class Chat {
     public String getMessage() {
         return message;
     }
-
     public void setMessage(String message) {
         this.message = message;
     }
 
-    private String sender;
-    private String receiver;
-
     public String getTimestamp() {
         return timestamp;
     }
-
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
-    private String timestamp;
-    private String message;
-
     public boolean isSeen() {
-        return isseen;
+        return isSeen;
     }
-
     public void setSeen(boolean seen) {
-        isseen = seen;
+        isSeen = seen;
     }
-
-    private boolean isseen;
 
     public String getChatId() {
         return chatId;
     }
-
     public void setChatId(String chatId) {
         this.chatId = chatId;
     }
-
-    private String chatId;
-
-    public Chat(String sender, String receiver, String message,boolean isseen,String timestamp){
-        this.message=message;
-        this.receiver=receiver;
-        this.sender=sender;
-        this.timestamp=timestamp;
-        this.isseen=isseen;
-    }
-
 }

@@ -58,7 +58,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
         Chat chat =mChat.get(position);
         holder.show_message.setText(chat.getMessage());
         holder.timestampTv.setVisibility(View.INVISIBLE);
-        if(imageUrl=="default"){
+        if(imageUrl.equals("default")){
          //   holder.userImage.setImageResource(R.mipmap.ic_launcher);
         }
         else{

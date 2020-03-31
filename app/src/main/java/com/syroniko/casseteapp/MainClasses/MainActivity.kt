@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     private val searchDone = false
     private val cassettes = ArrayList<LocalCassette>()
+    private var selectedFragment: Fragment? = null
 //    private var cassetteCaseFragment: CassetteCaseFragment? = null
 //    private var messagesFragment: MessagesFragment? = null
 //    private var createCassetteFragment: CreateCassetteFragment? = null
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 //        cassetteCaseFragment = CassetteCaseFragment()
 //        messagesFragment = MessagesFragment()
 //        createCassetteFragment = CreateCassetteFragment()
-        var selectedFragment: Fragment? = CassetteCaseFragment()
+        selectedFragment = CassetteCaseFragment()
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.core_fragment_container, selectedFragment!!).commit()
@@ -128,13 +129,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == com.syroniko.casseteapp.MainClasses.spotifyRequestCode) {
+        if (requestCode == spotifyRequestCode) {
             val response =
                 AuthenticationClient.getResponse(resultCode, data)
             when (response.type) {
@@ -150,6 +147,22 @@ class MainActivity : AppCompatActivity() {
                 AuthenticationResponse.Type.EMPTY -> Log.d(TAG, "empty")
                 AuthenticationResponse.Type.UNKNOWN -> Log.d(TAG, "unknown")
                 else -> Log.d(TAG, "null")
+            }
+        }
+        else if (requestCode == cassetteViewerRequestCode){
+            val localDb = this.let {
+                Room.databaseBuilder(
+                    it,
+                    AppDatabase::class.java, "cassette_database"
+                ).build()
+            }
+
+            lifecycleScope.launch {
+                cassettes.clear()
+                cassettes.addAll(localDb.cassetteDao().getAll())
+                if(selectedFragment != null && selectedFragment is CassetteCaseFragment){
+                    (selectedFragment as CassetteCaseFragment).setNewData(cassettes)
+                }
             }
         }
     }
@@ -211,7 +224,7 @@ class MainActivity : AppCompatActivity() {
                         localDb.cassetteDao().insertAll(newCassette)
                     }
 
-                    cassettes += newCassette
+                    cassettes.add(newCassette)
 
                     db.collection("cassettes")
                         .document(cassetteId)

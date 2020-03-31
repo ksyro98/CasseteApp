@@ -56,7 +56,13 @@ class CassetteCaseFragment : Fragment() {
     fun updateData(cassettes: MutableList<LocalCassette>){
         this.cassettes.addAll(cassettes)
         this.cassetteAdapter?.notifyDataSetChanged()
-        Log.d(MainActivity::class.java.simpleName, "!$cassetteAdapter")
+//        Log.d(MainActivity::class.java.simpleName, "!$cassetteAdapter")
+    }
+
+    fun setNewData(cassettes: MutableList<LocalCassette>){
+        this.cassettes.clear()
+        this.cassettes.addAll(cassettes)
+        this.cassetteAdapter?.notifyDataSetChanged()
     }
 }
 

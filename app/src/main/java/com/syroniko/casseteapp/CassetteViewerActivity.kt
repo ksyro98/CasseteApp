@@ -3,29 +3,26 @@ package com.syroniko.casseteapp
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.spotify.android.appremote.api.ConnectionParams
+import com.spotify.android.appremote.api.Connector
+import com.spotify.android.appremote.api.SpotifyAppRemote
+import com.syroniko.casseteapp.ChatAndMessages.sendMessage
+import com.syroniko.casseteapp.MainClasses.clientId
+import com.syroniko.casseteapp.MainClasses.longToast
+import com.syroniko.casseteapp.MainClasses.redirectUri
+import com.syroniko.casseteapp.TrackSearchFlow.noPreviewUrl
 import com.syroniko.casseteapp.room.AppDatabase
 import com.syroniko.casseteapp.room.LocalCassette
 import kotlinx.android.synthetic.main.activity_cassette_viewer.*
 import kotlinx.coroutines.launch
-
-import com.spotify.android.appremote.api.ConnectionParams
-import com.spotify.android.appremote.api.Connector
-import com.spotify.android.appremote.api.SpotifyAppRemote
-import com.spotify.protocol.types.Capabilities
-
-import com.syroniko.casseteapp.MainClasses.clientId
-import com.syroniko.casseteapp.MainClasses.longToast
-import com.syroniko.casseteapp.MainClasses.redirectUri
-import com.syroniko.casseteapp.MainClasses.toast
-import com.syroniko.casseteapp.TrackSearchFlow.noPreviewUrl
 
 
 const val resultForward = 12
@@ -44,7 +41,7 @@ class CassetteViewerActivity : AppCompatActivity() {
 
         val cassetteId = intent.getStringExtra(cassetteIdExtraName)
         val senderId = intent.getStringExtra(userIdExtraName)
-        val userId = FirebaseAuth.getInstance().uid.toString()
+        val uid = FirebaseAuth.getInstance().uid.toString()
         var trackName = ""
         var trackId = ""
 
@@ -64,7 +61,9 @@ class CassetteViewerActivity : AppCompatActivity() {
                 if (trackId != ""){
                     spotifyPlayButton.isEnabled = true
                 }
-                trackPreviewUrl = trackMap["previewUrl"] as String
+                if(trackMap["previewUrl"] != null) {
+                    trackPreviewUrl = trackMap["previewUrl"] as String
+                }
 //                toast(trackName)
 //                toast(trackId)
             }
@@ -84,7 +83,7 @@ class CassetteViewerActivity : AppCompatActivity() {
             db.collection("cassettes")
                 .document(cassetteId)
                 .update(
-                    "possibleReceivers", FieldValue.arrayRemove(userId)
+                    "possibleReceivers", FieldValue.arrayRemove(uid)
                 )
 
             db.collection("cassettes")
@@ -92,7 +91,7 @@ class CassetteViewerActivity : AppCompatActivity() {
                 .update("received", false)
 
             db.collection("users")
-                .document(userId)
+                .document(uid)
                 .update(
                     "cassettes", FieldValue.arrayRemove(cassetteId)
                 )
@@ -145,8 +144,41 @@ class CassetteViewerActivity : AppCompatActivity() {
                         // Something went wrong when attempting to connect! Handle errors here
                     }
                 })
-
         }
+
+        replyButton.setOnClickListener {
+            sendMessage(
+                uid,
+                senderId,
+                "Hello, I received your cassette with $trackName and I loved it!",
+                System.currentTimeMillis().toString(),
+                db)
+
+            val localDb = this.let {
+                Room.databaseBuilder(
+                    it,
+                    AppDatabase::class.java, "cassette_database"
+                ).build()
+            }
+
+            val localCassette = LocalCassette(cassetteId, trackName, senderId)
+            lifecycleScope.launch {
+                localDb.cassetteDao().delete(localCassette)
+            }
+
+            db.collection("users")
+                .document(uid)
+                .update(
+                    "friends",
+                    FieldValue.arrayUnion(senderId)
+                )
+
+            val resultIntent = Intent()
+            resultIntent.putExtra(resultCassette, localCassette)
+            setResult(resultForward, resultIntent)
+            finish()
+        }
+
     }
 
     private fun connected(trackId: String){

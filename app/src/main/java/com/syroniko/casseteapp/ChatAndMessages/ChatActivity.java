@@ -40,10 +40,12 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import static com.syroniko.casseteapp.ChatAndMessages.ChatUtilsKt.sendMessage;
+
 public class ChatActivity extends AppCompatActivity {
     EditText messageEditText;
     ImageButton sendButton;
-     FirebaseFirestore db;
+    FirebaseFirestore db;
     String friendChattingId;
     String uid;
     String friendName;
@@ -53,6 +55,7 @@ public class ChatActivity extends AppCompatActivity {
     DocumentReference docRef;
     CollectionReference colref;
     ListenerRegistration seenListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +78,14 @@ public class ChatActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!messageEditText.getText().toString().equals(""))
-                sendMessage(uid,friendChattingId,String.valueOf(System.currentTimeMillis()));
+                if(!messageEditText.getText().toString().equals("")) {
+                    sendMessage(
+                            uid,
+                            friendChattingId,
+                            messageEditText.getText().toString(),
+                            String.valueOf(System.currentTimeMillis()),
+                            db);
+                }
             }
         });
          docRef = db.collection("users").document(uid);
@@ -129,41 +138,40 @@ public class ChatActivity extends AppCompatActivity {
         });
 
     }*/
-    private void sendMessage(String sender,String receiver,String time){
-        Map<String, Object> user = new HashMap<>();
-        if(sender.hashCode()>receiver.hashCode()) {
-
-
-            user.put("chatid", sender + receiver);
-        }
-        else{
-            user.put("chatid", receiver + sender);
-
-        }
-        user.put("receiver", receiver);
-        user.put("sender",sender);
-        user.put("isseen",false);
-        user.put("timestamp", time);
-
-
-        user.put("message", messageEditText.getText().toString());
-
-
-        db.collection("chats")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Error adding document", e);
-                    }
-                });
-    }
+//    private void sendMessage(String sender,String receiver,String time){
+//        Map<String, Object> user = new HashMap<>();
+//        if(sender.hashCode()>receiver.hashCode()) {
+//            user.put("chatid", sender + receiver);
+//        }
+//        else{
+//            user.put("chatid", receiver + sender);
+//
+//        }
+//
+//        user.put("receiver", receiver);
+//        user.put("sender",sender);
+//        user.put("isseen",false);
+//        user.put("timestamp", time);
+//
+//
+//        user.put("message", messageEditText.getText().toString());
+//
+//
+//        db.collection("chats")
+//                .add(user)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d("TAG", "DocumentSnapshot added with ID: " + documentReference.getId());
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w("TAG", "Error adding document", e);
+//                    }
+//                });
+//    }
 
     private void readMessages(final String myId, final String userId, final String imageUrl ){
         mChat=new ArrayList<>();
