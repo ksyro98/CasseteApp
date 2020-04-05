@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.Room
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
-import com.syroniko.casseteapp.CassetteAdapter
 import com.syroniko.casseteapp.CassetteCaseFragment
 import com.syroniko.casseteapp.ChatAndMessages.MessagesFragment
 import com.syroniko.casseteapp.CreateCassetteFragment
@@ -28,9 +26,9 @@ import com.syroniko.casseteapp.SpotifyClasses.SpotifyResult
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
 import com.syroniko.casseteapp.room.AppDatabase
 import com.syroniko.casseteapp.room.LocalCassette
-import kotlinx.android.synthetic.main.fragment_cassette_case.*
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 const val spotifyQueryExtraName = "Spotify Query Extra Name"
@@ -89,7 +87,8 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.bot_nav_cassette_case -> {
                     selectedFragment = CassetteCaseFragment()
-                    (selectedFragment as CassetteCaseFragment).updateData(cassettes)
+                    updateCassettesInView(cassettes)
+//                    (selectedFragment as CassetteCaseFragment).updateData(cassettes)
 //                    selectedFragment.updateData(cassettes)
                     Log.d(tag, cassettes.toString())
                 }
@@ -123,9 +122,10 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             cassettes.addAll(localDb.cassetteDao().getAll())
-            if(selectedFragment != null && selectedFragment is CassetteCaseFragment){
-                (selectedFragment as CassetteCaseFragment).updateData(cassettes)
-            }
+            updateCassettesInView(cassettes)
+//            if(selectedFragment != null && selectedFragment is CassetteCaseFragment){
+//                (selectedFragment as CassetteCaseFragment).updateData(cassettes)
+//            }
         }
     }
 
@@ -181,7 +181,8 @@ class MainActivity : AppCompatActivity() {
                 .addOnSuccessListener { documentSnapshot ->
                     val time = documentSnapshot["receivedLastCassetteAt"] as Long
                     if (System.currentTimeMillis() - time > thirtyMins) {
-                        getCassette()
+                        getNewCassette()
+                        retrieveCassettes()
                     }
                 }
         }
@@ -191,7 +192,7 @@ class MainActivity : AppCompatActivity() {
         return uid
     }
 
-    private fun getCassette() {
+    private fun getNewCassette() {
         if (FirebaseAuth.getInstance().uid == null) {
             return
         }
@@ -258,6 +259,40 @@ class MainActivity : AppCompatActivity() {
                 Log.e(MainActivity::class.java.simpleName, "Retrieving Data Error", it)
             }
 
+    }
+
+    private fun retrieveCassettes(){
+        db.collection("users")
+            .document(uid)
+            .get()
+            .addOnSuccessListener {documentSnapshot ->
+                val userCassettes = documentSnapshot["cassettes"] as ArrayList<*>
+                val cassetteIds = cassettes.map { cassette -> cassette.cassetteId }
+                for (userCassette in userCassettes){
+                    if (userCassette !in cassetteIds){
+                        db.collection("cassettes")
+                            .document(userCassette.toString())
+                            .get()
+                            .addOnSuccessListener { cassetteDocument ->
+                                val trackMap = cassetteDocument["track"] as Map<*, *>
+                                val trackName = trackMap["trackName"] as String
+                                val senderId = cassetteDocument["senderId"] as String
+                                val localCassette = LocalCassette(userCassette.toString(), trackName, senderId)
+                                cassettes.add(localCassette)
+                                updateCassettesInView(mutableListOf(localCassette))
+                            }
+                    }
+                }
+            }
+            .addOnFailureListener {
+                toast("Unable to retrieve cassettes from our server.")
+            }
+    }
+
+    private fun updateCassettesInView(newCassettes: MutableList<LocalCassette>){
+        if (selectedFragment != null && selectedFragment is CassetteCaseFragment){
+            (selectedFragment as CassetteCaseFragment).updateData(newCassettes)
+        }
     }
 }
 
