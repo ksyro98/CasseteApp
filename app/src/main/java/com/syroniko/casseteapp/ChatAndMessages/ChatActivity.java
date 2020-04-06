@@ -187,7 +187,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         }
-            colref= db.collection("chats");
+        colref= db.collection("chats");
         colref.orderBy("timestamp")//.whereEqualTo("chatid", path)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override

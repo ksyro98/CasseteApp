@@ -8,7 +8,7 @@
 
     <ImageView
             android:id="@+id/senderImageView"
-            android:layout_width="100dp"
+            android:layout_width="266dp"
             android:layout_height="100dp"
             android:layout_marginTop="64dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,14 +28,14 @@
 
     <TextView
             android:id="@+id/cassetteCommentTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="64dp"
-            app:layout_constraintBottom_toTopOf="@+id/replyButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/youTubeButton" />
 
     <Button
             android:id="@+id/replyButton"
@@ -61,22 +61,31 @@
             android:id="@+id/spotifyPlayButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:text="Play"
-            app:layout_constraintBottom_toTopOf="@+id/cassetteCommentTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/senderNameTextView" />
+
+    <ImageView
+            android:id="@+id/youTubeImageView"
+            android:layout_width="266dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="64dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spotifyPlayButton" />
 
     <Button
             android:id="@+id/youTubeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="32dp"
             android:text="Search in YouTube"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.52"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spotifyPlayButton" />
+            app:layout_constraintTop_toBottomOf="@+id/youTubeImageView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

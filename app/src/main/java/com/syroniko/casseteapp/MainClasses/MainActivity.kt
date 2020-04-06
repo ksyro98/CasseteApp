@@ -102,15 +102,10 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.core_fragment_container, selectedFragment!!).commit()
             true
         }
-        val builder = AuthenticationRequest.Builder(
-            com.syroniko.casseteapp.MainClasses.clientId, AuthenticationResponse.Type.TOKEN,
-            com.syroniko.casseteapp.MainClasses.redirectUri
-        )
+
+        val builder = AuthenticationRequest.Builder(clientId, AuthenticationResponse.Type.TOKEN, redirectUri)
         val request = builder.build()
-        AuthenticationClient.openLoginActivity(
-            this,
-            com.syroniko.casseteapp.MainClasses.spotifyRequestCode, request
-        )
+        AuthenticationClient.openLoginActivity(this, spotifyRequestCode, request)
 
 
         val localDb = this.let {
@@ -123,9 +118,6 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             cassettes.addAll(localDb.cassetteDao().getAll())
             updateCassettesInView(cassettes)
-//            if(selectedFragment != null && selectedFragment is CassetteCaseFragment){
-//                (selectedFragment as CassetteCaseFragment).updateData(cassettes)
-//            }
         }
     }
 
@@ -180,10 +172,11 @@ class MainActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     val time = documentSnapshot["receivedLastCassetteAt"] as Long
+                    Log.d(MainActivity::class.java.simpleName, documentSnapshot.toString())
                     if (System.currentTimeMillis() - time > thirtyMins) {
                         getNewCassette()
-                        retrieveCassettes()
                     }
+                    retrieveCassettes()
                 }
         }
     }
@@ -226,6 +219,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     cassettes.add(newCassette)
+
+                    updateCassettesInView(mutableListOf(newCassette))
 
                     db.collection("cassettes")
                         .document(cassetteId)
@@ -278,11 +273,21 @@ class MainActivity : AppCompatActivity() {
                                 val trackName = trackMap["trackName"] as String
                                 val senderId = cassetteDocument["senderId"] as String
                                 val localCassette = LocalCassette(userCassette.toString(), trackName, senderId)
+
                                 cassettes.add(localCassette)
                                 updateCassettesInView(mutableListOf(localCassette))
+
+                                val localDb = Room.databaseBuilder(this, AppDatabase::class.java, "cassette_database").build()
+
+                                lifecycleScope.launch {
+                                    localDb.cassetteDao().insertAll(localCassette)
+                                }
+
                             }
                     }
                 }
+//                toast(newCassettes.toString())
+
             }
             .addOnFailureListener {
                 toast("Unable to retrieve cassettes from our server.")

@@ -12,13 +12,11 @@ import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
@@ -48,6 +46,7 @@ const val ytWebWatchUrl = "https://www.youtube.com/watch?v="
 class CassetteViewerActivity : AppCompatActivity() {
     private lateinit var spotifyAppRemote: SpotifyAppRemote
     private var trackPreviewUrl = noPreviewUrl
+    private var videoId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +62,6 @@ class CassetteViewerActivity : AppCompatActivity() {
 
 
         val db = FirebaseFirestore.getInstance()
-        val queue = Volley.newRequestQueue(this)
 
         db.collection("cassettes")
             .document(cassetteId)
@@ -81,12 +79,12 @@ class CassetteViewerActivity : AppCompatActivity() {
                 if(trackMap["previewUrl"] != null) {
                     trackPreviewUrl = trackMap["previewUrl"] as String
                 }
+
+                getYTData(trackName)
 //                toast(trackName)
 //                toast(trackId)
             }
 
-
-        Log.d(CassetteViewerActivity::class.java.simpleName, senderId)
 
         db.collection("users")
             .document(senderId)
@@ -100,7 +98,6 @@ class CassetteViewerActivity : AppCompatActivity() {
             .setRedirectUri(redirectUri)
             .showAuthView(true)
             .build()
-
 
         forwardButton.setOnClickListener {
             db.collection("cassettes")
@@ -196,60 +193,33 @@ class CassetteViewerActivity : AppCompatActivity() {
         }
 
 
-        youTubeButton.setOnClickListener {
+        youTubeImageView.isEnabled = false
+        youTubeImageView.setOnClickListener {
+            if (videoId != null) {
+                val ytAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytAppWatchUrl + videoId))
+                val ytWebIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytWebWatchUrl + videoId))
+                try {
+                    startActivity(ytAppIntent)
+                } catch (e: ActivityNotFoundException) {
+                    startActivity(ytWebIntent)
+                }
+            }
+            else{
+                toast("An error occurred while retrieving YouTube data.")
+            }
+        }
 
-//            ytIntent.setPackage("com.google.android.youtube")
-//            ytIntent.putExtra("query", trackName)
-//            ytIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//            startActivity(ytIntent)
-
-            val ytRequest = JsonObjectRequest(
-                Request.Method.GET,
-                ytSearchUrlStart + trackName + ytSearchUrlEnd,
-                null,
-                Response.Listener { response ->
-//                    Log.d(CassetteViewerActivity::class.java.simpleName, response.toString())
-
-                    val items = response["items"] as JSONArray
-                    val firstSong = items.getJSONObject(0)
-                    val id = firstSong.getJSONObject("id")
-                    val videoId = id.getString("videoId")
-
-                    val snippet = firstSong.getJSONObject("snippet")
-                    val thumbnail = snippet.getJSONObject("thumbnails").getJSONObject("default").getJSONObject("medium")
-                    val imageUrl = thumbnail.getString("url")
-
-                    val ytAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytAppWatchUrl + videoId))
-                    val ytWebIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytWebWatchUrl + videoId))
-                    try {
-                        startActivity(ytAppIntent)
-                    }
-                    catch (e: ActivityNotFoundException){
-                      startActivity(ytWebIntent)
-                    }
-
-                },
-                Response.ErrorListener {
-                    Log.e(CassetteViewerActivity::class.java.simpleName, "Something went wrong... :/")
-                })
-            queue.add(ytRequest)
-
-
-
-//            var results = YouTube.Search.list('id,snippet', {q: 'dogs', maxResults: 25});
-
-//            var results = YouTube.Search.List
-            //('id,snippet', {q: 'dogs', maxResults: 25})
-//            val youtube = YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, )
+        youTubeButton.setOnClickListener{
+            val ytIntent = Intent(Intent.ACTION_SEARCH)
+            ytIntent.setPackage("com.google.android.youtube")
+            ytIntent.putExtra("query", trackName)
+            ytIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(ytIntent)
         }
 
     }
 
     private fun connected(trackId: String){
-//        toast(trackId)
-//        spotifyAppRemote.playerApi.play("spotify:track:$trackId")
-//        if()
-
         val playerApi = spotifyAppRemote.playerApi//.play(" spotify:track:6rqhFgbbKwnb9MLmUQDhG6")
 
         spotifyAppRemote.userApi.capabilities.setResultCallback { capabilities ->
@@ -257,16 +227,6 @@ class CassetteViewerActivity : AppCompatActivity() {
                 playerApi.play("spotify:track:$trackId")
             }
             else{
-//                val builder = Uri.Builder()
-//                builder
-//                    .scheme("https")
-//                    .authority("p.scdn.co")
-//                    .appendPath("mp3-preview")
-//                    .appendPath("3eb16018c2a700240e9dfb8817b6f2d041f15eb1")
-//                    .appendQueryParameter("cid", "774b29d4f13844c495f206cafdad9c86")
-
-//                val uri = builder.build()
-
                 if (trackPreviewUrl != noPreviewUrl) {
                     val uri = Uri.parse(trackPreviewUrl)
 
@@ -277,6 +237,34 @@ class CassetteViewerActivity : AppCompatActivity() {
                 }
             }
         }
-//        toast(trackId)
+    }
+
+    private fun getYTData(trackName: String){
+        val queue = Volley.newRequestQueue(this)
+
+        Log.e(CassetteViewerActivity::class.java.simpleName, ytSearchUrlStart + trackName + ytSearchUrlEnd)
+
+        val ytRequest = JsonObjectRequest(
+            Request.Method.GET,
+            ytSearchUrlStart + trackName.replace(" ", "+") + ytSearchUrlEnd,
+            null,
+            Response.Listener { response ->
+                val items = response["items"] as JSONArray
+                val firstSong = items.getJSONObject(0)
+                val id = firstSong.getJSONObject("id")
+                videoId = id.getString("videoId")
+                youTubeImageView.isEnabled = true
+
+                val snippet = firstSong.getJSONObject("snippet")
+                val thumbnail = snippet.getJSONObject("thumbnails").getJSONObject("medium")
+                val imageUrl = thumbnail.getString("url")
+                Log.d(CassetteViewerActivity::class.java.simpleName, imageUrl)
+                Glide.with(this).load(imageUrl).into(youTubeImageView)
+            },
+            Response.ErrorListener {error ->
+                Log.e(CassetteViewerActivity::class.java.simpleName, "Something went wrong... :(")
+                Log.e(CassetteViewerActivity::class.java.simpleName, error.toString())
+            })
+        queue.add(ytRequest)
     }
 }
