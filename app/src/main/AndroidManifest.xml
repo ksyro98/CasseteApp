@@ -15,28 +15,28 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".CassetteViewerActivity"></activity>
-        <activity android:name=".ChatAndMessages.ChatActivity"/>
-        <activity android:name=".MainClasses.CoreActivity"/>
+        <activity android:name=".MainClasses.ProfileActivity">  <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
+        <activity android:name=".CassetteViewerActivity" />
+        <activity android:name=".ChatAndMessages.ChatActivity" />
+        <activity android:name=".MainClasses.CoreActivity" />
         <activity android:name=".TrackSearchFlow.SendTrackActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyAlbumResultActivity" />
         <activity android:name=".LogInSignUp.CountrySelectActivitySignUp" />
         <activity android:name=".StartingActivities.SplashActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyResultActivity" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".MainClasses.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".LogInSignUp.PickGenresSignUpActivity" />
-        <activity android:name=".LogInSignUp.SignUpActivity"></activity>
+        <activity android:name=".LogInSignUp.SignUpActivity" />
         <activity android:name=".LogInSignUp.ResetPasswordActivity" />
         <activity android:name=".LogInSignUp.WelcomingActivity" />
-        <activity android:name=".LogInSignUp.LoginActivity"/>
+        <activity android:name=".LogInSignUp.LoginActivity" />
         <activity
                 android:name="com.spotify.sdk.android.authentication.LoginActivity"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar" />
