@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.syroniko.casseteapp.MainClasses.cassetteViewerRequestCode
 import com.syroniko.casseteapp.room.LocalCassette
+import com.syroniko.casseteapp.viewCassette.CassetteViewerActivity
 
 
 const val cassetteIdExtraName = "Cassette Id Extra Name"

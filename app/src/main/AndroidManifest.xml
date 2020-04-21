@@ -15,12 +15,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainClasses.ProfileActivity">  <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
-        <activity android:name=".CassetteViewerActivity" />
+        <activity android:name=".MainClasses.ProfileActivity"/>
+        <activity android:name=".viewCassette.CassetteViewerActivity" />
         <activity android:name=".ChatAndMessages.ChatActivity" />
         <activity android:name=".MainClasses.CoreActivity" />
         <activity android:name=".TrackSearchFlow.SendTrackActivity" />
@@ -30,7 +26,11 @@
         <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyResultActivity" />
         <activity android:name=".MainClasses.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".LogInSignUp.PickGenresSignUpActivity" />
         <activity android:name=".LogInSignUp.SignUpActivity" />
