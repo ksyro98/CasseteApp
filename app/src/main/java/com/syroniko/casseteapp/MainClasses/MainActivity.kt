@@ -26,8 +26,8 @@ import com.syroniko.casseteapp.SpotifyClasses.SpotifyResult
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
 import com.syroniko.casseteapp.room.AppDatabase
 import com.syroniko.casseteapp.room.LocalCassette
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private val spotifyRequestCode = 1337
     private val welcomeRequestCode = 222
 
-    private val TAG = CoreActivity::class.java.simpleName
+    private val TAG = MainActivity::class.java.simpleName
 
     private var uid = ""
     private var db = FirebaseFirestore.getInstance()
@@ -70,27 +70,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_core)
-//        cassetteCaseFragment = CassetteCaseFragment()
-//        messagesFragment = MessagesFragment()
-//        createCassetteFragment = CreateCassetteFragment()
+        setContentView(R.layout.activity_main)
+
         selectedFragment = CassetteCaseFragment()
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.core_fragment_container, selectedFragment!!).commit()
+            .replace(R.id.main_fragment_container, selectedFragment!!).commit()
 
 
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.bottom_navigation_bar)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-//            var selectedFragment: Fragment? = null
             when (item.itemId) {
                 R.id.bot_nav_cassette_case -> {
                     selectedFragment = CassetteCaseFragment()
                     updateCassettesInView(cassettes)
-//                    (selectedFragment as CassetteCaseFragment).updateData(cassettes)
-//                    selectedFragment.updateData(cassettes)
-                    Log.d(tag, cassettes.toString())
                 }
                 R.id.bot_nav_messages -> selectedFragment = MessagesFragment()
                 R.id.bot_nav_new_cassette -> {
@@ -99,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             supportFragmentManager.beginTransaction()
-                .replace(R.id.core_fragment_container, selectedFragment!!).commit()
+                .replace(R.id.main_fragment_container, selectedFragment!!).commit()
             true
         }
 
@@ -118,6 +112,11 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             cassettes.addAll(localDb.cassetteDao().getAll())
             updateCassettesInView(cassettes)
+        }
+
+        profileFab.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -261,6 +260,7 @@ class MainActivity : AppCompatActivity() {
             .document(uid)
             .get()
             .addOnSuccessListener {documentSnapshot ->
+
                 val userCassettes = documentSnapshot["cassettes"] as ArrayList<*>
                 val cassetteIds = cassettes.map { cassette -> cassette.cassetteId }
                 for (userCassette in userCassettes){

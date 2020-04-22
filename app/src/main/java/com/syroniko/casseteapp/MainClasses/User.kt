@@ -19,8 +19,11 @@ class User(
     var image: Bitmap? = null,
     var uid: String?,
     var country:String?,
-    var genres: ArrayList<String>?=null,
-    var friends: ArrayList<String>? =null): Parcelable
+    var genres: ArrayList<String>?= null,
+    var friends: ArrayList<String>? = null,
+    var cassettes: ArrayList<String>? = null,
+    var songsSent: Int = 0,
+    var songsAccepted: Int = 0): Parcelable
 
 
 // var cassettes: ArrayList<Cassette>?)

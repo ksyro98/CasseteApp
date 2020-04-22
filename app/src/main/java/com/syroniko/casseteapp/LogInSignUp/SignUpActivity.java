@@ -60,7 +60,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Password must have at least 6 digits", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    User userInstance = new User(nameEditText.getText().toString(),  emailET.getText().toString(),"offline",System.currentTimeMillis(), null, null, null, null,null);
+                    User userInstance = new User(nameEditText.getText().toString(),  emailET.getText().toString(),"offline",System.currentTimeMillis(), null, null, null, null,null, null,0, 0);
                     Intent intent = new Intent(SignUpActivity.this, PickGenresSignUpActivity.class);
                     intent.putExtra("User", userInstance);
                     intent.putExtra("Password", pass);
