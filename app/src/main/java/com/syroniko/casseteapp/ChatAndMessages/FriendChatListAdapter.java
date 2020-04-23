@@ -55,11 +55,11 @@ public class FriendChatListAdapter extends RecyclerView.Adapter<FriendChatListAd
                 mContext.startActivity(i);
             }
         });
-        if(user.isAvailableOnChat().equals("online")){
+        if(user.getStatus().equals("online")){
          //   Log.v("KALO",user.getName());
             holder.isAvailableGreenCircle.setVisibility(View.VISIBLE);
         }
-        if(user.isAvailableOnChat().equals("offline")){
+        if(user.getStatus().equals("offline")){
 
             holder.isAvailableGreenCircle.setVisibility(View.INVISIBLE);
         }

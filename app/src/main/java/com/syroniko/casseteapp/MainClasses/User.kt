@@ -14,16 +14,19 @@ import kotlin.collections.ArrayList
 class User(
     var name: String?,
     var email: String,
-    var isAvailableOnChat : String,
+    var status : String,
     var receivedLastCassetteAt: Long,
     var image: Bitmap? = null,
     var uid: String?,
     var country:String?,
-    var genres: ArrayList<String>?= null,
-    var friends: ArrayList<String>? = null,
-    var cassettes: ArrayList<String>? = null,
+    var genres: ArrayList<String> = arrayListOf(),
+    var friends: ArrayList<String> = arrayListOf(),
+    var cassettes: ArrayList<String> = arrayListOf(),
     var songsSent: Int = 0,
-    var songsAccepted: Int = 0): Parcelable
+    var songsAccepted: Int = 0,
+    val favoriteArtists: ArrayList<String> = arrayListOf(),
+    var bio: String = "",
+    val interests: ArrayList<String> = arrayListOf()): Parcelable
 
 
 // var cassettes: ArrayList<Cassette>?)

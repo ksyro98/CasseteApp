@@ -95,8 +95,8 @@ public class MessagesFragment extends Fragment {
                                        if (frienddocument.exists()) {
                                          String name=  frienddocument.getString("name");
                                          String isOnline=frienddocument.getString("status");
-                                         User newUser= new User(name,"Buzia",isOnline,1313,null,frienddocument.getString("uid"),"Greece",
-                                                 null,null, null,0, 0);
+                                         User newUser= new User(name,"Buzia", isOnline,1313,null, frienddocument.getString("uid"),"Greece",
+                                                 new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(),0, 0, new ArrayList<String>(), "", new ArrayList<String>());
                                          list.add(newUser);
                                            Log.v("zazaza",String.valueOf(list.size()));
 
@@ -152,7 +152,7 @@ public class MessagesFragment extends Fragment {
                              name=name.toLowerCase();
                             String isOnline=doc.getString("status");
                             User user=new User(name,doc.getString("email"),isOnline,doc.getLong("receivedLastCassetteAt").longValue(),null,doc.getString("uid"),doc.getString("country"),
-                                    null,null, null, 0, 0);
+                                    new ArrayList<String>(),new ArrayList<String>(), new ArrayList<String>(), 0, 0, new ArrayList<String>(), "", new ArrayList<String>());
                             if(!user.getUid().equals(firebaseUser.getUid())){
                                 list.add(user);
                             }

@@ -100,8 +100,7 @@ public class ChatActivity extends AppCompatActivity {
 
                  if (snapshot != null && snapshot.exists()) {
 
-                     readMessages(uid,friendChattingId,"default");
-                 } else {
+                     readMessages(uid, friendChattingId,"default");
                  }
              }
          });
@@ -200,17 +199,21 @@ public class ChatActivity extends AppCompatActivity {
 
                         mChat.clear();
                         for (QueryDocumentSnapshot doc : value) {
-                           Chat chat=doc.toObject(Chat.class);
-                           Log.d("cmo",String.valueOf(doc.getBoolean("isseen")));
-                           chat.setSeen(doc.getBoolean("isseen"));
-                           chat.setTimestamp((doc.getString("timestamp")));
-                           if(chat.getReceiver().equals(myId)&&chat.getSender().equals(userId)||
-                           (chat.getReceiver().equals(userId)&&chat.getSender().equals(myId))){
-                               mChat.add(chat);
+                            Chat chat=doc.toObject(Chat.class);
 
+                            Log.d("cmo",String.valueOf(doc.getBoolean("isseen")));
+                            chat.setSeen(doc.getBoolean("isseen"));
+                            chat.setTimestamp((doc.getString("timestamp")));
+
+                            if(chat.getReceiver().equals(myId) && chat.getSender().equals(userId) ||
+                                    (chat.getReceiver().equals(userId) && chat.getSender().equals(myId))){
+                                mChat.add(chat);
                             }
+
+
+                            //TODO why is this in the loop??
                             adapter=new ChatAdapter(ChatActivity.this,mChat,imageUrl);
-                           recyclerView.setAdapter(adapter);
+                            recyclerView.setAdapter(adapter);
 
                             if(!doc.getBoolean("isseen")) {
 

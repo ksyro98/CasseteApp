@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -20,10 +21,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.syroniko.casseteapp.AboutActivity;
+import com.syroniko.casseteapp.ChatAndMessages.ChatActivity;
 import com.syroniko.casseteapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.syroniko.casseteapp.AboutActivityKt.BIO_NAME;
+import static com.syroniko.casseteapp.AboutActivityKt.COUNTRY_NAME;
+import static com.syroniko.casseteapp.AboutActivityKt.FAVORITE_ARTISTS_NAME;
+import static com.syroniko.casseteapp.AboutActivityKt.GENRES_NAME;
+import static com.syroniko.casseteapp.AboutActivityKt.INTERESTS_NAME;
+import static com.syroniko.casseteapp.AboutActivityKt.UID_NAME;
+import static com.syroniko.casseteapp.AboutActivityKt.USER_NAME;
 
 
 public  class ProfileActivity extends AppCompatActivity {
@@ -57,6 +68,8 @@ public  class ProfileActivity extends AppCompatActivity {
     TextView aboutUserTextView;
     TextView friendsNumberTextView;
     TextView addFriendTextView;
+    TextView seeCollectionTextView;
+    TextView sendMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +86,8 @@ public  class ProfileActivity extends AppCompatActivity {
         aboutUserTextView = findViewById(R.id.about_user_tv);
         friendsNumberTextView = findViewById(R.id.activity_profile_friends_number);
         addFriendTextView = findViewById(R.id.add_friend_tv);
+        seeCollectionTextView = findViewById(R.id.see_collection_tv);
+        sendMessageTextView = findViewById(R.id.send_message_tv);
 
         Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.boxicon);
         RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(),bitmap);
@@ -145,36 +160,91 @@ public  class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
-        addFriendTextView.setOnClickListener(new View.OnClickListener() {
+
+        sendMessageTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(ProfileActivity.this, ChatActivity.class);
+                intent.putExtra("FRIENDUSERID", anotherUserId);
+                intent.putExtra("FRIENDUSERNAME", name);
+                startActivity(intent);
+            }
+        });
+
+        aboutUserTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db.collection("users")
-                        .document(uid)
-                        .update(
-                                "friends",
-                                FieldValue.arrayUnion(anotherUserId)
-                        )
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        .document(anotherUserId)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
-                                addFriendTextView.setText("Already Friends");
-                                addFriendTextView.setClickable(false);
-                                Toast.makeText(ProfileActivity.this, "Friend added!", Toast.LENGTH_SHORT).show();
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                String country = documentSnapshot.getString("country");
+                                String bio = documentSnapshot.getString("bio");
+                                ArrayList<String> genres = (ArrayList<String>) documentSnapshot.get("genres");
+                                ArrayList<String> favoriteArtists = (ArrayList<String>) documentSnapshot.get("favoriteArtists");
+                                ArrayList<String> interests = (ArrayList<String>) documentSnapshot.get("interests");
 
-                                friendList.add(uid);
-                                friendsNumberTextView.setText(Integer.toString(friendList.size()));
-
-                                db.collection("users")
-                                        .document(anotherUserId)
-                                        .update(
-                                                "friends",
-                                                FieldValue.arrayUnion(uid)
-                                        );
-
+                                Intent intent = new Intent(ProfileActivity.this, AboutActivity.class);
+                                intent.putExtra(UID_NAME, anotherUserId);
+                                intent.putExtra(USER_NAME, name);
+                                intent.putExtra(COUNTRY_NAME, country);
+                                intent.putExtra(BIO_NAME, bio);
+                                intent.putStringArrayListExtra(GENRES_NAME, genres);
+                                intent.putStringArrayListExtra(FAVORITE_ARTISTS_NAME, favoriteArtists);
+                                intent.putStringArrayListExtra(INTERESTS_NAME, interests);
+                                startActivity(intent);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, e.toString());
+                                Toast.makeText(ProfileActivity.this, "Unfortunately there was an error, please try again.", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
         });
+
+        seeCollectionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileActivity.this, "Coming soon. ;)", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+//        addFriendTextView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                db.collection("users")
+//                        .document(uid)
+//                        .update(
+//                                "friends",
+//                                FieldValue.arrayUnion(anotherUserId)
+//                        )
+//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void aVoid) {
+//                                addFriendTextView.setText("Already Friends");
+//                                addFriendTextView.setClickable(false);
+//                                Toast.makeText(ProfileActivity.this, "Friend added!", Toast.LENGTH_SHORT).show();
+//
+//                                friendList.add(uid);
+//                                friendsNumberTextView.setText(Integer.toString(friendList.size()));
+//
+//                                db.collection("users")
+//                                        .document(anotherUserId)
+//                                        .update(
+//                                                "friends",
+//                                                FieldValue.arrayUnion(uid)
+//                                        );
+//
+//                            }
+//                        });
+//            }
+//        });
 
         }
     }
