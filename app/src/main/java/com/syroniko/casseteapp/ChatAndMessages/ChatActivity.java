@@ -12,9 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +33,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.syroniko.casseteapp.MainClasses.CoreActivity;
+import com.syroniko.casseteapp.MainClasses.ProfileActivity;
 import com.syroniko.casseteapp.MainClasses.User;
 import com.syroniko.casseteapp.R;
 
@@ -43,18 +47,23 @@ import javax.annotation.Nullable;
 import static com.syroniko.casseteapp.ChatAndMessages.ChatUtilsKt.sendMessage;
 
 public class ChatActivity extends AppCompatActivity {
-    EditText messageEditText;
-    ImageButton sendButton;
-    FirebaseFirestore db;
-    String friendChattingId;
-    String uid;
-    String friendName;
-    List<Chat> mChat;
-    RecyclerView recyclerView;
-    ChatAdapter adapter;
-    DocumentReference docRef;
-    CollectionReference colref;
-    ListenerRegistration seenListener;
+    private EditText messageEditText;
+    private ImageButton sendButton;
+    private LinearLayout infoLinearLayout;
+    private ImageView profileImageView;
+    private TextView nameTextView;
+    private FirebaseFirestore db;
+    private String friendChattingId;
+    private String uid;
+    private String friendName;
+    private List<Chat> mChat;
+    private RecyclerView recyclerView;
+    private ChatAdapter adapter;
+    private DocumentReference docRef;
+    private CollectionReference colref;
+    private ListenerRegistration seenListener;
+
+    public static final String FRIEND_ID = "Friend ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +76,32 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         messageEditText=findViewById(R.id.type_message_edit_text_chat_activity);
         sendButton=findViewById(R.id.chat_activity_send_message_button);
+        infoLinearLayout = findViewById(R.id.info_linear_layout);
+        profileImageView = findViewById(R.id.profile_image_view);
+        nameTextView = findViewById(R.id.name_text_view);
         Intent intent=getIntent();
-         friendChattingId=intent.getStringExtra("FRIENDUSERID");
+        friendChattingId=intent.getStringExtra("FRIENDUSERID");
       //   uid= CoreActivity.uid;
         uid= FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.d("HAHA", "uid is"+ " in anathesi " + uid);
 
         friendName=intent.getStringExtra("FRIENDUSERNAME");
         db= FirebaseFirestore.getInstance();
+
+        db.collection("users")
+                .document(friendChattingId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String name = documentSnapshot.getString("name");
+                        nameTextView.setText(name);
+
+                        String imageUrl = documentSnapshot.getString("image");
+                        Glide.with(getApplicationContext()).load(imageUrl).placeholder(R.drawable.greenbox).into(profileImageView);
+                    }
+                });
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +129,15 @@ public class ChatActivity extends AppCompatActivity {
 
                      readMessages(uid, friendChattingId,"default");
                  }
+             }
+         });
+
+         infoLinearLayout.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+                 profileIntent.putExtra(FRIEND_ID, friendChattingId);
+                 startActivity(profileIntent);
              }
          });
    //      seenMessage(uid);

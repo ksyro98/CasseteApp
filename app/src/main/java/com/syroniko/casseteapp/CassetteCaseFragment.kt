@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.syroniko.casseteapp.MainClasses.MainActivity
+import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.room.AppDatabase
 import com.syroniko.casseteapp.room.LocalCassette
 import kotlinx.android.synthetic.main.fragment_cassette_case.*
@@ -59,7 +60,7 @@ class CassetteCaseFragment : Fragment() {
 //        Log.d(MainActivity::class.java.simpleName, "!$cassetteAdapter")
     }
 
-    fun setNewData(cassettes: MutableList<LocalCassette>){
+    fun clearAndSetNewData(cassettes: MutableList<LocalCassette>){
         this.cassettes.clear()
         this.cassettes.addAll(cassettes)
         this.cassetteAdapter?.notifyDataSetChanged()

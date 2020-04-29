@@ -35,6 +35,7 @@ import static com.syroniko.casseteapp.AboutActivityKt.GENRES_NAME;
 import static com.syroniko.casseteapp.AboutActivityKt.INTERESTS_NAME;
 import static com.syroniko.casseteapp.AboutActivityKt.UID_NAME;
 import static com.syroniko.casseteapp.AboutActivityKt.USER_NAME;
+import static com.syroniko.casseteapp.ChatAndMessages.ChatActivity.FRIEND_ID;
 
 
 public  class ProfileActivity extends AppCompatActivity {
@@ -54,7 +55,7 @@ public  class ProfileActivity extends AppCompatActivity {
     private String description;
     private String country;
     private User user;
-    private String anotherUserId = "aT2i8Gq5yiY0BHTK0tTtYNBPKXC3";
+    private String anotherUserId; //= "aT2i8Gq5yiY0BHTK0tTtYNBPKXC3";
 
 
     TextView nameTextView;
@@ -93,6 +94,9 @@ public  class ProfileActivity extends AppCompatActivity {
         RoundedBitmapDrawable roundedBitmapDrawable= RoundedBitmapDrawableFactory.create(getResources(),bitmap);
         roundedBitmapDrawable.setCircular(true);
         userProfileImageView.setImageDrawable(roundedBitmapDrawable);
+
+        Intent intent = getIntent();
+        anotherUserId = intent.getStringExtra(FRIEND_ID);
 
 
         final String uid = FirebaseAuth.getInstance().getUid();

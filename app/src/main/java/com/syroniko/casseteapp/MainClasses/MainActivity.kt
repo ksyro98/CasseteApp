@@ -17,6 +17,7 @@ import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.syroniko.casseteapp.CassetteCaseFragment
+import com.syroniko.casseteapp.ChatAndMessages.ChatActivity.FRIEND_ID
 import com.syroniko.casseteapp.ChatAndMessages.MessagesFragment
 import com.syroniko.casseteapp.CreateCassetteFragment
 import com.syroniko.casseteapp.LogInSignUp.WelcomingActivity
@@ -102,20 +103,22 @@ class MainActivity : AppCompatActivity() {
         AuthenticationClient.openLoginActivity(this, spotifyRequestCode, request)
 
 
-        val localDb = this.let {
-            Room.databaseBuilder(
-                it,
-                AppDatabase::class.java, "cassette_database"
-            ).build()
-        }
-
-        lifecycleScope.launch {
-            cassettes.addAll(localDb.cassetteDao().getAll())
-            updateCassettesInView(cassettes)
-        }
+//        val localDb = this.let {
+//            Room.databaseBuilder(
+//                it,
+//                AppDatabase::class.java, "cassette_database"
+//            ).build()
+//        }
+//
+//        lifecycleScope.launch {
+//            cassettes.addAll(localDb.cassetteDao().getAll())
+//            updateCassettesInView(cassettes)
+//        }
+        useNewCassettes(::updateCassettesInView)
 
         profileFab.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra(FRIEND_ID, uid);
             startActivity(intent)
         }
     }
@@ -141,20 +144,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
         else if (requestCode == cassetteViewerRequestCode){
-            val localDb = this.let {
-                Room.databaseBuilder(
-                    it,
-                    AppDatabase::class.java, "cassette_database"
-                ).build()
-            }
-
-            lifecycleScope.launch {
-                cassettes.clear()
-                cassettes.addAll(localDb.cassetteDao().getAll())
-                if(selectedFragment != null && selectedFragment is CassetteCaseFragment){
-                    (selectedFragment as CassetteCaseFragment).setNewData(cassettes)
-                }
-            }
+//            val localDb = this.let {
+//                Room.databaseBuilder(
+//                    it,
+//                    AppDatabase::class.java, "cassette_database"
+//                ).build()
+//            }
+//
+//            lifecycleScope.launch {
+//                cassettes.clear()
+//                cassettes.addAll(localDb.cassetteDao().getAll())
+//                if(selectedFragment != null && selectedFragment is CassetteCaseFragment){
+//                    (selectedFragment as CassetteCaseFragment).clearAndSetNewData(cassettes)
+//                }
+//            }
+            useNewCassettes(::updateCassettesInView)
         }
     }
 
@@ -219,7 +223,11 @@ class MainActivity : AppCompatActivity() {
 
                     cassettes.add(newCassette)
 
-                    updateCassettesInView(mutableListOf(newCassette))
+                    updateCassettesInView(cassettes)
+//                    updateCassettesInView(mutableListOf(newCassette))
+//                    Log.d(TAG, "R oom related: New Cassettes")
+//                    useNewCassettes(::updateCassettesInView)
+
 
                     db.collection("cassettes")
                         .document(cassetteId)
@@ -235,6 +243,8 @@ class MainActivity : AppCompatActivity() {
                         .document(uid)
                         .update(
                             "cassettes",
+                            FieldValue.arrayUnion(cassetteId),
+                            "cassettesAccepted",
                             FieldValue.arrayUnion(cassetteId)
                         )
 
@@ -245,7 +255,6 @@ class MainActivity : AppCompatActivity() {
                                 "receivedLastCassetteAt" to System.currentTimeMillis()
                             )
                         )
-
                 }
 
             }
@@ -296,11 +305,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateCassettesInView(newCassettes: MutableList<LocalCassette>){
         if (selectedFragment != null && selectedFragment is CassetteCaseFragment){
-            (selectedFragment as CassetteCaseFragment).updateData(newCassettes)
+//            (selectedFragment as CassetteCaseFragment).updateData(newCassettes)
+            (selectedFragment as CassetteCaseFragment).clearAndSetNewData(newCassettes)
         }
+    }
+
+    private fun useNewCassettes(cassetteFun: (cassettes: MutableList<LocalCassette>) -> Unit){
+        val localDb = this.let {
+            Room.databaseBuilder(
+                it,
+                AppDatabase::class.java, "cassette_database"
+            ).build()
+        }
+
+        lifecycleScope
+            .launch {
+                cassettes.clear()
+                cassettes.addAll(localDb.cassetteDao().getAll())
+            }
+            .invokeOnCompletion {
+                cassetteFun(cassettes)
+//                Log.d(TAG, "Room related: $cassettes")
+//                if(selectedFragment != null && selectedFragment is CassetteCaseFragment){
+//                    (selectedFragment as CassetteCaseFragment).setNewData(cassettes)
+//                }
+            }
     }
 }
 
-fun Context.toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+fun Context.toast(text: Any) = Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show()
 fun Context.longToast(text: String) = Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-

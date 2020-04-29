@@ -26,7 +26,8 @@ class User(
     var songsAccepted: Int = 0,
     val favoriteArtists: ArrayList<String> = arrayListOf(),
     var bio: String = "",
-    val interests: ArrayList<String> = arrayListOf()): Parcelable
+    val interests: ArrayList<String> = arrayListOf(),
+    val cassettesAccepted: ArrayList<String> = arrayListOf()): Parcelable
 
 
 // var cassettes: ArrayList<Cassette>?)

@@ -26,7 +26,7 @@ const val ytSearchUrlEnd = "&type=video&key=$ytApiKey"
 const val ytAppWatchUrl = "vnd.youtube:"
 const val ytWebWatchUrl = "https://www.youtube.com/watch?v="
 
-private const val NUM_PAGES = 2
+private const val NUM_PAGES = 3
 
 class CassetteViewerActivity : AppCompatActivity() {
     private var trackPreviewUrl = noPreviewUrl
@@ -70,24 +70,20 @@ class CassetteViewerActivity : AppCompatActivity() {
         cassetteViewPager.adapter = pagerAdapter
     }
 
-
-    //TODO ask Nikos for this
-//    override fun onBackPressed() {
-//        if (cassetteViewPager.currentItem == 0) {
-//            super.onBackPressed()
-//        } else {
-//            cassetteViewPager.currentItem = cassetteViewPager.currentItem - 1
-//        }
-//    }
-
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = NUM_PAGES
 
         override fun createFragment(position: Int): Fragment {
-            fragment = if (position == 0) {
-                CassetteMessageFragment()
-            } else {
-                CassetteVideoFragment()
+            fragment = when (position) {
+                0 -> {
+                    CassetteMessageFragment()
+                }
+                1 -> {
+                    CassetteTrackFragment()
+                }
+                else -> {
+                    CassetteVideoFragment()
+                }
             }
 
             (fragment as CassetteData).getInitialCassetteData(cassetteId, senderId)
