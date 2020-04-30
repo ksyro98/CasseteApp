@@ -35,11 +35,14 @@ import com.syroniko.casseteapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.syroniko.casseteapp.utils.ArrayUtilsKt.sortUserList;
 
 public class MessagesFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private static List<User> list;
+    private static ArrayList<User> list;
     private FriendChatListAdapter adapter;
     private EditText searchEditText;
     private String uid;
@@ -83,34 +86,39 @@ public class MessagesFragment extends Fragment {
 
                     if (document.exists()) {
                        ArrayList friends= (ArrayList)document.get("friends");
+
                        for(int i =0;i<friends.size();i++){
 
-                           DocumentReference friendRef = db.collection("users").document(  friends.get(i).toString());
+                           DocumentReference friendRef = db.collection("users").document(friends.get(i).toString());
                            friendRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                @Override
                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                    if (task.isSuccessful()) {
-                                       DocumentSnapshot frienddocument = task.getResult();
+                                       DocumentSnapshot friendDocument = task.getResult();
 
-                                       if (frienddocument.exists()) {
-                                         String name=  frienddocument.getString("name");
-                                         String isOnline=frienddocument.getString("status");
-                                         User newUser= new User(name,"Buzia", isOnline,1313,null, frienddocument.getString("uid"),"Greece",
-                                                 new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(),0, 0, new ArrayList<String>(), "", new ArrayList<String>(), new ArrayList<String>());
-                                         list.add(newUser);
+                                       if (friendDocument.exists()) {
+//                                           String name = friendDocument.getString("name");
+//                                           String isOnline = friendDocument.getString("status");
+//                                           String email = friendDocument.getString("email");
+//                                           Long receivedLastCassetteAt = friendDocument.getLong("receivedLastCassetteAt");
+//                                           String friendUid = friendDocument.getString("uid");
+//                                           String country = friendDocument.getString("country");
+//                                           User newUser = new User(name,"Buzia", isOnline,1313,null, friendDocument.getString("uid"),"Greece",
+//                                                   new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(),0, 0, new ArrayList<String>(), "", new ArrayList<String>(), new ArrayList<String>());
+
+                                           User newUser = friendDocument.toObject(User.class);
+
+                                           list.add(newUser);
+                                           list = sortUserList(list);
                                            Log.v("zazaza",String.valueOf(list.size()));
-
-
                                        }
                                    }
-                                   Log.v("Lawl",String.valueOf(list.size()));
-                                   adapter=new FriendChatListAdapter(getContext(),list);
+
+                                   adapter = new FriendChatListAdapter(getContext(), list);
                                    recyclerView.setAdapter(adapter);
                                    adapter.notifyDataSetChanged();
                                }
-
-                                       });
-
+                           });
                        }
 
                     } else {

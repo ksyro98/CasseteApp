@@ -44,7 +44,7 @@ public class FriendChatListAdapter extends RecyclerView.Adapter<FriendChatListAd
             holder.userImage.setImageResource(R.mipmap.ic_launcher);
         }
         else{
-            Glide.with(mContext).load(user.getImage()).into(holder.userImage);
+            Glide.with(mContext).load(user.getImage()).placeholder(R.drawable.greenbox).into(holder.userImage);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

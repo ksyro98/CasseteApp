@@ -11,14 +11,14 @@ import kotlin.collections.ArrayList
 
 
 @Parcelize
-class User(
-    var name: String?,
-    var email: String,
-    var status : String,
-    var receivedLastCassetteAt: Long,
-    var image: Bitmap? = null,
-    var uid: String?,
-    var country:String?,
+data class User(
+    var name: String? = "",
+    var email: String = "",
+    var status : String = "",
+    var receivedLastCassetteAt: Long = 0,
+    var image: String? = "",
+    var uid: String? = "",
+    var country:String? = "",
     var genres: ArrayList<String> = arrayListOf(),
     var friends: ArrayList<String> = arrayListOf(),
     var cassettes: ArrayList<String> = arrayListOf(),
