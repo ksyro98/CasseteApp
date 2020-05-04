@@ -32,9 +32,12 @@ import com.syroniko.casseteapp.MainClasses.CoreActivity;
 import com.syroniko.casseteapp.MainClasses.MainActivity;
 import com.syroniko.casseteapp.MainClasses.User;
 import com.syroniko.casseteapp.R;
+import com.syroniko.casseteapp.utils.UserAndTime;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.syroniko.casseteapp.utils.ArrayUtilsKt.sortUserList;
@@ -42,7 +45,7 @@ import static com.syroniko.casseteapp.utils.ArrayUtilsKt.sortUserList;
 public class MessagesFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private static ArrayList<User> list;
+    private static ArrayList<UserAndTime> list;
     private FriendChatListAdapter adapter;
     private EditText searchEditText;
     private String uid;
@@ -85,11 +88,11 @@ public class MessagesFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists()) {
-                       ArrayList friends= (ArrayList)document.get("friends");
+                       final HashMap<String, Long> friends= (HashMap<String, Long>) document.get("friends");
 
-                       for(int i =0;i<friends.size();i++){
-
-                           DocumentReference friendRef = db.collection("users").document(friends.get(i).toString());
+//                       for(int i =0;i<friends.size();i++){
+                        for (final Map.Entry<String, Long> entry : friends.entrySet()){
+                           DocumentReference friendRef = db.collection("users").document(entry.getKey());
                            friendRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                @Override
                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -97,18 +100,9 @@ public class MessagesFragment extends Fragment {
                                        DocumentSnapshot friendDocument = task.getResult();
 
                                        if (friendDocument.exists()) {
-//                                           String name = friendDocument.getString("name");
-//                                           String isOnline = friendDocument.getString("status");
-//                                           String email = friendDocument.getString("email");
-//                                           Long receivedLastCassetteAt = friendDocument.getLong("receivedLastCassetteAt");
-//                                           String friendUid = friendDocument.getString("uid");
-//                                           String country = friendDocument.getString("country");
-//                                           User newUser = new User(name,"Buzia", isOnline,1313,null, friendDocument.getString("uid"),"Greece",
-//                                                   new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(),0, 0, new ArrayList<String>(), "", new ArrayList<String>(), new ArrayList<String>());
-
                                            User newUser = friendDocument.toObject(User.class);
 
-                                           list.add(newUser);
+                                           list.add(new UserAndTime(newUser, entry.getValue()));
                                            list = sortUserList(list);
                                            Log.v("zazaza",String.valueOf(list.size()));
                                        }
@@ -137,6 +131,18 @@ public class MessagesFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //TODO this doesn't work
+        if (adapter == null || list == null){
+            return;
+        }
+        sortUserList(list);
+        adapter.notifyDataSetChanged();
+        Toast.makeText(getContext(), "AHA", Toast.LENGTH_SHORT).show();
+    }
+
     private void searchUsers(String s) {
         final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -157,12 +163,12 @@ public class MessagesFragment extends Fragment {
                         list.clear();
                         for (QueryDocumentSnapshot doc : value) {
                             String name=  doc.getString("name");
-                             name=name.toLowerCase();
+                            name=name.toLowerCase();
                             String isOnline=doc.getString("status");
                             User user=new User(name,doc.getString("email"),isOnline,doc.getLong("receivedLastCassetteAt").longValue(),null,doc.getString("uid"),doc.getString("country"),
-                                    new ArrayList<String>(),new ArrayList<String>(), new ArrayList<String>(), 0, 0, new ArrayList<String>(), "", new ArrayList<String>(), new ArrayList<String>());
+                                    new ArrayList<String>(),new HashMap<String, Long>(), new ArrayList<String>(), 0, 0, new ArrayList<String>(), "", new ArrayList<String>(), new ArrayList<String>());
                             if(!user.getUid().equals(firebaseUser.getUid())){
-                                list.add(user);
+                                list.add(new UserAndTime(user, 0));
                             }
                         }
                         adapter=new FriendChatListAdapter(getContext(),list);
@@ -170,5 +176,7 @@ public class MessagesFragment extends Fragment {
                     }
                 });
         }
+
+
     }
 

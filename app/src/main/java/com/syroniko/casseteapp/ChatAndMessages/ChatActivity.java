@@ -26,6 +26,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -141,6 +142,9 @@ public class ChatActivity extends AppCompatActivity {
              }
          });
    //      seenMessage(uid);
+
+
+//                .set(friends, SetOptions.merge());
     }
 
     /*private void seenMessage(final String userId){

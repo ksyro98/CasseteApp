@@ -11,11 +11,9 @@ fun <T> removeDuplicates(list: List<T>): List<T>{
 }
 
 
-fun sortUserList(list: ArrayList<User>): ArrayList<User>{
-    val temp = list.sortedWith(compareBy {it.name})
-    val arrayList = arrayListOf<User>()
-
-    arrayList.addAll(temp)
-
-    return arrayList
+fun sortUserList(list: ArrayList<UserAndTime>): ArrayList<UserAndTime>{
+    val temp = list.sortedWith(compareBy { -it.time })
+    val res = arrayListOf<UserAndTime>()
+    res.addAll(temp)
+    return res
 }

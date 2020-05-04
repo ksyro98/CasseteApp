@@ -15,15 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.syroniko.casseteapp.MainClasses.User;
 import com.syroniko.casseteapp.R;
+import com.syroniko.casseteapp.utils.UserAndTime;
 
 import java.util.List;
 
 public class FriendChatListAdapter extends RecyclerView.Adapter<FriendChatListAdapter.ViewHolder>{
     private Context mContext;
-    private List<User> mUsers;
+    private List<UserAndTime> mUsers;
     private boolean isOnline;
 
-    public FriendChatListAdapter (Context mContext,List<User> mUsers){
+    public FriendChatListAdapter (Context mContext,List<UserAndTime> mUsers){
         this.mUsers=mUsers;
         this.mContext=mContext;
     }
@@ -38,7 +39,7 @@ public class FriendChatListAdapter extends RecyclerView.Adapter<FriendChatListAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final User user=mUsers.get(position);
+        final User user=mUsers.get(position).getUser();
         holder.userName.setText(user.getName());
         if(user.getImage()==null){
             holder.userImage.setImageResource(R.mipmap.ic_launcher);

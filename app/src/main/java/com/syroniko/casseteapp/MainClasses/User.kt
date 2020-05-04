@@ -6,10 +6,6 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-//could change image with String (id in firestore or something like that)
-
-
 @Parcelize
 data class User(
     var name: String? = "",
@@ -20,7 +16,7 @@ data class User(
     var uid: String? = "",
     var country:String? = "",
     var genres: ArrayList<String> = arrayListOf(),
-    var friends: ArrayList<String> = arrayListOf(),
+    var friends: MutableMap<String, Long> = mutableMapOf(),
     var cassettes: ArrayList<String> = arrayListOf(),
     var songsSent: Int = 0,
     var songsAccepted: Int = 0,

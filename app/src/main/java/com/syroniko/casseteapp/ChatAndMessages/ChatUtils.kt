@@ -2,6 +2,7 @@ package com.syroniko.casseteapp.ChatAndMessages
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.syroniko.casseteapp.MainClasses.User
 import java.util.*
 
 fun sendMessage(sender: String, receiver: String, text: String, time: String, db: FirebaseFirestore): Unit{
@@ -32,4 +33,27 @@ fun sendMessage(sender: String, receiver: String, text: String, time: String, db
         }
         .addOnFailureListener { e -> Log.w("TAG", "Error adding document", e) }
 
+    updateUserTimes(db, sender, receiver)
+    updateUserTimes(db, receiver, sender)
+
+    //      seenMessage(uid);
+
+}
+
+fun updateUserTimes(db: FirebaseFirestore, uid1: String, uid2: String){
+    db.collection("users")
+        .document(uid1)
+        .get()
+        .addOnSuccessListener { documentSnapshot ->
+            val tempUser =
+                documentSnapshot.toObject(
+                    User::class.java
+                )
+            val m = tempUser!!.friends
+            val messageTime = System.currentTimeMillis()
+            m[uid2] = messageTime
+            db.collection("users")
+                .document(uid1)
+                .update("friends", m)
+        }
 }
