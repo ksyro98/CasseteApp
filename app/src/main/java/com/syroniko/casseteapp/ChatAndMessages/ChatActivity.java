@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -103,11 +105,14 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
 
+
+        final Activity activity = this;
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!messageEditText.getText().toString().equals("")) {
                     sendMessage(
+                            activity,
                             uid,
                             friendChattingId,
                             messageEditText.getText().toString(),

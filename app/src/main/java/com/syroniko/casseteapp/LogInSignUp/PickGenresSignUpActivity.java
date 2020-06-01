@@ -16,72 +16,63 @@ import com.syroniko.casseteapp.MainClasses.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.syroniko.casseteapp.LogInSignUp.CountrySelectSignUpActivity.COUNTRY_PASSWORD_EXTRA;
+import static com.syroniko.casseteapp.LogInSignUp.CountrySelectSignUpActivity.COUNTRY_USER_EXTRA;
+
 public class PickGenresSignUpActivity extends AppCompatActivity {
-    private List<GenreNameImageForSignupAdapter> list = new ArrayList<>();
+    public static final String GENRES_USER_EXTRA = "genres user extra";
+    public static final String GENRES_PASSWORD_EXTRA = "genres password extra";
+
+    private List<GenreNameImageForSignupAdapter> list = GenresListKt.getList();
     private ArrayList<String> genreList=new ArrayList<>();
-    private GenrePickSignupAdapter adapter;
-    private RecyclerView recyclerView;
     GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_genres_sign_up);
-        Intent intent =getIntent();
-        final User user=intent.getParcelableExtra("User");
-        final String password=intent.getStringExtra("Password");
 
-        list.add(new GenreNameImageForSignupAdapter("Blues",R.drawable.blues,R.drawable.bluesgreen));
-        list.add(new GenreNameImageForSignupAdapter("Classical",R.drawable.classicalgray,R.drawable.classicalgreen));
-        list.add(new GenreNameImageForSignupAdapter("Country",R.drawable.countrygray,R.drawable.countrygreen));
-        list.add(new GenreNameImageForSignupAdapter("Electronic",R.drawable.electronic_gray,R.drawable.electronic_green));
-        list.add(new GenreNameImageForSignupAdapter("Folk",R.drawable.folkgray,R.drawable.folkgreen));
-        list.add(new GenreNameImageForSignupAdapter("Hip-Hop",R.drawable.hip_hop_gray,R.drawable.hip_hop_green));
-        list.add(new GenreNameImageForSignupAdapter("Jazz",R.drawable.jazz_gray,R.drawable.jazz_green));
-        list.add(new GenreNameImageForSignupAdapter("Metal",R.drawable.metalgray,R.drawable.metal));
-        list.add(new GenreNameImageForSignupAdapter("Pop",R.drawable.pop_mic_gray,R.drawable.pop_mic_green));
-        list.add(new GenreNameImageForSignupAdapter("Punk",R.drawable.punkgray,R.drawable.punk_green));
-        list.add(new GenreNameImageForSignupAdapter("R&B",R.drawable.rnbgray,R.drawable.rnbgreen));
-        list.add(new GenreNameImageForSignupAdapter("Rock",R.drawable.rockgray,R.drawable.rockgreen));
-        list.add(new GenreNameImageForSignupAdapter("Soundtracks",R.drawable.tvigray,R.drawable.tv_green));
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_signup_genres);
+        RecyclerView recyclerView = findViewById(R.id.recycler_signup_genres);
+        TextView next = findViewById(R.id.nextfromgenres_to);
+
+        TextView tx = findViewById(R.id.pickthegenresyouenjou_string);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/montsextrathic.ttf");
+        tx.setTypeface(custom_font);
+
+        Intent intent = getIntent();
+        final User user=intent.getParcelableExtra(GENRES_USER_EXTRA);
+        final String password=intent.getStringExtra(GENRES_PASSWORD_EXTRA);
+
+
         gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);
-        adapter=new GenrePickSignupAdapter(this, list, new GenrePickSignupAdapter.GenreListClickListener() {
+
+        GenrePickSignupAdapter adapter = new GenrePickSignupAdapter(list, new GenrePickSignupAdapter.GenreListClickListener() {
             @Override
             public void OnListItemClick(int clickedItemPosition) {
-                if(!list.get(clickedItemPosition).getClicked()){
+                if (!list.get(clickedItemPosition).isClicked()) {
                     genreList.add(list.get(clickedItemPosition).getGenre());
                 }
-                else{
-                    for(int i=0; i<genreList.size(); i++){
-                        if(list.get(clickedItemPosition).getGenre().equals(genreList.get(i))){
-                            genreList.remove(i);
-                        }
-                    }
+                else {
+                    genreList.remove(list.get(clickedItemPosition).getGenre());
                 }
             }
         });
+
         recyclerView.setAdapter(adapter);
         ViewCompat.setNestedScrollingEnabled(recyclerView, false);
-        findViewById(R.id.recycler_signup_genres).setFocusable(false);
-        TextView tx = (TextView)findViewById(R.id.pickthegenresyouenjou_string);
+        recyclerView.setFocusable(false);
 
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/montsextrathic.ttf");
-
-        tx.setTypeface(custom_font);
-
-        TextView next = findViewById(R.id.nextfromgenres_to);
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (genreList.size() == 0)
-                    Toast.makeText(PickGenresSignUpActivity.this, "Please pick a genre", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PickGenresSignUpActivity.this, "Please pick a genre.", Toast.LENGTH_SHORT).show();
                 else {
-                    Intent intent = new Intent(PickGenresSignUpActivity.this, CountrySelectActivitySignUp.class);
+                    Intent intent = new Intent(PickGenresSignUpActivity.this, CountrySelectSignUpActivity.class);
                     user.setGenres(genreList);
-                    intent.putExtra("User", user);
-                    intent.putExtra("Password", password);
+                    intent.putExtra(COUNTRY_USER_EXTRA, user);
+                    intent.putExtra(COUNTRY_PASSWORD_EXTRA, password);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();

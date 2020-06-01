@@ -2,7 +2,7 @@ package com.syroniko.casseteapp.utils
 
 import android.util.Log
 import com.google.android.gms.common.util.ArrayUtils
-import com.syroniko.casseteapp.MainClasses.User
+import com.syroniko.casseteapp.room.UserAndTime
 
 fun <T> removeDuplicates(list: List<T>): List<T>{
     Log.d(ArrayUtils::class.java.simpleName, list.toString())

@@ -122,10 +122,10 @@ class CassetteMessageFragment : Fragment(), CassetteData {
             }
         }
 
-
-
+        val activity = activity
         replyButton.setOnClickListener {
             sendMessage(
+                activity,
                 uid,
                 senderId,
                 "Hello, I received your cassette with $trackName and I loved it!",

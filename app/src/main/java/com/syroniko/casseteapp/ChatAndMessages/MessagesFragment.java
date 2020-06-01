@@ -28,17 +28,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.syroniko.casseteapp.MainClasses.CoreActivity;
 import com.syroniko.casseteapp.MainClasses.MainActivity;
 import com.syroniko.casseteapp.MainClasses.User;
 import com.syroniko.casseteapp.R;
-import com.syroniko.casseteapp.utils.UserAndTime;
+import com.syroniko.casseteapp.room.UserAndTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.syroniko.casseteapp.utils.ArrayUtilsKt.sortUserList;
 
@@ -55,6 +52,7 @@ public class MessagesFragment extends Fragment {
     {
         View view =inflater.inflate(R.layout.fragment_messages,container,false);
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final Fragment fragment = this;
 
         recyclerView=view.findViewById(R.id.recycler_of_friends_message_fragment);
         recyclerView.setHasFixedSize(true);
@@ -104,7 +102,7 @@ public class MessagesFragment extends Fragment {
 
                                            list.add(new UserAndTime(newUser, entry.getValue()));
                                            list = sortUserList(list);
-                                           Log.v("zazaza",String.valueOf(list.size()));
+                                           Log.v("zazaza", String.valueOf(list.size()));
                                        }
                                    }
 
@@ -113,7 +111,8 @@ public class MessagesFragment extends Fragment {
                                    adapter.notifyDataSetChanged();
                                }
                            });
-                       }
+                        }
+                        ChatUtilsKt.insertInLocalDb(fragment, list);
 
                     } else {
                         Log.d("TAG", "No such document");
@@ -134,11 +133,12 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //TODO this doesn't work
+
         if (adapter == null || list == null){
             return;
         }
         sortUserList(list);
+        Log.d(MessagesFragment.class.getSimpleName(), list.toString());
         adapter.notifyDataSetChanged();
         Toast.makeText(getContext(), "AHA", Toast.LENGTH_SHORT).show();
     }

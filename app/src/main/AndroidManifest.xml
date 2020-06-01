@@ -22,7 +22,7 @@
         <activity android:name=".MainClasses.CoreActivity" />
         <activity android:name=".TrackSearchFlow.SendTrackActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyAlbumResultActivity" />
-        <activity android:name=".LogInSignUp.CountrySelectActivitySignUp" />
+        <activity android:name=".LogInSignUp.CountrySelectSignUpActivity" />
         <activity android:name=".StartingActivities.SplashActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyResultActivity" />

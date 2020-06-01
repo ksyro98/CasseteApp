@@ -17,25 +17,24 @@ public class WelcomingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcoming);
 
-
-        TextView tx = (TextView)findViewById(R.id.app_quote_textview);
-
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/montsextrathic.ttf");
-
-        tx.setTypeface(custom_font);
-
         TextView loginButton=findViewById(R.id.login_but_welc_act);
         TextView signupButton=findViewById(R.id.signup_but_welc_act);
+
+        TextView tx = findViewById(R.id.app_quote_textview);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/montsextrathic.ttf");
+        tx.setTypeface(custom_font);
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(WelcomingActivity.this, LoginActivity.class);
+                Intent intent = new Intent(WelcomingActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             }
         });
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,50 +1,36 @@
 package com.syroniko.casseteapp.LogInSignUp;
 
-import android.graphics.Bitmap;
+import com.syroniko.casseteapp.firebase.FirestoreDB;
 
 public class GenreNameImageForSignupAdapter {
     private String genre;
-
-    public Boolean getClicked() {
-        return isClicked;
-    }
-
-    public void setClicked(Boolean clicked) {
-        isClicked = clicked;
-    }
-
-    private Boolean isClicked=false;
+    private Boolean clicked = false;
     private int genreImageDefault;
+    private int genreImageClicked;
 
-    public int getGenreImageClicked() {
+    Boolean isClicked() {
+        return clicked;
+    }
+
+    void setClicked(Boolean clicked) {
+        this.clicked = clicked;
+    }
+
+    int getGenreImageClicked() {
         return genreImageClicked;
     }
 
-    public GenreNameImageForSignupAdapter(String genre,int defaultt, int clicked){
-        genreImageDefault=defaultt;
-        genreImageClicked=clicked;
-        this.genre=genre;
-
-    }
-    public void setGenreImageClicked(int genreImageClicked) {
-        this.genreImageClicked = genreImageClicked;
-    }
-
-    private int genreImageClicked;
-
-    public String getGenre() {
+    String getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public int getGenreImageDefault() {
+    int getGenreImageDefault() {
         return genreImageDefault;
     }
 
-    public void setGenreImageDefault(int genreImage) {
-        this.genreImageDefault = genreImage;
+    public GenreNameImageForSignupAdapter(String genre, int defaultImage, int clicked){
+        genreImageDefault = defaultImage;
+        genreImageClicked = clicked;
+        this.genre = genre;
     }
 }

@@ -44,6 +44,8 @@ const val welcomeRequestCode = 222
 const val clientId = "846a7d470725449994155b664cb7959b"
 const val redirectUri = "https://duckduckgo.com"
 
+const val UID_MAIN_EXTRA = "uid main extra"
+
 class MainActivity : AppCompatActivity() {
 
     private val clientId = "846a7d470725449994155b664cb7959b"
@@ -80,6 +82,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_fragment_container, selectedFragment!!).commit()
 
+        uid = intent.getStringExtra(UID_MAIN_EXTRA) ?: ""
+
+        if(uid == "") {
+            uid = FirebaseAuth.getInstance().uid ?: ""
+        }
 
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.bottom_navigation_bar)
@@ -172,6 +179,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         } else {
             uid = firebaseAuth.uid!!
+            Log.d(MainActivity::class.java.simpleName, uid)
             db.collection("users")
                 .document(uid)
                 .get()
