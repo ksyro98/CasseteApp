@@ -15,7 +15,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AboutActivity"></activity>
+        <activity android:name=".AboutActivity"/>
         <activity android:name=".MainClasses.ProfileActivity" />
         <activity android:name=".viewCassette.CassetteViewerActivity" />
         <activity android:name=".ChatAndMessages.ChatActivity" />

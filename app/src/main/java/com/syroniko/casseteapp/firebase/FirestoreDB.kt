@@ -1,9 +1,51 @@
 package com.syroniko.casseteapp.firebase
 
+import android.util.Log
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
-abstract class FirestoreDB(
-    private val collectionName: String,
-    protected val dbCollection: CollectionReference = FirebaseFirestore.getInstance().collection(collectionName)
-)
+abstract class FirestoreDB(private val collectionName: String){
+
+    protected val db = Firebase.firestore
+    protected val dbCollection = db.collection(collectionName)
+    private lateinit var registration: ListenerRegistration
+
+    open fun insert(item: Any) {
+        db.collection(collectionName).add(item)
+    }
+
+    open fun delete(id: String) {
+        db.collection(collectionName).document(id).delete()
+    }
+
+    open fun listenToChanges(onChange: (List<DocumentSnapshot>) -> Unit) {
+        val tag = FirestoreDB::class.java.simpleName
+
+        registration = db.collection(collectionName).addSnapshotListener { snapshot, e ->
+            if(e != null){
+                Log.w(tag, "List failed.", e)
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && !snapshot.isEmpty){
+                onChange(snapshot.documents)
+            }
+            else{
+                Log.d(tag, "Current data: null")
+            }
+        }
+    }
+
+    open fun detachListener(){
+        if (::registration.isInitialized){
+            registration.remove()
+        }
+    }
+
+    abstract fun getId(): String
+
+}

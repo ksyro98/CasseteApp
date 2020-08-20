@@ -175,8 +175,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         val firebaseAuth = FirebaseAuth.getInstance()
         if (firebaseAuth.uid == null) {
-            val intent = Intent(this, WelcomingActivity::class.java)
-            startActivity(intent)
+            WelcomingActivity.startActivity(this)
         } else {
             uid = firebaseAuth.uid!!
             Log.d(MainActivity::class.java.simpleName, uid)
@@ -341,6 +340,17 @@ class MainActivity : AppCompatActivity() {
 //                }
             }
     }
+
+    companion object{
+        fun startActivity(context: Context, uid: String?){
+            //Not sure if this will work for all activities.
+            val i = Intent(context, MainActivity::class.java)
+            i.putExtra(UID_MAIN_EXTRA, uid)
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            context.startActivity(i)
+        }
+    }
+
 }
 
 fun Context.toast(text: Any) = Toast.makeText(this, text.toString(), Toast.LENGTH_SHORT).show()

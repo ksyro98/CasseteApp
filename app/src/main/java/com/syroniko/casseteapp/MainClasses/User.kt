@@ -23,7 +23,8 @@ data class User(
     val favoriteArtists: ArrayList<String> = arrayListOf(),
     var bio: String = "",
     val interests: ArrayList<String> = arrayListOf(),
-    val cassettesAccepted: ArrayList<String> = arrayListOf()): Parcelable
+    val cassettesAccepted: ArrayList<String> = arrayListOf()
+): Parcelable
 
 
 // var cassettes: ArrayList<Cassette>?)

@@ -2,7 +2,7 @@ package com.syroniko.casseteapp.LogInSignUp
 
 import com.syroniko.casseteapp.R
 
-val list = arrayListOf<GenreNameImageForSignupAdapter>(
+val GENRES_LIST = arrayListOf<GenreNameImageForSignupAdapter>(
     GenreNameImageForSignupAdapter("Blues", R.drawable.blues, R.drawable.bluesgreen),
     GenreNameImageForSignupAdapter("Classical", R.drawable.classicalgray, R.drawable.classicalgreen),
     GenreNameImageForSignupAdapter("Country", R.drawable.countrygray, R.drawable.countrygreen),

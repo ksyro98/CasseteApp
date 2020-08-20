@@ -30,6 +30,10 @@ class SendTrackActivity : AppCompatActivity() {
         val token = intent.getStringExtra(tokenExtraName)
         val context = this
 
+        if(track == null || token == null){
+            return
+        }
+
         track.getGenreFromArtists(Volley.newRequestQueue(this), token, ::updateGenreTextView)
 
         Glide.with(this).load(track.imageUrl).into(trackImageView)

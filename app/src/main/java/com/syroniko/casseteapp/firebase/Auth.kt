@@ -3,15 +3,15 @@ package com.syroniko.casseteapp.firebase
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
 
 
-object Auth{
+class Auth(private val authCallback: AuthCallback = EmptyAuthCallback()){
+
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val tag = Auth::class.java.simpleName
 
-    fun signInWithEmail(email: String, password: String, authCallback: AuthCallback){
+    fun signInWithEmail(email: String, password: String, authCallback: AuthCallback = this.authCallback){
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful){
@@ -25,7 +25,7 @@ object Auth{
             }
     }
 
-    fun signInWithGoogle(account: GoogleSignInAccount, authCallback: AuthCallback){
+    fun signInWithGoogle(account: GoogleSignInAccount, authCallback: AuthCallback = this.authCallback){
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
 
         auth.signInWithCredential(credential)
@@ -36,12 +36,12 @@ object Auth{
                 }
                 else{
                     Log.e(tag, "Log in with google failed", task.exception)
-
+                    authCallback.onFailure()
                 }
             }
     }
 
-    fun signUpWithEmail(email: String, password: String, authCallback: AuthCallback){
+    fun signUpWithEmail(email: String, password: String, authCallback: AuthCallback = this.authCallback){
         auth.createUserWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 Log.d(tag, "Sign up with email was successful.")
@@ -53,7 +53,7 @@ object Auth{
             }
     }
 
-    fun resetPassword(email: String, authCallback: AuthCallback){
+    fun resetPassword(email: String, authCallback: AuthCallback = this.authCallback){
         auth.sendPasswordResetEmail(email)
             .addOnSuccessListener {
                 Log.d(tag, "Reset email sent.")
@@ -61,6 +61,19 @@ object Auth{
             }
             .addOnFailureListener { e ->
                 Log.e(tag, "Failed to send reset email.", e)
+                authCallback.onFailure()
             }
     }
+
+
+    class EmptyAuthCallback : AuthCallback{
+        override fun onSuccess(uid: String?) {
+            //do nothing
+        }
+
+        override fun onFailure() {
+            //do nothing
+        }
+    }
+
 }
