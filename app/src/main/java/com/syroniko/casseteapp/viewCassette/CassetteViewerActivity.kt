@@ -6,14 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.firebase.firestore.FirebaseFirestore
-import com.spotify.android.appremote.api.SpotifyAppRemote
-import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.TrackSearchFlow.noPreviewUrl
+import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.cassetteIdExtraName
 import com.syroniko.casseteapp.userIdExtraName
 import kotlinx.android.synthetic.main.activity_cassette_viewer.*
-import kotlinx.android.synthetic.main.fragment_cassette_message.*
 
 
 const val resultForward = 12
@@ -29,7 +26,7 @@ const val ytWebWatchUrl = "https://www.youtube.com/watch?v="
 private const val NUM_PAGES = 3
 
 class CassetteViewerActivity : AppCompatActivity() {
-    private var trackPreviewUrl = noPreviewUrl
+    private var trackPreviewUrl = NO_PREVIEW_URL
     private var cassetteComment: String? = null
     private var trackName = ""
     private var trackId = ""

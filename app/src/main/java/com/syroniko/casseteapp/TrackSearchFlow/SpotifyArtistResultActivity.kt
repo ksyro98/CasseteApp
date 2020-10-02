@@ -27,8 +27,8 @@ class SpotifyArtistResultActivity : AppCompatActivity() {
             return
         }
 
-        val artistName = intent.getStringExtra(spotifyArtistResultExtraName).replace(" ", "%20")
-        val token = intent.getStringExtra(tokenExtraName)
+        val artistName = intent.getStringExtra(spotifyArtistResultExtraName)?.replace(" ", "%20")
+        val token = intent.getStringExtra(tokenExtraName) ?: return
 
         val query = "https://api.spotify.com/v1/search?q=artist%3A$artistName&type=album"
 

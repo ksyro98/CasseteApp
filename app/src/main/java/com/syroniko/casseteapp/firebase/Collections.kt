@@ -1,4 +1,4 @@
-package com.syroniko.casseteapp.firebase
+package com.syroniko.casseteapp.firebasefirebase
 
 internal const val USERS = "users"
 internal const val CASSETTES = "cassettes"

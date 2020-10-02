@@ -28,11 +28,11 @@ class SpotifyAlbumResultActivity : AppCompatActivity() {
             return
         }
 
-        val albumId = intent.getStringExtra(spotifyAlbumIdExtraName)
-        val token = intent.getStringExtra(tokenExtraName)
-        val albumImageUrl = intent.getStringExtra(spotifyAlbumImageUrlExtraName)
+        val albumId = intent.getStringExtra(spotifyAlbumIdExtraName) ?: return
+        val token = intent.getStringExtra(tokenExtraName) ?: return
+        val albumImageUrl = intent.getStringExtra(spotifyAlbumImageUrlExtraName) ?: return
 
-        val trackAdapter = SpotifyAdapter(this, trackList, token)
+        val trackAdapter = SpotifyAdapter(this)
 
         val query = "https://api.spotify.com/v1/albums/$albumId/tracks"
 
@@ -63,7 +63,7 @@ class SpotifyAlbumResultActivity : AppCompatActivity() {
                         items.getJSONObject(i).getString("preview_url")
                     }
                     else{
-                        noPreviewUrl
+                        NO_PREVIEW_URL
                     }
 //                    Log.d("SpotifyAlbumResultAct", artistNames.toString())
 //                    Log.d("SpotifyAlbumResultAct", artistIds.toString())

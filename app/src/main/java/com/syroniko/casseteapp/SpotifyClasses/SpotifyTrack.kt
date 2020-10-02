@@ -9,17 +9,29 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.syroniko.casseteapp.TrackSearchFlow.SearchRequest
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 @Parcelize
-class SpotifyTrack(val trackName: String = "", val trackId: String = "", val artistIds: ArrayList<String> = arrayListOf(), val artistNames: ArrayList<String> = arrayListOf(), val imageUrl: String = "", var genre: String? = "", val previewUrl: String? = "") : Parcelable
-    , SpotifyResult {
+class SpotifyTrack(
+    val trackName: String = "",
+    val trackId: String = "",
+    val artistIds: ArrayList<String> = arrayListOf(),
+    val artistNames: ArrayList<String> = arrayListOf(),
+    val imageUrl: String = "",
+    var genre: String? = "",
+    val previewUrl: String? = ""
+) : Parcelable, SpotifyResult {
 
+    @IgnoredOnParcel
     private val genreMap = HashMap<String, Int>()
 
     override fun getClass(): String {
-        return track
+        return TRACK
     }
 
     fun getGenreFromArtists(queue: RequestQueue, token: String, action: (String?) -> Unit){
@@ -31,16 +43,12 @@ class SpotifyTrack(val trackName: String = "", val trackId: String = "", val art
                 Request.Method.GET,
                 "https://api.spotify.com/v1/artists/$artistId",
                 token,
-                Response.Listener<JSONObject> { response ->
-//                    Log.d("SpotifyTrack", response.toString())
-
+                Response.Listener { response ->
                     val jsonObject = Gson().fromJson(response.toString(), JsonObject::class.java)
                     val genres = jsonObject.get("genres") as JsonArray
                     for (genre in genres){
                         tempGenres.add(genre.asString)
                     }
-
-//                    Log.d("SpotifyTrack", tempGenres.toString())
 
                     getGenreFromList(tempGenres, action)
                 },
@@ -64,14 +72,10 @@ class SpotifyTrack(val trackName: String = "", val trackId: String = "", val art
                    genreMap[subGenre] = genreMap[subGenre]!!.plus(1)
                 }
             }
-
-//            Log.d("SpotifyTrack", genreMap.toString())
         }
 
         genre = genreMap.maxBy { it.value }?.key
         action(genre)
-
-//        Log.d("SpotifyTrack", genre)
     }
 
     private fun initializeGenreMap(){
@@ -90,17 +94,17 @@ class SpotifyTrack(val trackName: String = "", val trackId: String = "", val art
         genreMap["soundtracks"] = 0
     }
 
-    private fun getMaxFromMap(map: HashMap<String, Int>) : String{
-        var maxKey = ""
-        var maxValue = 0
-        for (entry in map){
-            if (entry.value >= maxValue){
-                maxValue = entry.value
-                maxKey = entry.key
-            }
-        }
-
-        return maxKey
-    }
+//    private fun getMaxFromMap(map: HashMap<String, Int>) : String{
+//        var maxKey = ""
+//        var maxValue = 0
+//        for (entry in map){
+//            if (entry.value >= maxValue){
+//                maxValue = entry.value
+//                maxKey = entry.key
+//            }
+//        }
+//
+//        return maxKey
+//    }
 }
 

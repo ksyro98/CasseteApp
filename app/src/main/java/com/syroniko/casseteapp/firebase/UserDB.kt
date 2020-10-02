@@ -1,14 +1,9 @@
 package com.syroniko.casseteapp.firebase
 
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentReference
 import com.syroniko.casseteapp.MainClasses.User
+import com.syroniko.casseteapp.firebasefirebase.USERS
 
 class UserDB: FirestoreDB(USERS) {
-
-//    fun insert(uid: String, user: User) {
-//        dbCollection.document(uid).set(user)
-//    }
 
     override fun insert(item: Any) {
         if (item !is User || item.uid == null){

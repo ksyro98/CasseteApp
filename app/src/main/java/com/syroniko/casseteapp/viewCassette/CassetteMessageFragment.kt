@@ -1,10 +1,7 @@
 package com.syroniko.casseteapp.viewCassette
 
 import android.content.Intent
-import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.syroniko.casseteapp.ChatAndMessages.sendMessage
 
 import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.TrackSearchFlow.noPreviewUrl
+import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.room.AppDatabase
 import com.syroniko.casseteapp.room.LocalCassette
 import kotlinx.coroutines.launch
@@ -36,7 +33,7 @@ class CassetteMessageFragment : Fragment(), CassetteData {
     private var uid = FirebaseAuth.getInstance().uid.toString()
     private var trackName = ""
     private var trackId: String? = null
-    private var trackPreviewUrl = noPreviewUrl
+    private var trackPreviewUrl = NO_PREVIEW_URL
 
     private lateinit var forwardButton: Button
     private lateinit var replyButton: Button

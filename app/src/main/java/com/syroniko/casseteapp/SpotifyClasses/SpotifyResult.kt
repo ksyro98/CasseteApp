@@ -1,9 +1,9 @@
 package com.syroniko.casseteapp.SpotifyClasses
 
-const val track = "SpotifyTrack"
-const val artist = "SpotifyArtist"
-const val separator = "SpotifySeparator"
-const val album = "SpotifyAlbum"
+const val TRACK = "SpotifyTrack"
+const val ARTIST = "SpotifyArtist"
+const val SEPARATOR = "SpotifySeparator"
+const val ALBUM = "SpotifyAlbum"
 
 
 interface SpotifyResult{

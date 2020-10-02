@@ -1,6 +1,6 @@
 package com.syroniko.casseteapp.SpotifyClasses
 
-val genres = arrayOf(
+val GENRES = arrayOf(
         "Blues",
         "Classical",
         "Country",

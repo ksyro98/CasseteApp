@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.syroniko.casseteapp.MainClasses.*
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
-import com.syroniko.casseteapp.SpotifyClasses.genres
+import com.syroniko.casseteapp.SpotifyClasses.GENRES
 import kotlinx.android.synthetic.main.activity_send_track.*
 
 
@@ -40,16 +40,16 @@ class SendTrackActivity : AppCompatActivity() {
         trackTitleTextView.text = track.trackName
         artistNameTextView.text = track.artistNames.toString()
 
-        if (track.previewUrl == noPreviewUrl){
+        if (track.previewUrl == NO_PREVIEW_URL){
             longToast("This track has no available preview, so only to people who use Spotify premium will be able to listen to it.")
         }
 
         changeGenreTextView.setOnClickListener {
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Pick a genre")
-            builder.setItems(genres) { dialog, which ->
-                track.genre = genres[which]
-                genreTextView.text = genres[which]
+            builder.setItems(GENRES) { dialog, which ->
+                track.genre = GENRES[which]
+                genreTextView.text = GENRES[which]
                 dialog.dismiss()
             }
             builder.show()

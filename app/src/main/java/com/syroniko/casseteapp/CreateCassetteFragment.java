@@ -36,11 +36,8 @@ public class CreateCassetteFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String searchQuery = searchEditText.getText().toString();
-                Intent intent = new Intent(context, SpotifyResultActivity.class);
-                intent.putExtra(spotifyQueryExtraName, searchQuery);
-                intent.putExtra(tokenExtraName, token);
                 if(context != null) {
-                    context.startActivity(intent);
+                    SpotifyResultActivity.Companion.startActivity(context, searchQuery, token);
                 }
             }
         });

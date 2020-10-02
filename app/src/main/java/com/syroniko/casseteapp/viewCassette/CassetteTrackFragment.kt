@@ -17,7 +17,7 @@ import com.syroniko.casseteapp.MainClasses.longToast
 import com.syroniko.casseteapp.MainClasses.redirectUri
 
 import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.TrackSearchFlow.noPreviewUrl
+import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
 
 class CassetteTrackFragment : Fragment(), CassetteData {
 
@@ -74,7 +74,7 @@ class CassetteTrackFragment : Fragment(), CassetteData {
                 playerApi.play("spotify:track:$trackId")
             }
             else{
-                if (trackPreviewUrl != noPreviewUrl) {
+                if (trackPreviewUrl != NO_PREVIEW_URL) {
                     val uri = Uri.parse(trackPreviewUrl)
 
                     MediaPlayer.create(context, uri).start()
