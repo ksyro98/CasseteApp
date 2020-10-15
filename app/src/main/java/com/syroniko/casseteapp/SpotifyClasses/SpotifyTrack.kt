@@ -30,7 +30,7 @@ class SpotifyTrack(
     @IgnoredOnParcel
     private val genreMap = HashMap<String, Int>()
 
-    override fun getClass(): String {
+    override fun getSpotifyClass(): String {
         return TRACK
     }
 

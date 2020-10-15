@@ -1,7 +1,6 @@
 package com.syroniko.casseteapp.TrackSearchFlow
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,6 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.syroniko.casseteapp.MainClasses.spotifyArtistResultExtraName
-import com.syroniko.casseteapp.MainClasses.spotifyTrackResultExtraName
-import com.syroniko.casseteapp.MainClasses.tokenExtraName
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.*
 import dagger.hilt.android.qualifiers.ActivityContext
@@ -30,58 +26,39 @@ class SpotifyAdapter @Inject constructor(
     var token: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpotifyViewHolder {
-        val context = parent.context
-        val layoutIdForListItem = R.layout.spotify_item
-        val layoutInflater = LayoutInflater.from(context)
-
-        val view = layoutInflater.inflate(layoutIdForListItem, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.spotify_item, parent, false)
 
         return SpotifyViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return spotifyItemsList.size
-    }
-
     override fun onBindViewHolder(holder: SpotifyViewHolder, position: Int) {
-        holder.itemView.spotifyTextView.text = ""
-        holder.itemView.spotifyDetailsTextView.text = ""
-        holder.itemView.spotifyDetailsTextView.maxLines = 1
-        holder.itemView.spotifyImageView.layoutParams = LinearLayout.LayoutParams((64 * context.resources.displayMetrics.density).toInt(), (64 * context.resources.displayMetrics.density).toInt())
-//        holder.itemView.spotifyImageView
-        Glide.with(context).clear(holder.itemView.spotifyImageView)
+        resetItem(holder)
 
-        when (spotifyItemsList[position].getClass()){
+        when (spotifyItemsList[position].getSpotifyClass()){
             TRACK -> {
                 val track = spotifyItemsList[position] as SpotifyTrack
+
                 holder.itemView.spotifyTextView.text = track.trackName
-                for(i in track.artistNames.indices) {
-                    holder.itemView.spotifyDetailsTextView.append(track.artistNames[i])
-                    if(i != track.artistNames.size-1){
-                        holder.itemView.spotifyDetailsTextView.append(", ")
-                    }
-                }
+                holder.itemView.spotifyDetailsTextView.text = generateArtistNamesString(track.artistNames)
                 Glide.with(context).load(track.imageUrl).into(holder.itemView.spotifyImageView)
+
                 holder.itemView.setOnClickListener {
-                    val trackIntent = Intent(context, SendTrackActivity::class.java)
-                    trackIntent.putExtra(spotifyTrackResultExtraName, track)
-                    trackIntent.putExtra(tokenExtraName, token)
-                    trackIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    context.startActivity(trackIntent)
+                    SendTrackActivity.startActivity(context, track, token)
                 }
+
             }
 
             ARTIST -> {
                 val artist = spotifyItemsList[position] as SpotifyArtist
+
                 holder.itemView.spotifyTextView.text = artist.artistName
                 holder.itemView.spotifyDetailsTextView.text = context.getString(R.string.artist)
                 Glide.with(context).load(artist.imageUrl).apply(RequestOptions.circleCropTransform()).into(holder.itemView.spotifyImageView)
+
                 holder.itemView.setOnClickListener {
-                    val artistIntent = Intent(context, SpotifyArtistResultActivity::class.java)
-                    artistIntent.putExtra(spotifyArtistResultExtraName, artist.artistName)
-                    artistIntent.putExtra(tokenExtraName, token)
-                    context.startActivity(artistIntent)
+                    SpotifyArtistResultActivity.startActivity(context, artist.artistName, token)
                 }
+
             }
 
             SEPARATOR -> {
@@ -94,6 +71,31 @@ class SpotifyAdapter @Inject constructor(
                 }
             }
         }
+    }
+
+    override fun getItemCount() = spotifyItemsList.size
+
+
+    private fun resetItem(holder: SpotifyViewHolder){
+        holder.itemView.spotifyTextView.text = ""
+        holder.itemView.spotifyDetailsTextView.text = ""
+        holder.itemView.spotifyDetailsTextView.maxLines = 1
+        holder.itemView.spotifyImageView.layoutParams = LinearLayout.LayoutParams((64 * context.resources.displayMetrics.density).toInt(), (64 * context.resources.displayMetrics.density).toInt())
+        Glide.with(context).clear(holder.itemView.spotifyImageView)
+
+    }
+
+    private fun generateArtistNamesString(artistNames: ArrayList<String>): String{
+        var res = ""
+
+        for(i in artistNames.indices) {
+            res += artistNames[i]
+            if(i != artistNames.size-1){
+                res += ", "
+            }
+        }
+
+        return res
     }
 
     class SpotifyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

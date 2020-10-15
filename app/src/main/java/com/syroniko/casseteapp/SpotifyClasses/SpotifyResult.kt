@@ -7,5 +7,5 @@ const val ALBUM = "SpotifyAlbum"
 
 
 interface SpotifyResult{
-    fun getClass(): String
+    fun getSpotifyClass(): String
 }

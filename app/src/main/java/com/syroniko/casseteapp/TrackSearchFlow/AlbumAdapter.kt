@@ -7,30 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.syroniko.casseteapp.MainClasses.tokenExtraName
+import com.syroniko.casseteapp.MainClasses.TOKEN_EXTRA_NAME
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyAlbum
+import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.android.synthetic.main.spotify_item_album.view.*
+import javax.inject.Inject
 
 const val spotifyAlbumIdExtraName = "Spotify Album Id Extra Name"
 const val spotifyAlbumImageUrlExtraName = "Spotify Album Image Url Extra Name"
 
-class AlbumAdapter(private val context: Context, private val albumList: ArrayList<SpotifyAlbum>, private val token: String) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
+class AlbumAdapter @Inject constructor(
+    @ActivityContext private val context: Context
+) : RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>() {
 
+    var albumList = arrayListOf<SpotifyAlbum>()
+        set(value){
+            field = value
+            this.notifyDataSetChanged()
+        }
+    var token: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
-        val context = parent.context
-        val layoutIdForListItem = R.layout.spotify_item_album
-        val layoutInflater = LayoutInflater.from(context)
-
-        val view = layoutInflater.inflate(layoutIdForListItem, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.spotify_item_album, parent, false)
 
         return AlbumViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-//        context.toast(albumList.size.toString())
-        return albumList.size
     }
 
     override fun onBindViewHolder(holder: AlbumViewHolder, position: Int) {
@@ -43,15 +44,11 @@ class AlbumAdapter(private val context: Context, private val albumList: ArrayLis
             val albumId = albumList[position].albumId
             val albumImageUrl = albumList[position].imageUrl
 
-            val trackIntent = Intent(context, SpotifyAlbumResultActivity::class.java)
-
-            trackIntent.putExtra(spotifyAlbumIdExtraName, albumId)
-            trackIntent.putExtra(spotifyAlbumImageUrlExtraName, albumImageUrl)
-            trackIntent.putExtra(tokenExtraName, token)
-
-            context.startActivity(trackIntent)
+            SpotifyAlbumResultActivity.startActivity(context, albumId, albumImageUrl, token)
         }
     }
+
+    override fun getItemCount() = albumList.size
 
 
     class AlbumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

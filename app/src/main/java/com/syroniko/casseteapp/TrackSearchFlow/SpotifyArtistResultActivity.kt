@@ -1,23 +1,31 @@
 package com.syroniko.casseteapp.TrackSearchFlow
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
-import com.syroniko.casseteapp.MainClasses.spotifyArtistResultExtraName
 import com.syroniko.casseteapp.MainClasses.toast
-import com.syroniko.casseteapp.MainClasses.tokenExtraName
+import com.syroniko.casseteapp.MainClasses.TOKEN_EXTRA_NAME
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyAlbum
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_spotify_artist_result.*
 import org.json.JSONObject
+import javax.inject.Inject
 
+const val SPOTIFY_ARTIST_RESULT_EXTRA_NAME = "Spotify Artist Result Extra Name"
+
+@AndroidEntryPoint
 class SpotifyArtistResultActivity : AppCompatActivity() {
 
-    private val albumList = arrayListOf<SpotifyAlbum>()
+    private val viewModel by viewModels<SpotifyArtistResultViewModel>()
+    @Inject lateinit var albumAdapter: AlbumAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,53 +35,29 @@ class SpotifyArtistResultActivity : AppCompatActivity() {
             return
         }
 
-        val artistName = intent.getStringExtra(spotifyArtistResultExtraName)?.replace(" ", "%20")
-        val token = intent.getStringExtra(tokenExtraName) ?: return
+        val artistName = intent.getStringExtra(SPOTIFY_ARTIST_RESULT_EXTRA_NAME)?.replace(" ", "%20") ?: return
+        viewModel.token = intent.getStringExtra(TOKEN_EXTRA_NAME) ?: return
 
-        val query = "https://api.spotify.com/v1/search?q=artist%3A$artistName&type=album"
+        viewModel.query = "https://api.spotify.com/v1/search?q=artist%3A$artistName&type=album"
 
-        val albumAdapter = AlbumAdapter(this, albumList, token)
+        spotifyAlbumRecyclerView.apply {
+            layoutManager = GridLayoutManager(this@SpotifyArtistResultActivity, 2)
+            setHasFixedSize(true)
+            adapter = albumAdapter
+        }
 
-        val context = this
+        albumAdapter.token = viewModel.token
+        viewModel.getSpotifyAlbums { albumAdapter.albumList = it }
 
-        val queue = Volley.newRequestQueue(this)
+    }
 
-        val searchRequest = SearchRequest(
-            Request.Method.GET,
-            query,
-            token,
-            Response.Listener<JSONObject> { response ->
-
-                Log.d("ArtistResult", response.toString())
-//                toast(response.toString())
-
-                for (i in 0 until response.getJSONObject("albums").getJSONArray("items").length()) {
-                    val item: JSONObject = response.getJSONObject("albums").getJSONArray("items").getJSONObject(i)
-                    val albumId = item.getString("id")
-                    val albumName = item.getString("name")
-                    val imageUrl = item.getJSONArray("images").getJSONObject(0).getString("url")
-
-                    albumList.add(SpotifyAlbum(albumName, albumId, imageUrl))
-                }
-
-                albumAdapter.notifyDataSetChanged()
-
-            },
-            Response.ErrorListener { error ->
-                toast("Error. :("); Log.d(
-                "ArtistResult",
-                error.toString()
-            ); toast(error.toString())
-            })
-
-        queue.add(searchRequest)
-
-
-        spotifyAlbumRecyclerView.layoutManager = GridLayoutManager(this, 2) //as RecyclerView.LayoutManager?
-        spotifyAlbumRecyclerView.setHasFixedSize(true)
-
-        spotifyAlbumRecyclerView.adapter = albumAdapter
-
+    companion object {
+        fun startActivity(context: Context, artistName: String, token: String?){
+            val artistIntent = Intent(context, SpotifyArtistResultActivity::class.java)
+            artistIntent.putExtra(SPOTIFY_ARTIST_RESULT_EXTRA_NAME, artistName)
+            artistIntent.putExtra(TOKEN_EXTRA_NAME, token)
+            context.startActivity(artistIntent)
+        }
     }
 
 }

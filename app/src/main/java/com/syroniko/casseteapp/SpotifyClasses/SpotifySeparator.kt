@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class SpotifySeparator(val message: String) : SpotifyResult, Parcelable{
-    override fun getClass(): String {
+    override fun getSpotifyClass(): String {
         return SEPARATOR
     }
 }

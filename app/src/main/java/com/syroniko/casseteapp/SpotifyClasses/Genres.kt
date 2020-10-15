@@ -14,3 +14,22 @@ val GENRES = arrayOf(
         "R&B",
         "Rock",
         "Soundtracks")
+
+fun mapGenres(genre: String?) : String?{
+        return when(genre){
+                "blues" -> "Blues"
+                "classical" -> "Classical"
+                "country" -> "Country"
+                "electronic" -> "Electronic"
+                "folk" -> "Folk"
+                "hip-hop" -> "Hip-Hop"
+                "jazz" -> "Jazz"
+                "metal" -> "Metal"
+                "pop" -> "Pop"
+                "punk" -> "Punk"
+                "r&b" -> "R&B"
+                "rock" -> "Rock"
+                "soundtracks" -> "Soundtracks"
+                else -> genre
+        }
+}

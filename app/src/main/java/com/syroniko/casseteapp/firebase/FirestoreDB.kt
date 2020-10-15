@@ -18,6 +18,7 @@ abstract class FirestoreDB(private val collectionName: String){
         db.collection(collectionName).add(item)
     }
 
+
     open fun delete(id: String) {
         db.collection(collectionName).document(id).delete()
     }

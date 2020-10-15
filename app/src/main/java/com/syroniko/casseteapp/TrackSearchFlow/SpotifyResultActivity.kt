@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syroniko.casseteapp.MainClasses.spotifyQueryExtraName
-import com.syroniko.casseteapp.MainClasses.tokenExtraName
+import com.syroniko.casseteapp.MainClasses.TOKEN_EXTRA_NAME
 import com.syroniko.casseteapp.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_spotify_result.*
@@ -26,7 +26,7 @@ class SpotifyResultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_spotify_result)
 
         viewModel.searchQuery = intent.getStringExtra(spotifyQueryExtraName) ?: return
-        viewModel.token = intent.getStringExtra(tokenExtraName) ?: return
+        viewModel.token = intent.getStringExtra(TOKEN_EXTRA_NAME) ?: return
 
         spotifyAdapter.token = viewModel.token
 
@@ -43,7 +43,7 @@ class SpotifyResultActivity : AppCompatActivity() {
         fun startActivity(context: Context, searchQuery: String, token: String){
             val intent = Intent(context, SpotifyResultActivity::class.java)
             intent.putExtra(spotifyQueryExtraName, searchQuery)
-            intent.putExtra(tokenExtraName, token)
+            intent.putExtra(TOKEN_EXTRA_NAME, token)
             context.startActivity(intent)
         }
     }

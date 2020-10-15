@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.ktx.Firebase
 
 
 class Auth(private val authCallback: AuthCallback = EmptyAuthCallback()){
@@ -76,4 +77,9 @@ class Auth(private val authCallback: AuthCallback = EmptyAuthCallback()){
         }
     }
 
+    companion object {
+        fun getUid(): String?{
+            return FirebaseAuth.getInstance().uid
+        }
+    }
 }

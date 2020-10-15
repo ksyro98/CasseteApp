@@ -33,9 +33,7 @@ import kotlin.collections.ArrayList
 
 
 const val spotifyQueryExtraName = "Spotify Query Extra Name"
-const val spotifyArtistResultExtraName = "Spotify Artist Result Extra Name"
-const val spotifyTrackResultExtraName = "Spotify Track Result Extra Name"
-const val tokenExtraName = "Token Extra Name"
+const val TOKEN_EXTRA_NAME = "Token Extra Name"
 const val thirtyMins = 1800000
 const val cassetteViewerRequestCode = 314
 const val spotifyRequestCode = 1337
@@ -346,7 +344,7 @@ class MainActivity : AppCompatActivity() {
             //Not sure if this will work for all activities.
             val i = Intent(context, MainActivity::class.java)
             i.putExtra(UID_MAIN_EXTRA, uid)
-            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(i)
         }
     }
