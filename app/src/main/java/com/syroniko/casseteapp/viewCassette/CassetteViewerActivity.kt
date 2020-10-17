@@ -1,6 +1,7 @@
 package com.syroniko.casseteapp.viewCassette
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -10,13 +11,12 @@ import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.cassetteIdExtraName
 import com.syroniko.casseteapp.userIdExtraName
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_cassette_viewer.*
 
 
 const val resultForward = 12
-const val resultReply = 11
 const val resultCassette = "result cassette"
-const val requestTag = "YouTubeTag"
 const val ytApiKey = "AIzaSyDK0u16JJxYenpBhQRte-CC5FHl0IcMIeM"
 const val ytSearchUrlStart = "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
 const val ytSearchUrlEnd = "&type=video&key=$ytApiKey"
@@ -25,47 +25,30 @@ const val ytWebWatchUrl = "https://www.youtube.com/watch?v="
 
 private const val NUM_PAGES = 3
 
+@AndroidEntryPoint
 class CassetteViewerActivity : AppCompatActivity() {
-    private var trackPreviewUrl = NO_PREVIEW_URL
-    private var cassetteComment: String? = null
-    private var trackName = ""
-    private var trackId = ""
-    private var cassetteId: String? = null
-    private var senderId: String? = null
-
     private var fragment = Fragment()
+    private val viewModel by viewModels<CassetteViewerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cassette_viewer)
 
-        cassetteId = intent.getStringExtra(cassetteIdExtraName)
-        senderId = intent.getStringExtra(userIdExtraName)
+        viewModel.cassetteId = intent.getStringExtra(cassetteIdExtraName) ?: return
+        viewModel.senderId = intent.getStringExtra(userIdExtraName) ?: return
 
-        val db = FirebaseFirestore.getInstance()
-
-        val localCassetteId = cassetteId.toString()
-        db.collection("cassettes")
-            .document(localCassetteId)
-            .get()
-            .addOnSuccessListener { document ->
-                cassetteComment = document.data?.get("comment") as String
-
-                val trackMap = document.data?.get("track") as Map<*, *>
-                trackName = trackMap["trackName"] as String
-                trackId = trackMap["trackId"] as String
-                if(trackMap["previewUrl"] != null) {
-                    trackPreviewUrl = trackMap["previewUrl"] as String
-                }
-
-                if (fragment is CassetteData){
-                    (fragment as CassetteData).getCassetteDataFromDb(cassetteComment.toString(), trackName, trackId, trackPreviewUrl)
-                }
+        viewModel.getCassette { cassetteComment, trackName, trackId, trackPreviewUrl ->
+            if (fragment is CassetteData){
+                (fragment as CassetteData).getCassetteDataFromDb(cassetteComment, trackName, trackId, trackPreviewUrl)
             }
 
-        val pagerAdapter = ScreenSlidePagerAdapter(this)
-        cassetteViewPager.adapter = pagerAdapter
+            val pagerAdapter = ScreenSlidePagerAdapter(this)
+            cassetteViewPager.adapter = pagerAdapter
+        }
+
+
     }
+
 
     private inner class ScreenSlidePagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = NUM_PAGES
@@ -83,10 +66,13 @@ class CassetteViewerActivity : AppCompatActivity() {
                 }
             }
 
-            (fragment as CassetteData).getInitialCassetteData(cassetteId, senderId)
-            if (cassetteComment != null){
-                (fragment as CassetteData).getCassetteDataFromDb(cassetteComment.toString(), trackName, trackId, trackPreviewUrl)
-            }
+            (fragment as CassetteData).getInitialCassetteData(viewModel.cassetteId, viewModel.senderId)
+            (fragment as CassetteData).getCassetteDataFromDb(
+                viewModel.cassetteComment,
+                viewModel.trackName,
+                viewModel.trackId,
+                viewModel.trackPreviewUrl
+            )
 
             return fragment
         }

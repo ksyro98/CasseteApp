@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-fun sendMessage(activity: Activity?, sender: String, receiver: String, text: String, time: String, db: FirebaseFirestore): Unit{
+fun sendMessage(context: Context, sender: String, receiver: String, text: String, time: String, db: FirebaseFirestore): Unit{
     val user: MutableMap<String, Any> = HashMap()
     if (sender.hashCode() > receiver.hashCode()) {
         user["chatid"] = sender + receiver
@@ -50,7 +50,12 @@ fun sendMessage(activity: Activity?, sender: String, receiver: String, text: Str
     val messageTime = System.currentTimeMillis()
     updateUserTimes(db, sender, receiver, messageTime)
     updateUserTimes(db, receiver, sender, messageTime)
-    updateRoom(activity, sender, messageTime)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////PART OF REMOVING ROOM FROM THE APP, DON'T DELETE UNTIL WE MAKE SURE THAT IT'S A GOOD IDEA///////
+//    updateRoom(context, sender, messageTime)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     //      seenMessage(uid);
 

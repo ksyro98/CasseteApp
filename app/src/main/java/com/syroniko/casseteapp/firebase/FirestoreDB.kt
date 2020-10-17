@@ -18,7 +18,6 @@ abstract class FirestoreDB(private val collectionName: String){
         db.collection(collectionName).add(item)
     }
 
-
     open fun delete(id: String) {
         db.collection(collectionName).document(id).delete()
     }
@@ -46,6 +45,11 @@ abstract class FirestoreDB(private val collectionName: String){
             registration.remove()
         }
     }
+
+    open fun getDocumentFromId(id: String) = dbCollection.document(id).get()
+
+    open fun update(id: String, updateMap: HashMap<String, Any>) =
+        dbCollection.document(id).update(updateMap)
 
     abstract fun getId(): String
 
