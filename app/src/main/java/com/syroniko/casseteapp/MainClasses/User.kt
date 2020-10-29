@@ -16,7 +16,7 @@ data class User(
     var uid: String? = "",
     var country:String? = "",
     var genres: ArrayList<String> = arrayListOf(),
-    var friends: MutableMap<String, Long> = mutableMapOf(),
+    var friends: ArrayList<String> = arrayListOf(),
     var cassettes: ArrayList<String> = arrayListOf(),
     var songsSent: Int = 0,
     var songsAccepted: Int = 0,

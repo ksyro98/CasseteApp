@@ -2,8 +2,11 @@ package com.syroniko.casseteapp.ChatAndMessages
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Rect
 import android.os.AsyncTask
 import android.util.Log
+import android.util.TypedValue
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -18,6 +21,7 @@ import com.syroniko.casseteapp.room.UserAndTime
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 fun sendMessage(context: Context, sender: String, receiver: String, text: String, time: String, db: FirebaseFirestore): Unit{
     val user: MutableMap<String, Any> = HashMap()
@@ -72,7 +76,7 @@ fun updateUserTimes(db: FirebaseFirestore, uid1: String, uid2: String, messageTi
                 )
             val m = tempUser!!.friends
 
-            m[uid2] = messageTime
+//            m[uid2] = messageTime
             db.collection("users")
                 .document(uid1)
                 .update("friends", m)
@@ -132,3 +136,14 @@ fun insertInLocalDb(fragment: Fragment, list: java.util.ArrayList<UserAndTime>){
         }
     }
 }
+
+
+fun getTheOtherUid(uids: ArrayList<String>, selectedUid: String): String?{
+    for (uid in uids){
+        if (uid != selectedUid){
+            return uid
+        }
+    }
+    return null
+}
+

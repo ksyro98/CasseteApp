@@ -2,7 +2,8 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:padding="10dp" android:layout_height="wrap_content">
+        android:padding="10dp" android:layout_height="wrap_content"
+        android:id="@+id/friend_list_relative_layout">
     
     <ImageView
             android:layout_width="50dp"
@@ -14,13 +15,12 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        android:id="@+id/username_friend_list_item_message_fragment_recycler"
-        android:textSize="10sp"
-        android:layout_toRightOf="@id/message_fragment_recycler_item_user_image"
-        android:text="username"
-        android:layout_marginLeft="10dp"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/message_fragment_recycler_item_user_image"
+            android:id="@+id/username_friend_list_item_message_fragment_recycler"
+            android:text="username"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/message_fragment_recycler_item_user_image"
+            android:layout_marginTop="2dp"
+            android:textStyle="bold"
 />
 
     <ImageView
@@ -30,13 +30,21 @@
             android:visibility="gone"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="-15dp"
-
             android:layout_toEndOf="@id/message_fragment_recycler_item_user_image"
             android:layout_toRightOf="@id/message_fragment_recycler_item_user_image"
             android:layout_below="@id/username_friend_list_item_message_fragment_recycler"
             android:background="@drawable/isavailalbleshape"/>
 
-
+    <TextView
+            android:id="@+id/last_message_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/username_friend_list_item_message_fragment_recycler"
+            android:layout_toEndOf="@id/message_fragment_recycler_item_user_image"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp"
+            />
 
 
 </RelativeLayout>

@@ -6,13 +6,21 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 
 abstract class FirestoreDB(private val collectionName: String){
 
     protected val db = Firebase.firestore
     protected val dbCollection = db.collection(collectionName)
-    private lateinit var registration: ListenerRegistration
+    protected lateinit var registration: ListenerRegistration
+
+    init {
+        val settings = firestoreSettings {
+            isPersistenceEnabled = true
+        }
+        db.firestoreSettings = settings
+    }
 
     open fun insert(item: Any) {
         db.collection(collectionName).add(item)

@@ -17,7 +17,7 @@ import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.syroniko.casseteapp.CassetteCaseFragment
-import com.syroniko.casseteapp.ChatAndMessages.ChatActivity.FRIEND_ID
+import com.syroniko.casseteapp.ChatAndMessages.FRIEND_ID
 import com.syroniko.casseteapp.ChatAndMessages.MessagesFragment
 import com.syroniko.casseteapp.CreateCassetteFragment
 import com.syroniko.casseteapp.LogInSignUp.WelcomingActivity
@@ -25,8 +25,10 @@ import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyArtist
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyResult
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
+import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.room.AppDatabase
 import com.syroniko.casseteapp.room.LocalCassette
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
@@ -44,6 +46,7 @@ const val redirectUri = "https://duckduckgo.com"
 
 const val UID_MAIN_EXTRA = "uid main extra"
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val clientId = "846a7d470725449994155b664cb7959b"
@@ -73,10 +76,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val aha = applicationContext
+        Log.d(MainActivity::class.simpleName, Auth.getUid().toString())
 
         selectedFragment = CassetteCaseFragment()
-
+        updateCassettesInView(cassettes)
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_fragment_container, selectedFragment!!).commit()
 
