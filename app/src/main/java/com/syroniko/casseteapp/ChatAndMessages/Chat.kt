@@ -6,3 +6,4 @@ class Chat(
     var lastMessageSent: Long = 0,
     var id: String = ""
 )
+

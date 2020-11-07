@@ -48,6 +48,7 @@ class SpotifyResultViewModel @Inject constructor(
         } else {
             "https://api.spotify.com/v1/search?q=$searchKeyWord*&type=track"
         }
+
     }
 
     private fun prepareArtistQuery(searchQuery: String): String{
