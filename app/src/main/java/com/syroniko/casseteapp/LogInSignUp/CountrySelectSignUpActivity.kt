@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +17,15 @@ import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.AuthCallback
 import com.syroniko.casseteapp.firebase.UserDB
 import com.ybs.countrypicker.CountryPicker
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CountrySelectSignUpActivity : AppCompatActivity() {
 
     //todo add auth functionality to a view model
-    private lateinit var auth: Auth
-    private lateinit var userDb: UserDB
+    private val auth = Auth()
+    @Inject lateinit var userDb: UserDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +55,7 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
 
         finishTextView.setOnClickListener {
             if (user.country != null) {
-                auth.signInWithEmail(
+                auth.signUpWithEmail(
                     user.email,
                     password,
                     object : AuthCallback {
@@ -59,7 +63,9 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
                             toast("Sign Up Completed.")
 
                             if (uid != null) {
+                                Log.d(CountrySelectSignUpActivity::class.java.simpleName, "123")
                                 user.uid = uid
+                                Log.d(CountrySelectSignUpActivity::class.java.simpleName, uid)
                                 userDb.insert(user)
 ////                                TODO("What is that? :O")
 //                                val resultIntent = Intent()
@@ -67,6 +73,7 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
 //                                finish()
                                 MainActivity.startActivity(this@CountrySelectSignUpActivity, uid)
                             }
+
                         }
 
                         override fun onFailure() {

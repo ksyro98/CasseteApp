@@ -1,5 +1,8 @@
 package com.syroniko.casseteapp.ChatAndMessages
 
+import android.R.attr.label
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.R
@@ -15,7 +19,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
+
 
 class ChatAdapter @Inject constructor(
     @ApplicationContext val context: Context
@@ -53,6 +57,14 @@ class ChatAdapter @Inject constructor(
         }
         else{
             "Sent"
+        }
+
+        holder.showMessage.setOnLongClickListener {
+            val clipboard: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
+            clipboard?.setPrimaryClip(clip)
+            context.toast("Message copied to clipboard.")
+            return@setOnLongClickListener true
         }
 
 

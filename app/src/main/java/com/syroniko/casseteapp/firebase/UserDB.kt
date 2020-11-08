@@ -3,17 +3,22 @@ package com.syroniko.casseteapp.firebase
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
+import com.syroniko.casseteapp.LogInSignUp.CountrySelectSignUpActivity
 import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.TrackSearchFlow.SendTrackActivity
 import com.syroniko.casseteapp.firebasefirebase.USERS
+import javax.inject.Inject
 
-class UserDB: FirestoreDB(USERS) {
+class UserDB @Inject constructor(): FirestoreDB(USERS) {
 
     override fun insert(item: Any) {
         if (item !is User || item.uid == null){
             return
         }
         dbCollection.document(item.uid!!).set(item)
+            .addOnSuccessListener {
+                Log.d(CountrySelectSignUpActivity::class.java.simpleName, "success")
+            }
     }
 
     fun getPossibleReceivers(

@@ -45,20 +45,20 @@ class CassetteTrackFragment : Fragment(), CassetteData {
 
 
     override fun getInitialCassetteData(cassetteId: String?, senderId: String?) {
-        viewModel.cassetteId = cassetteId.toString()
-        viewModel.senderId = senderId.toString()
+//        viewModel.cassetteId = cassetteId.toString()
+//        viewModel.senderId = senderId.toString()
     }
 
     override fun getCassetteDataFromDb(cassetteComment: String, trackName: String, trackId: String, trackPreviewUrl: String) {
-        viewModel.trackId = trackId
-        viewModel.trackPreviewUrl = trackPreviewUrl
+//        viewModel.trackId = trackId
+//        viewModel.trackPreviewUrl = trackPreviewUrl
 
-        if (spotifyPlayButton != null) {
-            spotifyPlayButton!!.isEnabled = true
-        }
-        else{
-            viewModel.shouldEnableButton = true
-        }
+//        if (spotifyPlayButton != null) {
+//            spotifyPlayButton!!.isEnabled = true
+//        }
+//        else{
+//            viewModel.shouldEnableButton = true
+//        }
     }
 
 }

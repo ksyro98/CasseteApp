@@ -24,7 +24,7 @@ class FriendChatListAdapter @Inject constructor(
         set(value) {
             field = value
             field.sortByDescending { displayedChat ->
-                displayedChat.timestamp.toLong()
+                displayedChat.timestamp
             }
             notifyDataSetChanged()
         }
@@ -37,7 +37,7 @@ class FriendChatListAdapter @Inject constructor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.userName.text = displayedChats[position].userName
 
-        val lastMessageText = displayedChats[position].lastMessageText
+        val lastMessageText = displayedChats[position].lastMessageText.replace("\n", " ")
 
         holder.lastMessageTextView.text = if (lastMessageText.length > 20){
             (lastMessageText.subSequence(0, 20).toString()) + "..."

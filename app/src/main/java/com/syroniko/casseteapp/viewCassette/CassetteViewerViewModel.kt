@@ -132,7 +132,7 @@ class CassetteViewerViewModel @Inject constructor(
 //    private var senderId = ""
 //    private var trackId: String? = null
 //    private var trackPreviewUrl: String? = null
-    var shouldEnableButton = false
+    var shouldEnableButton = true   //false (changed to true)
 
     /**
     //FragmentTrackFragmentFunctions

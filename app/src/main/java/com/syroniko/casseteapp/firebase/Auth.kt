@@ -5,6 +5,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.ktx.Firebase
+import javax.inject.Inject
 
 
 class Auth(private val authCallback: AuthCallback = EmptyAuthCallback()){

@@ -66,13 +66,13 @@ class CassetteViewerActivity : AppCompatActivity() {
                 }
             }
 
-            (fragment as CassetteData).getInitialCassetteData(viewModel.cassetteId, viewModel.senderId)
-            (fragment as CassetteData).getCassetteDataFromDb(
-                viewModel.cassetteComment,
-                viewModel.trackName,
-                viewModel.trackId,
-                viewModel.trackPreviewUrl
-            )
+//            (fragment as CassetteData).getInitialCassetteData(viewModel.cassetteId, viewModel.senderId)
+//            (fragment as CassetteData).getCassetteDataFromDb(
+//                viewModel.cassetteComment,
+//                viewModel.trackName,
+//                viewModel.trackId,
+//                viewModel.trackPreviewUrl
+//            )
 
             return fragment
         }
