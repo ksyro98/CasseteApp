@@ -38,34 +38,24 @@ class CassetteVideoFragment : Fragment(), CassetteData {
         val youTubeImageView = view.findViewById<ImageView>(R.id.youTubeImageView)
         val youTubeButton = view.findViewById<Button>(R.id.youTubeButton)
 
-       viewModel.getTrackName(){imageUrl->
+       viewModel.getTrackName {imageUrl->
            youTubeImageView.isEnabled = true
            Glide.with(this).load(imageUrl).into(youTubeImageView)
-
        }
 
         youTubeImageView.isEnabled = false
-        youTubeImageView.setOnClickListener {
 
-            viewModel.makeWebIntent()
+        youTubeImageView.setOnClickListener {
+            viewModel.makeWebIntent {
+                startActivity(it)
+            }
         }
 
         youTubeButton.setOnClickListener{
-           viewModel.ytResultsQuery()
+            viewModel.ytResultsQuery()
         }
 
         return view
-    }
-
-
-
-    override fun getInitialCassetteData(cassetteId: String?, senderId: String?) {
-        viewModel.cassetteId = cassetteId.toString()
-        viewModel.senderId = senderId.toString()
-    }
-
-    override fun getCassetteDataFromDb(cassetteComment: String, trackName: String, trackId: String, trackPreviewUrl: String) {
-        viewModel.trackName = trackName
     }
 
 }

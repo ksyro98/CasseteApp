@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View.OnFocusChangeListener
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -17,12 +16,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.MainClasses.MainActivity
-import com.syroniko.casseteapp.MainClasses.UID_MAIN_EXTRA
+import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.MainClasses.toast
-import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.AuthCallback
+import com.syroniko.casseteapp.firebase.UserDB
+import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
 import kotlinx.android.synthetic.main.activity_login.*
 
 const val RC_SIGN_IN = 543
@@ -30,6 +31,7 @@ const val RC_SIGN_IN = 543
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var spotifyToken: String
 
     //add auth functionality to a view model
     private val auth = Auth(object : AuthCallback{
@@ -49,7 +51,9 @@ class LoginActivity : AppCompatActivity() {
         val tx = findViewById<TextView>(R.id.login_to_account_string)
         val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
         tx.typeface = customFont
-        
+
+        spotifyToken = intent.getStringExtra(SPOTIFY_TOKEN_EXTRA_NAME) ?: SPOTIFY_NO_TOKEN
+
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -92,8 +96,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun loginToApp(uid: String?) {
-        MainActivity.startActivity(this, uid)
-        finish()
+        if (uid == null) {
+            toast("There was a problem retrieving your data. Please try again.")
+            return
+        }
+
+        UserDB.getDocumentFromId(uid)
+            .addOnSuccessListener { documentSnapshot ->
+                val user = documentSnapshot.toObject(User::class.java)
+                MainActivity.startActivity(this, uid, user, spotifyToken)
+            }
     }
 
     private fun signInWithGoogle() {
@@ -128,8 +140,11 @@ class LoginActivity : AppCompatActivity() {
 
 
     companion object{
-        fun startActivity(context: Context){
+        private const val SPOTIFY_TOKEN_EXTRA_NAME = "spotify token extra name"
+
+        fun startActivity(context: Context, spotifyToken: String){
             val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra(SPOTIFY_TOKEN_EXTRA_NAME, spotifyToken)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }

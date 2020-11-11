@@ -25,7 +25,6 @@ class SendTrackViewModel @Inject constructor(
     private val queue = Volley.newRequestQueue(application)
     private val uid = Auth.getUid()
     private val restrictedReceivers = arrayListOf(uid)
-    private val userDb = UserDB()
 
 
     fun getGenre(callback: (String?) -> Unit){
@@ -34,7 +33,7 @@ class SendTrackViewModel @Inject constructor(
 
 
     fun sendCassette(comment: String, callback: () -> Unit){
-        userDb.getPossibleReceivers(track.genre!!, restrictedReceivers) { possibleReceivers ->
+        UserDB.getPossibleReceivers(track.genre!!, restrictedReceivers) { possibleReceivers ->
             val cassette = Cassette(
                 uid,
                 track,
@@ -43,8 +42,7 @@ class SendTrackViewModel @Inject constructor(
                 possibleReceivers,
                 restrictedReceivers)
 
-            val cassetteDB = CassetteDB()
-            cassetteDB.insert(cassette)
+            CassetteDB.insert(cassette)
 
             callback()
         }

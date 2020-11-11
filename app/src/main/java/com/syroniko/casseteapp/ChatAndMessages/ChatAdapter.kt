@@ -59,12 +59,23 @@ class ChatAdapter @Inject constructor(
             "Sent"
         }
 
+        holder.showMessage.setOnClickListener {
+            if (holder.timestampTv.visibility == View.INVISIBLE) {
+                holder.timestampTv.visibility = View.VISIBLE
+                holder.messageSeen.visibility = View.VISIBLE
+            }
+            else {
+                holder.timestampTv.visibility = View.INVISIBLE
+                holder.messageSeen.visibility = View.INVISIBLE
+            }
+        }
+
         holder.showMessage.setOnLongClickListener {
             val clipboard: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
             val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
             clipboard?.setPrimaryClip(clip)
             context.toast("Message copied to clipboard.")
-            return@setOnLongClickListener true
+            return@setOnLongClickListener false
         }
 
 
@@ -100,8 +111,7 @@ class ChatAdapter @Inject constructor(
 
     override fun getItemCount() = messages.size
 
-    inner class ViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val showMessage: TextView = itemView.findViewById(R.id.chat_item_textView_bubble)
         val userImage: ImageView = itemView.findViewById(R.id.profile_image_chat_activity)
@@ -109,20 +119,6 @@ class ChatAdapter @Inject constructor(
         val timestampTv: TextView = itemView.findViewById(R.id.timestamptextviewchat)
 //        val messageSeenTv: TextView = itemView.findViewById(R.id.message_read_text_view)
 
-        override fun onClick(v: View) {
-            if (timestampTv.visibility == View.INVISIBLE) {
-                timestampTv.visibility = View.VISIBLE
-                messageSeen.visibility = View.VISIBLE
-            }
-            else {
-                timestampTv.visibility = View.INVISIBLE
-                messageSeen.visibility = View.INVISIBLE
-            }
-        }
-
-        init {
-            itemView.setOnClickListener(this)
-        }
     }
 
     override fun getItemViewType(position: Int): Int {

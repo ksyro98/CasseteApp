@@ -21,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
+import com.syroniko.casseteapp.ChatAndMessages.sendFirstMessage
 import com.syroniko.casseteapp.ChatAndMessages.sendMessage
 import com.syroniko.casseteapp.MainClasses.clientId
 import com.syroniko.casseteapp.MainClasses.longToast
@@ -29,6 +30,7 @@ import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.CassetteDB
+import com.syroniko.casseteapp.firebase.ChatDB
 import com.syroniko.casseteapp.firebase.UserDB
 import kotlinx.android.synthetic.main.fragment_cassette_video.*
 import org.json.JSONArray
@@ -38,23 +40,22 @@ class CassetteViewerViewModel @Inject constructor(
     application: Application,
     @Assisted savedStateHandle: SavedStateHandle
 ): AndroidViewModel(application) {
-    /**FragmentMessageVariables*/
+
+    /**
+     * All Fragments/Activity
+     */
     var trackPreviewUrl = NO_PREVIEW_URL
     lateinit var cassetteId: String
     lateinit var senderId: String
-    lateinit var cassetteComment: String
-    lateinit var trackName: String
     lateinit var trackId: String
-    lateinit var senderName: String
-    private val cassetteDB = CassetteDB()
-    private val userDB = UserDB()
-    private val uid = Auth.getUid()
+    lateinit var cassetteComment: String
 
 
-    /**FragmentMessageFunctions
+    /**
+     * All Fragments/Activity
      */
-    fun getCassette(callback: (String, String, String, String) -> Unit) {
-        cassetteDB.getDocumentFromId(cassetteId)
+    fun getCassette(callback: () -> Unit) {
+        CassetteDB.getDocumentFromId(cassetteId)
             .addOnSuccessListener { document ->
                 cassetteComment = document.data?.get("comment") as String
 
@@ -65,12 +66,24 @@ class CassetteViewerViewModel @Inject constructor(
                     trackPreviewUrl = trackMap["previewUrl"] as String
                 }
 
-                callback(cassetteComment, trackName, trackId, trackPreviewUrl)
+                callback()
             }
     }
 
+
+    /**
+     * CassetteMessageFragment Variables
+     */
+    lateinit var trackName: String
+    lateinit var senderName: String
+    private val uid = Auth.getUid()
+
+
+    /**
+     * CassetteMessageFragment Functions
+     */
     fun getSender(callback: (String) -> Unit) {
-        userDB.getDocumentFromId(senderId)
+        UserDB.getDocumentFromId(senderId)
             .addOnSuccessListener { document ->
                 senderName = document.data?.get("name") as String
                 callback(senderName)
@@ -87,11 +100,11 @@ class CassetteViewerViewModel @Inject constructor(
             Pair("possibleReceivers", FieldValue.arrayRemove(uid)),
             Pair("restrictedReceivers", FieldValue.arrayUnion(uid))
         )
-        cassetteDB.update(cassetteId, updateMap)
+        CassetteDB.update(cassetteId, updateMap)
 
-        cassetteDB.update(cassetteId, hashMapOf(Pair("received", false)))
+        CassetteDB.update(cassetteId, hashMapOf(Pair("received", false)))
 
-        userDB.update(uid, hashMapOf(Pair("cassettes", FieldValue.arrayRemove(cassetteId))))
+        UserDB.update(uid, hashMapOf(Pair("cassettes", FieldValue.arrayRemove(cassetteId))))
     }
 
     fun updateOnReply() {
@@ -100,8 +113,8 @@ class CassetteViewerViewModel @Inject constructor(
             return
         }
 
-        userDB.update(uid, hashMapOf(Pair("friends", FieldValue.arrayUnion(senderId))))
-        userDB.update(uid, hashMapOf(Pair("cassettes", FieldValue.arrayRemove(cassetteId))))
+        UserDB.update(uid, hashMapOf(Pair("friends", FieldValue.arrayUnion(senderId))))
+        UserDB.update(uid, hashMapOf(Pair("cassettes", FieldValue.arrayRemove(cassetteId))))
     }
 
     fun sendReplyMessage() {
@@ -111,33 +124,24 @@ class CassetteViewerViewModel @Inject constructor(
         }
 
         //TODO change that to server time
-        //TODO change the way this (the db) is done in chat
-        sendMessage(
-            getApplication(),
+        sendFirstMessage(
             uid,
             senderId,
-            "Hello, I received your cassette with $trackName and I loved it!",
-            System.currentTimeMillis().toString(),
-            Firebase.firestore
+            "Hello, I received your cassette with $trackName and I loved it!"
         )
     }
 
     /**
-    // FragmentTrackFragmentVariables
+     * CassetteTrackFragment Variables
      */
 
     lateinit var spotifyAppRemote: SpotifyAppRemote
-
-    //    private var cassetteId = ""
-//    private var senderId = ""
-//    private var trackId: String? = null
-//    private var trackPreviewUrl: String? = null
     var shouldEnableButton = true   //false (changed to true)
 
     /**
-    //FragmentTrackFragmentFunctions
+     * CassetteTrackFragment Functions
      */
-    fun connectParams() = ConnectionParams.Builder(clientId)
+    private fun connectParams(): ConnectionParams = ConnectionParams.Builder(clientId)
         .setRedirectUri(redirectUri)
         .showAuthView(true)
         .build()
@@ -180,17 +184,17 @@ class CassetteViewerViewModel @Inject constructor(
             })
     }
 
-    /**FragmentVideoFragmentVariables
+    /**
+     * CassetteVideoFragment Variables
      */
-
     var videoId: String? = null
 
-    /**
-    FragmentVideoFragmentFunctions
-     */
 
+    /**
+     * CassetteVideoFragment Functions
+     */
     fun getTrackName(callback: (String) -> Unit) {
-      //   if(viewModel.trackName != null) {
+//        if(viewModel.trackName != null) {
         getYTData(trackName,callback)
  //   }
 //    else{
@@ -232,30 +236,30 @@ class CassetteViewerViewModel @Inject constructor(
             { error ->
                 Log.e(CassetteViewerActivity::class.java.simpleName, "Something went wrong... :(")
                 Log.e(CassetteViewerActivity::class.java.simpleName, error.toString())
-            })
+            }
+        )
         queue.add(ytRequest)
     }
 
-    fun makeWebIntent() {
-
+    fun makeWebIntent(callback: (Intent) -> Unit) {
         if (videoId != null) {
-            val ytAppIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(ytAppWatchUrl + videoId))
-            val ytWebIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(ytWebWatchUrl + videoId))
+
+            val ytAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytAppWatchUrl + videoId))
+            val ytWebIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytWebWatchUrl + videoId))
+
             try {
-                getApplication<Application>().startActivity(ytAppIntent)
-            } catch (e: ActivityNotFoundException) {
-                getApplication<Application>().startActivity(ytWebIntent)
+                callback(ytAppIntent)
             }
-        } else {
+            catch (e: ActivityNotFoundException) {
+                callback(ytWebIntent)
+            }
+        }
+        else {
             getApplication<Application>().toast("An error occurred while retrieving YouTube data.")
         }
     }
 
     fun ytResultsQuery() {
-
-
         val ytIntent = Intent(Intent.ACTION_SEARCH)
         ytIntent.setPackage("com.google.android.youtube")
         ytIntent.putExtra("query", trackName)

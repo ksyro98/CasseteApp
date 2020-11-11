@@ -8,18 +8,25 @@ import android.widget.TextView                    //todo add cassette to recycle
 import androidx.appcompat.app.AppCompatActivity
 
 import androidx.recyclerview.widget.RecyclerView
-import com.syroniko.casseteapp.MainClasses.cassetteViewerRequestCode
-import com.syroniko.casseteapp.room.LocalCassette
+import com.syroniko.casseteapp.MainClasses.Cassette
+import com.syroniko.casseteapp.MainClasses.CASSETTE_VIEWER_REQUEST_CODE
 import com.syroniko.casseteapp.viewCassette.CassetteViewerActivity
+import dagger.hilt.android.qualifiers.ActivityContext
+import javax.inject.Inject
 
 
 const val cassetteIdExtraName = "Cassette Id Extra Name"
 const val userIdExtraName = "User Id Extra Name"
 
 
-class CassetteAdapter(private val context: Context, private val cassettes: MutableList<LocalCassette>) :
+class CassetteAdapter @Inject constructor(@ActivityContext private val context: Context) :
         RecyclerView.Adapter<CassetteAdapter.CassetteViewHolder>(){
 
+    var cassettes: MutableList<Cassette> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     class CassetteViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
 
@@ -30,15 +37,14 @@ class CassetteAdapter(private val context: Context, private val cassettes: Mutab
     }
 
     override fun onBindViewHolder(holder: CassetteViewHolder, position: Int) {
-        holder.textView.text = cassettes[position].trackName
+        holder.textView.text = cassettes[position].track.trackName
 
         holder.textView.setOnClickListener {
             val intent = Intent(context, CassetteViewerActivity::class.java)
-            intent.putExtra(cassetteIdExtraName, cassettes[position].cassetteId)
+            intent.putExtra(cassetteIdExtraName, cassettes[position].getId())
             intent.putExtra(userIdExtraName, cassettes[position].senderId)
-//            context.startActivity(intent)
 
-            (context as AppCompatActivity).startActivityForResult(intent, cassetteViewerRequestCode)
+            (context as AppCompatActivity).startActivityForResult(intent, CASSETTE_VIEWER_REQUEST_CODE)
         }
     }
 

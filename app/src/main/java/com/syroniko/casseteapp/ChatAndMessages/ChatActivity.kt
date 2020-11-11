@@ -41,8 +41,6 @@ class ChatActivity : AppCompatActivity() {
 
     @Inject lateinit var chatAdapter: ChatAdapter
     private val uid: String? = Auth.getUid()
-    private val chatDB = ChatDB()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,10 +73,10 @@ class ChatActivity : AppCompatActivity() {
 //                chatAdapter.messages = chat.messages
 //            }
 
-        chatDB.listenToMessages(displayedChat.chatId) { document ->
+        ChatDB.listenToMessages(displayedChat.chatId) { document ->
             val chat = document.toObject(Chat::class.java) ?: return@listenToMessages
             chat.messages.map { message -> if(message.senderId != uid) message.read = true }
-            chatDB.update(displayedChat.chatId, hashMapOf(Pair("messages", chat.messages)))
+            ChatDB.update(displayedChat.chatId, hashMapOf(Pair("messages", chat.messages)))
             chatAdapter.messages = chat.messages
             chat_activity_recycler.scrollToPosition(chatAdapter.itemCount - 1)
         }
@@ -89,7 +87,7 @@ class ChatActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            sendMessage(displayedChat.chatId, uid, displayedChat.userId, text)
+            sendMessage(uid, displayedChat.userId, text)
 
             type_message_edit_text_chat_activity.text.clear()
         }
@@ -149,19 +147,7 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
-    private fun sendMessage(chatId: String, uid: String, otherUid: String, text: String){
-        val message = Message(
-            uid,
-            otherUid,
-            text,
-            System.currentTimeMillis(),
-            false,
-            chatId + System.currentTimeMillis().toString()
-        )
 
-        chatDB.update(chatId, hashMapOf(Pair("messages", FieldValue.arrayUnion(message))))
-        chatDB.update(chatId, hashMapOf(Pair("lastMessageSent", message.timestamp)))
-    }
 
     /*private void seenMessage(final String userId){
         colref = db.collection("chats");
@@ -299,7 +285,7 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        chatDB.detachListener()
+        ChatDB.detachListener()
     }
 
     companion object {

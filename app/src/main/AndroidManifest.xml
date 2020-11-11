@@ -24,16 +24,16 @@
         <activity android:name=".TrackSearchFlow.SendTrackActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyAlbumResultActivity" />
         <activity android:name=".LogInSignUp.CountrySelectSignUpActivity" />
-        <activity android:name=".StartingActivities.SplashActivity" />
-        <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity" />
-        <activity android:name=".TrackSearchFlow.SpotifyResultActivity" />
-        <activity android:name=".MainClasses.MainActivity">
+        <activity android:name=".StartingActivities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity" />
+        <activity android:name=".TrackSearchFlow.SpotifyResultActivity" />
+        <activity android:name=".MainClasses.MainActivity"/>
         <activity android:name=".LogInSignUp.PickGenresSignUpActivity" />
         <activity android:name=".LogInSignUp.SignUpActivity" />
         <activity android:name=".LogInSignUp.ResetPasswordActivity" />

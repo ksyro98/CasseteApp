@@ -1,42 +1,6 @@
 package com.syroniko.casseteapp.MainClasses;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.spotify.sdk.android.authentication.AuthenticationClient;
-import com.spotify.sdk.android.authentication.AuthenticationRequest;
-import com.spotify.sdk.android.authentication.AuthenticationResponse;
-import com.syroniko.casseteapp.CassetteAdapter;
-import com.syroniko.casseteapp.CassetteCaseFragment;
-import com.syroniko.casseteapp.CreateCassetteFragment;
-import com.syroniko.casseteapp.ChatAndMessages.MessagesFragment;
-import com.syroniko.casseteapp.LogInSignUp.WelcomingActivity;
-import com.syroniko.casseteapp.R;
-import com.syroniko.casseteapp.SpotifyClasses.SpotifyArtist;
-import com.syroniko.casseteapp.SpotifyClasses.SpotifyResult;
-import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack;
-import com.syroniko.casseteapp.room.LocalCassette;
-
-import java.util.ArrayList;
-
-import static com.spotify.sdk.android.authentication.AuthenticationResponse.Type.*;
-import static com.syroniko.casseteapp.MainClasses.MainActivityKt.clientId;
-import static com.syroniko.casseteapp.MainClasses.MainActivityKt.longToast;
-import static com.syroniko.casseteapp.MainClasses.MainActivityKt.redirectUri;
-import static com.syroniko.casseteapp.MainClasses.MainActivityKt.spotifyRequestCode;
-import static com.syroniko.casseteapp.MainClasses.MainActivityKt.thirtyMins;
 
 public class CoreActivity extends AppCompatActivity {
 //    private final String TAG = CoreActivity.class.getSimpleName();

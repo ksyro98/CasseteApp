@@ -37,11 +37,7 @@ class CassetteViewerActivity : AppCompatActivity() {
         viewModel.cassetteId = intent.getStringExtra(cassetteIdExtraName) ?: return
         viewModel.senderId = intent.getStringExtra(userIdExtraName) ?: return
 
-        viewModel.getCassette { cassetteComment, trackName, trackId, trackPreviewUrl ->
-            if (fragment is CassetteData){
-                (fragment as CassetteData).getCassetteDataFromDb(cassetteComment, trackName, trackId, trackPreviewUrl)
-            }
-
+        viewModel.getCassette {
             val pagerAdapter = ScreenSlidePagerAdapter(this)
             cassetteViewPager.adapter = pagerAdapter
         }
@@ -65,14 +61,6 @@ class CassetteViewerActivity : AppCompatActivity() {
                     CassetteVideoFragment()
                 }
             }
-
-//            (fragment as CassetteData).getInitialCassetteData(viewModel.cassetteId, viewModel.senderId)
-//            (fragment as CassetteData).getCassetteDataFromDb(
-//                viewModel.cassetteComment,
-//                viewModel.trackName,
-//                viewModel.trackId,
-//                viewModel.trackPreviewUrl
-//            )
 
             return fragment
         }

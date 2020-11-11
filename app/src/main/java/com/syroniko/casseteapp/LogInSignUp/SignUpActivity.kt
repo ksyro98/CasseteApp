@@ -6,12 +6,11 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.R
-import java.util.*
+import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -28,6 +27,8 @@ class SignUpActivity : AppCompatActivity() {
 
         val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
         tx.typeface = customFont
+
+        val spotifyToken = intent.getStringExtra(SPOTIFY_TOKEN_EXTRA_NAME) ?: SPOTIFY_NO_TOKEN
 
         next.setOnClickListener {
             val pass = password.text.toString()
@@ -49,15 +50,18 @@ class SignUpActivity : AppCompatActivity() {
                     uid = null
                 )
 
-                PickGenresSignUpActivity.startActivity(this, userInstance, pass)
+                PickGenresSignUpActivity.startActivity(this, userInstance, pass, spotifyToken)
                 finish()
             }
         }
     }
 
     companion object {
-        fun startActivity(context: Context){
+        private const val SPOTIFY_TOKEN_EXTRA_NAME = "spotify token extra name"
+
+        fun startActivity(context: Context, spotifyToken: String){
             val intent = Intent(context, SignUpActivity::class.java)
+            intent.putExtra(SPOTIFY_TOKEN_EXTRA_NAME, spotifyToken)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }

@@ -9,7 +9,7 @@ import com.syroniko.casseteapp.TrackSearchFlow.SendTrackActivity
 import com.syroniko.casseteapp.firebasefirebase.USERS
 import javax.inject.Inject
 
-class UserDB @Inject constructor(): FirestoreDB(USERS) {
+object UserDB: FirestoreDB(USERS) {
 
     override fun insert(item: Any) {
         if (item !is User || item.uid == null){

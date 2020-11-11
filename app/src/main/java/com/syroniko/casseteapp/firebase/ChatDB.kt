@@ -2,19 +2,13 @@ package com.syroniko.casseteapp.firebase
 
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.ktx.firestoreSettings
-import com.syroniko.casseteapp.ChatAndMessages.Message
+import com.syroniko.casseteapp.ChatAndMessages.Chat
+import com.syroniko.casseteapp.ChatAndMessages.getChatIdFromUids
 import com.syroniko.casseteapp.firebasefirebase.CHATS
 
-class ChatDB: FirestoreDB(CHATS) {
+object ChatDB: FirestoreDB(CHATS) {
 
-//    init {
-//        val settings = firestoreSettings {
-//            isPersistenceEnabled = true
-//        }
-//        db.firestoreSettings = settings
-//    }
+    fun insertWithId(chat: Chat) = dbCollection.document(chat.id).set(chat)
 
     fun getChatsThatIncludesUser(uid: String) = dbCollection.whereArrayContains("uids", uid).get()
 

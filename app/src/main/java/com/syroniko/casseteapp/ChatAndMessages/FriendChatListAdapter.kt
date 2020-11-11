@@ -77,11 +77,10 @@ class FriendChatListAdapter @Inject constructor(
                 return@setOnLongClickListener true
             }
 
-            val chatDB = ChatDB()
-            chatDB.getDocumentFromId(displayedChats[position].chatId).addOnSuccessListener { document ->
+            ChatDB.getDocumentFromId(displayedChats[position].chatId).addOnSuccessListener { document ->
                 val chat = document.toObject(Chat::class.java) ?: return@addOnSuccessListener
                 chat.messages[chat.messages.lastIndex].read = false
-                chatDB.update(displayedChats[position].chatId, hashMapOf(Pair("messages", chat.messages)))
+                ChatDB.update(displayedChats[position].chatId, hashMapOf(Pair("messages", chat.messages)))
             }
 
             style = Typeface.BOLD

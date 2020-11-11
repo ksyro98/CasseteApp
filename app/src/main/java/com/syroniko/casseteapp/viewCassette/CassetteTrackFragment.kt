@@ -33,32 +33,12 @@ class CassetteTrackFragment : Fragment(), CassetteData {
         spotifyPlayButton = view.findViewById(R.id.spotifyPlayButton)
         spotifyPlayButton!!.isEnabled = viewModel.shouldEnableButton
 
-
-        val connectionParams = viewModel.connectParams()
         spotifyPlayButton!!.setOnClickListener {
             viewModel.spotifyConnect()
 
         }
 
         return view
-    }
-
-
-    override fun getInitialCassetteData(cassetteId: String?, senderId: String?) {
-//        viewModel.cassetteId = cassetteId.toString()
-//        viewModel.senderId = senderId.toString()
-    }
-
-    override fun getCassetteDataFromDb(cassetteComment: String, trackName: String, trackId: String, trackPreviewUrl: String) {
-//        viewModel.trackId = trackId
-//        viewModel.trackPreviewUrl = trackPreviewUrl
-
-//        if (spotifyPlayButton != null) {
-//            spotifyPlayButton!!.isEnabled = true
-//        }
-//        else{
-//            viewModel.shouldEnableButton = true
-//        }
     }
 
 }

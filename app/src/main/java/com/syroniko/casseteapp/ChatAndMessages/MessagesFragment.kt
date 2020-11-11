@@ -29,9 +29,6 @@ class MessagesFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchEditText: EditText
 
-    private val chatDB = ChatDB()
-    private val userDB = UserDB()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,7 +80,7 @@ class MessagesFragment : Fragment() {
             return
         }
 
-        chatDB.getChatsThatIncludesUser(uid)
+        ChatDB.getChatsThatIncludesUser(uid)
             .addOnSuccessListener { documentSnapshot ->
                 val chats = arrayListOf<Chat>()
                 documentSnapshot.map { document ->
@@ -100,7 +97,7 @@ class MessagesFragment : Fragment() {
 
                     val otherUid = getTheOtherUid(chat.uids, uid) ?: return@addOnSuccessListener
 
-                    userDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
+                    UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
                         val otherUser = document.toObject(User::class.java)
                         displayedChats.add(DisplayedChat(
                             otherUser?.uid ?: "",
