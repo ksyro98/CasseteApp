@@ -13,14 +13,13 @@ import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.firebase.ChatDB
 import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.android.synthetic.main.activity_chat.*
 import javax.inject.Inject
 
 class FriendChatListAdapter @Inject constructor(
     @ActivityContext private val context: Context
 ) : RecyclerView.Adapter<FriendChatListAdapter.ViewHolder>() {
 
-    var displayedChats: ArrayList<DisplayedChat> = arrayListOf()
+    var displayedChats: MutableList<DisplayedChat> = mutableListOf()
         set(value) {
             field = value
             field.sortByDescending { displayedChat ->
