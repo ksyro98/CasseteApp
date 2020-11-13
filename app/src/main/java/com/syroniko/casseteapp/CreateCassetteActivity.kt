@@ -1,5 +1,6 @@
 package com.syroniko.casseteapp
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -21,5 +22,12 @@ class CreateCassetteActivity : AppCompatActivity() {
         val tx = findViewById<TextView>(R.id.create_cassette_headline)
         val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
         tx.typeface = customFont
+    }
+
+    companion object {
+        fun startActivity(context: Context){
+            val i = Intent(context, CreateCassetteActivity::class.java)
+            context.startActivity(i)
+        }
     }
 }

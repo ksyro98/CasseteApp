@@ -19,8 +19,10 @@ fun sendMessage(senderUid: String, receiverUid: String, text: String){
         chatId + System.currentTimeMillis().toString()
     )
 
-    ChatDB.update(chatId, hashMapOf(Pair("messages", FieldValue.arrayUnion(message))))
-    ChatDB.update(chatId, hashMapOf(Pair("lastMessageSent", message.timestamp)))
+    ChatDB.update(chatId, hashMapOf(
+        Pair("messages", FieldValue.arrayUnion(message)),
+        Pair("lastMessageSent", message.timestamp))
+    )
 }
 
 fun sendFirstMessage(senderUid: String, receiverUid: String, text: String){
@@ -44,8 +46,10 @@ fun sendFirstMessage(senderUid: String, receiverUid: String, text: String){
     )
 
     ChatDB.insertWithId(chat)
-    UserDB.update(senderUid, hashMapOf(Pair("friends", FieldValue.arrayUnion(receiverUid))))
-    UserDB.update(receiverUid, hashMapOf(Pair("friends", FieldValue.arrayUnion(senderUid))))
+    UserDB.update(senderUid, hashMapOf(
+        Pair("friends", FieldValue.arrayUnion(receiverUid)),
+        Pair("friends", FieldValue.arrayUnion(senderUid))
+    ))
 }
 
 

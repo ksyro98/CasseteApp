@@ -9,14 +9,19 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.syroniko.casseteapp.CassetteCaseFragment
+import com.syroniko.casseteapp.ChatAndMessages.MessagesFragment
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.CreateCassetteActivity
+import com.syroniko.casseteapp.cassetteIdExtraName
+import com.syroniko.casseteapp.viewCassette.CASSETTE_VIEWER_REQUEST_CODE
+import com.syroniko.casseteapp.viewCassette.RESULT_FORWARD
+import com.syroniko.casseteapp.viewCassette.RESULT_RESPONSE
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 const val spotifyQueryExtraName = "Spotify Query Extra Name"
 const val TOKEN_EXTRA_NAME = "Token Extra Name"
-const val CASSETTE_VIEWER_REQUEST_CODE = 314
 
 const val clientId = "846a7d470725449994155b664cb7959b"
 const val redirectUri = "https://duckduckgo.com"
@@ -37,10 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         val fab :View=findViewById(R.id.mainFab)
         fab.setOnClickListener{
-            val i = Intent(this, CreateCassetteActivity::class.java)
-            startActivity(i)
-
-
+            CreateCassetteActivity.startActivity(this)
         }
 
         if(intent.hasExtra(USER_MAIN_EXTRA) && intent.getParcelableExtra<User>(USER_MAIN_EXTRA) != null){
@@ -54,25 +56,30 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.main_fragment_container, selectedFragment).commit()
 
-//        bottom_navigation_bar.setOnNavigationItemSelectedListener { item ->
-//            when (item.itemId) {
-//                R.id.bot_nav_cassette_case -> selectedFragment = CassetteCaseFragment()
-//                R.id.bot_nav_messages -> selectedFragment = MessagesFragment()
-//                R.id.bot_nav_new_cassette -> selectedFragment = CreateCassetteFragment()
-//            }
-//
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.main_fragment_container, selectedFragment).commit()
-//
-//            true
-//        }
+        chatBottomNavigationIcon.setOnClickListener {
+            selectedFragment = MessagesFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_fragment_container, selectedFragment).commit()
+        }
 
+        viewModel.startListeningToChats()
         viewModel.setUserOnline()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.stopListeningToChats()
         viewModel.setUserOffline()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CASSETTE_VIEWER_REQUEST_CODE && data != null){
+            if (resultCode == RESULT_RESPONSE || resultCode == RESULT_FORWARD){
+                val cassetteId = data.getStringExtra(cassetteIdExtraName) ?: return
+                viewModel.removeCassette(cassetteId)
+            }
+        }
     }
 
     companion object{
