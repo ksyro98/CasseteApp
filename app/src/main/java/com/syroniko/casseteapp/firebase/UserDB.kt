@@ -9,6 +9,9 @@ import com.syroniko.casseteapp.TrackSearchFlow.SendTrackActivity
 import com.syroniko.casseteapp.firebasefirebase.USERS
 import javax.inject.Inject
 
+const val STATUS_ONLINE = "online"
+const val STATUS_OFFLINE = "offline"
+
 object UserDB: FirestoreDB(USERS) {
 
     override fun insert(item: Any) {

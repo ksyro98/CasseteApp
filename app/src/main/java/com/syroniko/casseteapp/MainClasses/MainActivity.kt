@@ -67,6 +67,12 @@ class MainActivity : AppCompatActivity() {
 //            true
 //        }
 
+        viewModel.setUserOnline()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.setUserOffline()
     }
 
     companion object{

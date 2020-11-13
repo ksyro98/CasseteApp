@@ -25,7 +25,7 @@ class ChatAdapter @Inject constructor(
     @ApplicationContext val context: Context
 ) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
 
-    var messages: ArrayList<Message> = arrayListOf()
+    var messages: MutableList<Message> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()

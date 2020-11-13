@@ -7,9 +7,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.google.firebase.firestore.FieldValue
-import com.syroniko.casseteapp.firebase.Auth
-import com.syroniko.casseteapp.firebase.CassetteDB
-import com.syroniko.casseteapp.firebase.UserDB
+import com.syroniko.casseteapp.ChatAndMessages.Chat
+import com.syroniko.casseteapp.ChatAndMessages.DisplayedChat
+import com.syroniko.casseteapp.ChatAndMessages.getTheOtherUid
+import com.syroniko.casseteapp.firebase.*
+import com.syroniko.casseteapp.utils.addAndUpdate
 import javax.inject.Inject
 
 private const val THIRTY_MINS = 1800000
@@ -24,6 +26,9 @@ class MainViewModel @Inject constructor(
     val cassettes: MutableLiveData<MutableList<Cassette>> by lazy {
         MutableLiveData<MutableList<Cassette>>()
     }
+    val chats: MutableLiveData<MutableList<DisplayedChat>> by lazy {
+        MutableLiveData<MutableList<DisplayedChat>>()
+    }
     var user: User = User()
         set(value) {
             field = value
@@ -34,8 +39,25 @@ class MainViewModel @Inject constructor(
 
     init {
         retrieveCassettes()
+        retrieveChats()
     }
 
+
+    /**
+     * MainActivity Functions
+     */
+    fun setUserOnline(){
+        UserDB.update(uid, hashMapOf(Pair("status", STATUS_ONLINE)))
+    }
+
+    fun setUserOffline(){
+        UserDB.update(uid, hashMapOf(Pair("status", STATUS_OFFLINE)))
+    }
+
+
+    /**
+     * CassetteCaseFragment Functions
+     */
     private fun retrieveCassettes(){
         cassettes.value = mutableListOf()
 
@@ -84,10 +106,46 @@ class MainViewModel @Inject constructor(
             }
     }
 
-}
 
-fun MutableLiveData<MutableList<Cassette>>.addAndUpdate(item: Cassette){
-    val tempValue = this.value
-    tempValue?.add(item)
-    this.value = tempValue
+    /**
+     * MessagesFragment functions
+     */
+    private fun retrieveChats(){
+        chats.value = mutableListOf()
+
+        ChatDB.getChatsThatIncludesUser(uid)
+            .addOnSuccessListener { documentSnapshot ->
+                val chatsList = mutableListOf<Chat>()
+                documentSnapshot.map { document ->
+                    chatsList.add(document.toObject(Chat::class.java))
+                }
+
+                chatsList.map{ chat ->
+                    val timestamp = chat.lastMessageSent
+                    val lastMessageText = chat.messages.last().text
+                    val lastMessageRead = chat.messages.last().read
+                    val lastMessageSentByMe = chat.messages.last().senderId == uid
+                    val chatId = chat.id
+                    val otherUid = getTheOtherUid(chat.uids, uid) ?: return@addOnSuccessListener
+
+                    UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
+                        val otherUser = document.toObject(User::class.java)
+                        val displayedChat = DisplayedChat(
+                            otherUser?.uid ?: "",
+                            otherUser?.image ?: "",
+                            otherUser?.name ?: "",
+                            otherUser?.status ?: "",
+                            lastMessageText,
+                            lastMessageRead,
+                            lastMessageSentByMe,
+                            timestamp,
+                            chatId
+                        )
+
+                        chats.addAndUpdate(displayedChat)
+                    }
+                }
+            }
+    }
+
 }
