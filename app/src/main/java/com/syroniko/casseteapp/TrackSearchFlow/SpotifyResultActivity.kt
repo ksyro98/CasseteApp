@@ -3,6 +3,7 @@ package com.syroniko.casseteapp.TrackSearchFlow
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ class SpotifyResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spotify_result)
+        Log.v("ZAZAZAZA",viewModel.token)
 
         viewModel.searchQuery = intent.getStringExtra(spotifyQueryExtraName) ?: return
         viewModel.token = intent.getStringExtra(TOKEN_EXTRA_NAME) ?: return

@@ -16,7 +16,9 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".AboutActivity"/>
+        <activity android:name=".SearchSongActivity"></activity>
+        <activity android:name=".CreateCassetteActivity" />
+        <activity android:name=".AboutActivity" />
         <activity android:name=".MainClasses.ProfileActivity" />
         <activity android:name=".viewCassette.CassetteViewerActivity" />
         <activity android:name=".ChatAndMessages.ChatActivity" />
@@ -33,7 +35,7 @@
         </activity>
         <activity android:name=".TrackSearchFlow.SpotifyArtistResultActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyResultActivity" />
-        <activity android:name=".MainClasses.MainActivity"/>
+        <activity android:name=".MainClasses.MainActivity" />
         <activity android:name=".LogInSignUp.PickGenresSignUpActivity" />
         <activity android:name=".LogInSignUp.SignUpActivity" />
         <activity android:name=".LogInSignUp.ResetPasswordActivity" />

@@ -3,39 +3,15 @@ package com.syroniko.casseteapp.MainClasses
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.spotify.sdk.android.authentication.AuthenticationClient
-import com.spotify.sdk.android.authentication.AuthenticationRequest
-import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.syroniko.casseteapp.CassetteCaseFragment
-import com.syroniko.casseteapp.ChatAndMessages.FRIEND_ID
-import com.syroniko.casseteapp.ChatAndMessages.MessagesFragment
-import com.syroniko.casseteapp.CreateCassetteFragment
-import com.syroniko.casseteapp.LogInSignUp.WelcomingActivity
 import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.SpotifyClasses.SpotifyArtist
-import com.syroniko.casseteapp.SpotifyClasses.SpotifyResult
-import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
-import com.syroniko.casseteapp.firebase.Auth
-import com.syroniko.casseteapp.firebase.CassetteDB
-import com.syroniko.casseteapp.firebase.UserDB
-import com.syroniko.casseteapp.room.AppDatabase
-import com.syroniko.casseteapp.room.LocalCassette
+import com.syroniko.casseteapp.CreateCassetteActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.launch
-import kotlin.collections.ArrayList
 
 
 const val spotifyQueryExtraName = "Spotify Query Extra Name"
@@ -59,6 +35,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val fab :View=findViewById(R.id.mainFab)
+        fab.setOnClickListener{
+            val i = Intent(this, CreateCassetteActivity::class.java)
+            startActivity(i)
+
+
+        }
+
         if(intent.hasExtra(USER_MAIN_EXTRA) && intent.getParcelableExtra<User>(USER_MAIN_EXTRA) != null){
             viewModel.user = intent.getParcelableExtra(USER_MAIN_EXTRA)!!
         }
@@ -70,18 +54,18 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .add(R.id.main_fragment_container, selectedFragment).commit()
 
-        bottom_navigation_bar.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.bot_nav_cassette_case -> selectedFragment = CassetteCaseFragment()
-                R.id.bot_nav_messages -> selectedFragment = MessagesFragment()
-                R.id.bot_nav_new_cassette -> selectedFragment = CreateCassetteFragment()
-            }
-
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, selectedFragment).commit()
-
-            true
-        }
+//        bottom_navigation_bar.setOnNavigationItemSelectedListener { item ->
+//            when (item.itemId) {
+//                R.id.bot_nav_cassette_case -> selectedFragment = CassetteCaseFragment()
+//                R.id.bot_nav_messages -> selectedFragment = MessagesFragment()
+//                R.id.bot_nav_new_cassette -> selectedFragment = CreateCassetteFragment()
+//            }
+//
+//            supportFragmentManager.beginTransaction()
+//                .replace(R.id.main_fragment_container, selectedFragment).commit()
+//
+//            true
+//        }
 
     }
 

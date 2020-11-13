@@ -18,15 +18,63 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <ImageView
             android:id="@+id/bottom_navigation_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:background="?android:attr/windowBackground"
+            android:background="@drawable/ic_bottombar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/bottom_navigation" />
+
+
+            />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/mainFab"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="40dp"
+            android:foregroundGravity="center"
+            android:scaleType="centerCrop"
+            app:fabCustomSize="63dp"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_navigation_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/main_fragment_container"
+            app:layout_constraintVertical_bias="1.0"
+            app:maxImageSize="56dp"
+            app:srcCompat="@drawable/ic_boxplussignnavigation" />
+
+    <ImageView
+            android:id="@+id/ChatBottomNavigationIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/ic_chatbubbles"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/bottom_navigation_bar"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/bottom_navigation_bar"
+            app:layout_constraintTop_toBottomOf="@+id/main_fragment_container"
+            app:layout_constraintVertical_bias="1.0"
+            tools:srcCompat="@drawable/ic_chatbubbles" />
+
+    <ImageView
+            android:id="@+id/ProfileBottomNavigationIcon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/ic_profileicon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_fragment_container"
+            app:layout_constraintVertical_bias="1.0"
+            tools:srcCompat="@drawable/ic_profileicon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
