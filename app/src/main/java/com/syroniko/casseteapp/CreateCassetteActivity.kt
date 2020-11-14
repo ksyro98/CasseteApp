@@ -4,8 +4,10 @@ import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
+import com.syroniko.casseteapp.MainClasses.TOKEN_MAIN_EXTRA
 import com.syroniko.casseteapp.R
 
 class CreateCassetteActivity : AppCompatActivity() {
@@ -13,9 +15,13 @@ class CreateCassetteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_cassette)
 
+        var token =intent.getStringExtra(TOKEN_MAIN_EXTRA)
+        Log.v("zapowa",token!!)
+
         val searchSongButton: View =findViewById(R.id.pick_your_song_button_create_cassette)
         searchSongButton.setOnClickListener{
             val i = Intent(this, SearchSongActivity::class.java)
+            i.putExtra(TOKEN_MAIN_EXTRA, token)
             startActivity(i)
         }
         val tx = findViewById<TextView>(R.id.create_cassette_headline)

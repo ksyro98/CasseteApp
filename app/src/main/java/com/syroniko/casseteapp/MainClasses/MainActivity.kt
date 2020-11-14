@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         val fab :View=findViewById(R.id.mainFab)
         fab.setOnClickListener{
             val i = Intent(this, CreateCassetteActivity::class.java)
+            i.putExtra(TOKEN_MAIN_EXTRA, viewModel.token)
             startActivity(i)
 
 
