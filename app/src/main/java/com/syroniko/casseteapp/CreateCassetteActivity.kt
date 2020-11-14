@@ -31,8 +31,9 @@ class CreateCassetteActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context){
+        fun startActivity(context: Context, token: String){
             val i = Intent(context, CreateCassetteActivity::class.java)
+            i.putExtra(TOKEN_MAIN_EXTRA, token)
             context.startActivity(i)
         }
     }

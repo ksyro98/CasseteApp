@@ -9,15 +9,17 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import com.syroniko.casseteapp.MainClasses.MainViewModel
+import com.syroniko.casseteapp.MainClasses.TOKEN_MAIN_EXTRA
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.TrackSearchFlow.SpotifyResultActivity
 
 class SearchSongActivity : AppCompatActivity() {
-    private val viewModel by viewModels<MainViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_song)
+       val token =intent.getStringExtra(TOKEN_MAIN_EXTRA)
 
 
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
@@ -25,7 +27,7 @@ class SearchSongActivity : AppCompatActivity() {
 
                 resultsButton.setOnClickListener {
             val searchQuery = searchEditText.text.toString()
-            SpotifyResultActivity.startActivity(this, searchQuery, viewModel.token)
+            SpotifyResultActivity.startActivity(this, searchQuery, token!!)
 
         }
     }

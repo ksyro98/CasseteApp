@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         val fab :View=findViewById(R.id.mainFab)
         fab.setOnClickListener{
-            CreateCassetteActivity.startActivity(this)
+            CreateCassetteActivity.startActivity(this,viewModel.token)
         }
 
         if(intent.hasExtra(USER_MAIN_EXTRA) && intent.getParcelableExtra<User>(USER_MAIN_EXTRA) != null){
