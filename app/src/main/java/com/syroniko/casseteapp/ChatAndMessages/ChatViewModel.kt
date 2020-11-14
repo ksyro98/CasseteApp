@@ -23,11 +23,11 @@ class ChatViewModel  @Inject constructor(
     }
 
     fun startListeningToMessages(){
-        messages.value = mutableListOf()
-
         ChatDB.listenToMessages(displayedChat.chatId) { document ->
 
-            val chat = document.toObject(Chat::class.java) ?: return@listenToMessages
+            messages.value = mutableListOf()
+
+           val chat = document.toObject(Chat::class.java) ?: return@listenToMessages
 
             chat.messages.map { message ->
                 if(message.senderId != uid) message.read = true

@@ -4,12 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView                    //todo add cassette to recycler view
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
 import androidx.recyclerview.widget.RecyclerView
 import com.syroniko.casseteapp.MainClasses.Cassette
-import com.syroniko.casseteapp.MainClasses.CASSETTE_VIEWER_REQUEST_CODE
+import com.syroniko.casseteapp.viewCassette.CASSETTE_VIEWER_REQUEST_CODE
 import com.syroniko.casseteapp.viewCassette.CassetteViewerActivity
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject

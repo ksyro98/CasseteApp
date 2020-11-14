@@ -9,16 +9,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
-import com.google.firebase.firestore.FieldValue
-import com.syroniko.casseteapp.ChatAndMessages.sendMessage
 
 import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.firebase.Auth
-import com.syroniko.casseteapp.room.AppDatabase
-import com.syroniko.casseteapp.room.LocalCassette
-import kotlinx.coroutines.launch
+import com.syroniko.casseteapp.cassetteIdExtraName
 
 
 class CassetteMessageFragment : Fragment(), CassetteData {
@@ -41,19 +34,25 @@ class CassetteMessageFragment : Fragment(), CassetteData {
 
         forwardButton.setOnClickListener {
             viewModel.updateOnForward()
+
+            finishWithResult(RESULT_FORWARD)
         }
 
-        val activity = activity
         replyButton.setOnClickListener {
             viewModel.sendReplyMessage()
             viewModel.updateOnReply()
 
-            val resultIntent = Intent()
-            activity?.setResult(resultForward, resultIntent)
-            activity?.finish()
+            finishWithResult(RESULT_RESPONSE)
         }
 
         return view
+    }
+
+    private fun finishWithResult(result: Int){
+        val resultIntent = Intent()
+        resultIntent.putExtra(cassetteIdExtraName, viewModel.cassetteId)
+        activity?.setResult(result, resultIntent)
+        activity?.finish()
     }
 
 }

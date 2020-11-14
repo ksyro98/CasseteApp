@@ -28,10 +28,6 @@ class CassetteCaseFragment : Fragment() {
 
         val cassetteRecyclerView = view.findViewById<RecyclerView>(R.id.cassetteRecyclerView)
 
-        if (viewModel.cassettes.value != null) {
-            cassetteAdapter.cassettes = viewModel.cassettes.value!!
-        }
-
         cassetteRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)

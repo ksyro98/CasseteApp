@@ -8,3 +8,9 @@ fun <T> MutableLiveData<MutableList<T>>.addAndUpdate(item: T){
     tempValue?.add(item)
     this.value = tempValue
 }
+
+fun <T> MutableLiveData<MutableList<T>>.removeAndUpdate(item: T){
+    val tempValue = this.value
+    tempValue?.remove(item)
+    this.value = tempValue
+}

@@ -13,26 +13,18 @@ import androidx.lifecycle.SavedStateHandle
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.syroniko.casseteapp.ChatAndMessages.sendFirstMessage
-import com.syroniko.casseteapp.ChatAndMessages.sendMessage
 import com.syroniko.casseteapp.MainClasses.clientId
-import com.syroniko.casseteapp.MainClasses.longToast
 import com.syroniko.casseteapp.MainClasses.redirectUri
 import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.CassetteDB
-import com.syroniko.casseteapp.firebase.ChatDB
 import com.syroniko.casseteapp.firebase.UserDB
-import kotlinx.android.synthetic.main.fragment_cassette_video.*
 import org.json.JSONArray
 import javax.inject.Inject
 
@@ -96,13 +88,12 @@ class CassetteViewerViewModel @Inject constructor(
             return
         }
 
-        val updateMap = hashMapOf<String, Any>(
+        val updateMap = hashMapOf(
             Pair("possibleReceivers", FieldValue.arrayRemove(uid)),
-            Pair("restrictedReceivers", FieldValue.arrayUnion(uid))
+            Pair("restrictedReceivers", FieldValue.arrayUnion(uid)),
+            Pair("received", false)
         )
         CassetteDB.update(cassetteId, updateMap)
-
-        CassetteDB.update(cassetteId, hashMapOf(Pair("received", false)))
 
         UserDB.update(uid, hashMapOf(Pair("cassettes", FieldValue.arrayRemove(cassetteId))))
     }
@@ -113,8 +104,10 @@ class CassetteViewerViewModel @Inject constructor(
             return
         }
 
-        UserDB.update(uid, hashMapOf(Pair("friends", FieldValue.arrayUnion(senderId))))
-        UserDB.update(uid, hashMapOf(Pair("cassettes", FieldValue.arrayRemove(cassetteId))))
+        UserDB.update(uid, hashMapOf(
+            Pair("friends", FieldValue.arrayUnion(senderId)),
+            Pair("cassettes", FieldValue.arrayRemove(cassetteId))
+        ))
     }
 
     fun sendReplyMessage() {
@@ -215,11 +208,11 @@ class CassetteViewerViewModel @Inject constructor(
     private fun getYTData(trackName: String,callback: (String) -> Unit){
         val queue = Volley.newRequestQueue(getApplication())
 
-        Log.e(CassetteViewerActivity::class.java.simpleName, ytSearchUrlStart + trackName + ytSearchUrlEnd)
+        Log.e(CassetteViewerActivity::class.java.simpleName, YT_SEARCH_URL_START + trackName + YT_SEARCH_URL_END)
 
         val ytRequest = JsonObjectRequest(
             Request.Method.GET,
-            ytSearchUrlStart + trackName.replace(" ", "+") + ytSearchUrlEnd,
+            YT_SEARCH_URL_START + trackName.replace(" ", "+") + YT_SEARCH_URL_END,
             null,
             { response ->
                 val items = response["items"] as JSONArray
@@ -244,8 +237,8 @@ class CassetteViewerViewModel @Inject constructor(
     fun makeWebIntent(callback: (Intent) -> Unit) {
         if (videoId != null) {
 
-            val ytAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytAppWatchUrl + videoId))
-            val ytWebIntent = Intent(Intent.ACTION_VIEW, Uri.parse(ytWebWatchUrl + videoId))
+            val ytAppIntent = Intent(Intent.ACTION_VIEW, Uri.parse(YT_APP_WATCH_URL + videoId))
+            val ytWebIntent = Intent(Intent.ACTION_VIEW, Uri.parse(YT_WEB_WATCH_URL + videoId))
 
             try {
                 callback(ytAppIntent)

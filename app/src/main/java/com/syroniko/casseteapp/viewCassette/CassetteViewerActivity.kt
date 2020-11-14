@@ -6,22 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.firebase.firestore.FirebaseFirestore
 import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.cassetteIdExtraName
 import com.syroniko.casseteapp.userIdExtraName
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_cassette_viewer.*
 
+const val CASSETTE_VIEWER_REQUEST_CODE = 314
+const val RESULT_RESPONSE = 11
+const val RESULT_FORWARD = 12
 
-const val resultForward = 12
-const val resultCassette = "result cassette"
-const val ytApiKey = "AIzaSyDK0u16JJxYenpBhQRte-CC5FHl0IcMIeM"
-const val ytSearchUrlStart = "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
-const val ytSearchUrlEnd = "&type=video&key=$ytApiKey"
-const val ytAppWatchUrl = "vnd.youtube:"
-const val ytWebWatchUrl = "https://www.youtube.com/watch?v="
+const val YT_API_KEY = "AIzaSyDK0u16JJxYenpBhQRte-CC5FHl0IcMIeM"
+const val YT_SEARCH_URL_START = "https://www.googleapis.com/youtube/v3/search?part=snippet&q="
+const val YT_SEARCH_URL_END = "&type=video&key=$YT_API_KEY"
+const val YT_APP_WATCH_URL = "vnd.youtube:"
+const val YT_WEB_WATCH_URL = "https://www.youtube.com/watch?v="
 
 private const val NUM_PAGES = 3
 

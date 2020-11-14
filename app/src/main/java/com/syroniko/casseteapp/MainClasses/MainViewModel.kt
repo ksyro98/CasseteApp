@@ -39,7 +39,6 @@ class MainViewModel @Inject constructor(
 
     init {
         retrieveCassettes()
-        retrieveChats()
     }
 
 
@@ -54,6 +53,23 @@ class MainViewModel @Inject constructor(
         UserDB.update(uid, hashMapOf(Pair("status", STATUS_OFFLINE)))
     }
 
+    fun removeCassette(cassetteId: String){
+        val tempValue = cassettes.value ?: return
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tempValue.removeIf {
+                it.getId() == cassetteId
+            }
+        }
+        else{
+            for (cassette in tempValue){
+                if (cassette.getId() == cassetteId){
+                    tempValue.remove(cassette)
+                }
+            }
+        }
+
+        cassettes.value = tempValue
+    }
 
     /**
      * CassetteCaseFragment Functions
@@ -95,10 +111,10 @@ class MainViewModel @Inject constructor(
 
                     UserDB.update(uid, hashMapOf(
                         Pair("cassettes", FieldValue.arrayUnion(newCassette.getId())),
-                        Pair("cassettesAccepted", FieldValue.arrayUnion(newCassette.getId()))
+                        Pair("cassettesAccepted", FieldValue.arrayUnion(newCassette.getId())),
+                        Pair("receivedLastCassetteAt", System.currentTimeMillis())
                     ))
 
-                    UserDB.update(uid, hashMapOf(Pair("receivedLastCassetteAt", System.currentTimeMillis())))
                 }
             }
             .addOnFailureListener {
@@ -110,42 +126,82 @@ class MainViewModel @Inject constructor(
     /**
      * MessagesFragment functions
      */
-    private fun retrieveChats(){
-        chats.value = mutableListOf()
+    fun startListeningToChats(){
 
-        ChatDB.getChatsThatIncludesUser(uid)
-            .addOnSuccessListener { documentSnapshot ->
-                val chatsList = mutableListOf<Chat>()
-                documentSnapshot.map { document ->
-                    chatsList.add(document.toObject(Chat::class.java))
-                }
+        ChatDB.listenToChat(uid) { querySnapshot ->
 
-                chatsList.map{ chat ->
-                    val timestamp = chat.lastMessageSent
-                    val lastMessageText = chat.messages.last().text
-                    val lastMessageRead = chat.messages.last().read
-                    val lastMessageSentByMe = chat.messages.last().senderId == uid
-                    val chatId = chat.id
-                    val otherUid = getTheOtherUid(chat.uids, uid) ?: return@addOnSuccessListener
+            chats.value = mutableListOf()
 
-                    UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
-                        val otherUser = document.toObject(User::class.java)
-                        val displayedChat = DisplayedChat(
-                            otherUser?.uid ?: "",
-                            otherUser?.image ?: "",
-                            otherUser?.name ?: "",
-                            otherUser?.status ?: "",
-                            lastMessageText,
-                            lastMessageRead,
-                            lastMessageSentByMe,
-                            timestamp,
-                            chatId
-                        )
+            val chatsList = mutableListOf<Chat>()
 
-                        chats.addAndUpdate(displayedChat)
-                    }
+            querySnapshot.map { document ->
+                chatsList.add(document.toObject(Chat::class.java))
+            }
+
+            chatsList.map { chat ->
+                val timestamp = chat.lastMessageSent
+                val lastMessageText = chat.messages.last().text
+                val lastMessageRead = chat.messages.last().read
+                val lastMessageSentByMe = chat.messages.last().senderId == uid
+                val chatId = chat.id
+                val otherUid = getTheOtherUid(chat.uids, uid) ?: return@listenToChat
+
+                UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
+                    val otherUser = document.toObject(User::class.java)
+                    val displayedChat = DisplayedChat(
+                        otherUser?.uid ?: "",
+                        otherUser?.image ?: "",
+                        otherUser?.name ?: "",
+                        otherUser?.status ?: "",
+                        lastMessageText,
+                        lastMessageRead,
+                        lastMessageSentByMe,
+                        timestamp,
+                        chatId
+                    )
+
+                    chats.addAndUpdate(displayedChat)
                 }
             }
+        }
+
+//        ChatDB.getChatsThatIncludesUser(uid)
+//            .addOnSuccessListener { documentSnapshot ->
+//                val chatsList = mutableListOf<Chat>()
+//                documentSnapshot.map { document ->
+//                    chatsList.add(document.toObject(Chat::class.java))
+//                }
+//
+//                chatsList.map{ chat ->
+//                    val timestamp = chat.lastMessageSent
+//                    val lastMessageText = chat.messages.last().text
+//                    val lastMessageRead = chat.messages.last().read
+//                    val lastMessageSentByMe = chat.messages.last().senderId == uid
+//                    val chatId = chat.id
+//                    val otherUid = getTheOtherUid(chat.uids, uid) ?: return@addOnSuccessListener
+//
+//                    UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
+//                        val otherUser = document.toObject(User::class.java)
+//                        val displayedChat = DisplayedChat(
+//                            otherUser?.uid ?: "",
+//                            otherUser?.image ?: "",
+//                            otherUser?.name ?: "",
+//                            otherUser?.status ?: "",
+//                            lastMessageText,
+//                            lastMessageRead,
+//                            lastMessageSentByMe,
+//                            timestamp,
+//                            chatId
+//                        )
+//
+//                        chats.addAndUpdate(displayedChat)
+//                    }
+//                }
+//            }
+    }
+
+    fun stopListeningToChats(){
+        ChatDB.detachChatListener()
     }
 
 }
