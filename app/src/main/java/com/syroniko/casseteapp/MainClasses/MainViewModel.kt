@@ -6,10 +6,12 @@ import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.firestore.FieldValue
 import com.syroniko.casseteapp.ChatAndMessages.Chat
 import com.syroniko.casseteapp.ChatAndMessages.DisplayedChat
 import com.syroniko.casseteapp.ChatAndMessages.getTheOtherUid
+import com.syroniko.casseteapp.ChatAndMessages.getTime
 import com.syroniko.casseteapp.firebase.*
 import com.syroniko.casseteapp.utils.addAndUpdate
 import javax.inject.Inject
@@ -95,31 +97,38 @@ class MainViewModel @Inject constructor(
 
 
     private fun getNewCassette() {
-        if(System.currentTimeMillis() - user.receivedLastCassetteAt < THIRTY_MINS){
-            return
-        }
+        getTime(viewModelScope) { time ->
+            if (time - user.receivedLastCassetteAt < THIRTY_MINS) {
+                return@getTime
+            }
 
-        CassetteDB.getOneCassetteForUser(uid)
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    val newCassette = document.toObject(Cassette::class.java)
-                    newCassette.setId(document.id)
+            CassetteDB.getOneCassetteForUser(uid)
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        val newCassette = document.toObject(Cassette::class.java)
+                        newCassette.setId(document.id)
 
-                    cassettes.addAndUpdate(newCassette)
+                        cassettes.addAndUpdate(newCassette)
 
-                    CassetteDB.update(newCassette.getId(), hashMapOf(Pair("received", true)))
+                        CassetteDB.update(newCassette.getId(), hashMapOf(Pair("received", true)))
 
-                    UserDB.update(uid, hashMapOf(
-                        Pair("cassettes", FieldValue.arrayUnion(newCassette.getId())),
-                        Pair("cassettesAccepted", FieldValue.arrayUnion(newCassette.getId())),
-                        Pair("receivedLastCassetteAt", System.currentTimeMillis())
-                    ))
+                        UserDB.update(
+                            uid, hashMapOf(
+                                Pair("cassettes", FieldValue.arrayUnion(newCassette.getId())),
+                                Pair(
+                                    "cassettesAccepted",
+                                    FieldValue.arrayUnion(newCassette.getId())
+                                ),
+                                Pair("receivedLastCassetteAt", time)
+                            )
+                        )
 
+                    }
                 }
-            }
-            .addOnFailureListener {
-                Log.e(MainActivity::class.java.simpleName, "Retrieving Data Error", it)
-            }
+                .addOnFailureListener {
+                    Log.e(MainActivity::class.java.simpleName, "Retrieving Data Error", it)
+                }
+        }
     }
 
 

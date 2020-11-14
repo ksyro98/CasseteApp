@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="userName"
+                type="String" />
+        <variable
+                name="userFriendsNumber"
+                type="String" />
+        <variable
+                name="userSongsReceivedNumber"
+                type="String" />
+        <variable
+                name="userSongSentNumber"
+                type="String" />
+    </data>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainClasses.ProfileFragment"
+            android:id="@+id/profile_relative_layout">
+
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingTop="24dp"
+                android:layout_height="360dp"
+                android:background="#FFFFFF"
+                android:id="@+id/gray_frame_profile"
+                >
+
+            <ImageView
+
+                    android:id="@+id/activity_profile_image"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginEnd="8dp"
+
+                    tools:srcCompat="@tools:sample/avatars" />
+            <TextView
+                    android:id="@+id/activity_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/activity_profile_image"
+                    android:paddingTop="10dp"
+                    android:text="@{userName}"
+                    />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:paddingBottom="48dp"
+                    android:weightSum="3"
+
+                    android:orientation="horizontal"
+                    >
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                    <TextView
+                            android:text="@{userSongSentNumber}"
+                            android:gravity="center_horizontal"
+                            android:textSize="24sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/activity_profile_songs_sent_number"
+                            />
+                    <TextView
+                            android:text="Songs Sent"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/activity_profile_songs_sent"
+                            />
+                </LinearLayout>
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                    <TextView
+                            android:text="@{userSongsReceivedNumber}"
+                            android:gravity="center_horizontal"
+                            android:textSize="24sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/activity_profile_songs_received_number"
+                            />
+                    <TextView
+                            android:text="Songs Received"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/activity_profile_songs_received"
+                            />
+                </LinearLayout>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                    <TextView
+                            android:text="@{userFriendsNumber}"
+                            android:gravity="center_horizontal"
+                            android:textSize="24sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/activity_profile_friends_number"
+                            />
+                    <TextView
+                            android:text="Friends"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:id="@+id/activity_profile_friends"
+                            />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:id="@+id/friend_chat_linear"
+                android:orientation="horizontal"
+                android:layout_below="@id/gray_frame_profile"
+
+                >
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#D3D3D3"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Send a message"
+                    android:id="@+id/send_message_tv"
+                    />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/add_friend_tv"
+                    android:background="#0FA59B"
+                    android:layout_weight="1"
+                    android:text="Already Friends"
+                    android:layout_gravity="center"
+                    android:textColor="#f4f4f4"
+                    android:gravity="center"
+                    />
+
+        </LinearLayout>
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/friend_chat_linear"
+                android:paddingTop="8dp"
+                android:id="@+id/frame_about_user"
+                >
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/about_user_tv"
+                    android:background="@color/white"
+                    android:text='@{"About " + userName}'
+                    android:gravity="center_vertical"
+                    android:paddingLeft="51dp"
+                    />
+        </FrameLayout>
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/frame_about_user"
+                android:paddingTop="8dp"
+                >
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="See collection"
+                    android:gravity="center_vertical"
+                    android:background="@color/white"
+                    android:id="@+id/see_collection_tv"
+                    android:paddingLeft="51dp"
+                    />
+        </FrameLayout>
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="20dp"
+
+
+                >
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="51dp"
+                    android:text="Report user/Block"
+
+                    />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</layout>

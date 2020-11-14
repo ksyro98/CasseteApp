@@ -5,6 +5,7 @@ import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import com.android.volley.toolbox.Volley
+import com.google.firebase.firestore.FieldValue
 import com.syroniko.casseteapp.MainClasses.Cassette
 import com.syroniko.casseteapp.MainClasses.MainActivity
 import com.syroniko.casseteapp.MainClasses.toast
@@ -43,6 +44,9 @@ class SendTrackViewModel @Inject constructor(
                 restrictedReceivers)
 
             CassetteDB.insert(cassette)
+            if(uid != null) {
+                UserDB.update(uid, hashMapOf(Pair("songsSent", FieldValue.increment(1))))
+            }
 
             callback()
         }

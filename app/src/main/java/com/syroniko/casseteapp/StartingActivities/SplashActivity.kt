@@ -41,8 +41,6 @@ class SplashActivity: AppCompatActivity() {
     private fun scheduleSplashScreen(spotifyToken: String) {
         Handler(Looper.getMainLooper()).postDelayed(
             {
-                // After the splash screen duration, route to the right activities
-
                 if (uid == null){
                    WelcomingActivity.startActivity(this, spotifyToken)
                     finish()
@@ -52,6 +50,10 @@ class SplashActivity: AppCompatActivity() {
                         .addOnSuccessListener { documentSnapshot ->
                             val user = documentSnapshot.toObject(User::class.java)
                             MainActivity.startActivity(this, uid, user, spotifyToken)
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            MainActivity.startActivity(context = this, uid = uid, token = spotifyToken)
                             finish()
                         }
                 }

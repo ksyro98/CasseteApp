@@ -43,7 +43,7 @@ class SpotifyTrack(
                 Request.Method.GET,
                 "https://api.spotify.com/v1/artists/$artistId",
                 token,
-                Response.Listener { response ->
+                { response ->
                     val jsonObject = Gson().fromJson(response.toString(), JsonObject::class.java)
                     val genres = jsonObject.get("genres") as JsonArray
                     for (genre in genres){
@@ -52,7 +52,7 @@ class SpotifyTrack(
 
                     getGenreFromList(tempGenres, action)
                 },
-                Response.ErrorListener { error -> Log.e("SpotifyTrack", "Volley Error", error) }
+                { error -> Log.e("SpotifyTrack", "Volley Error", error) }
             ))
         }
 

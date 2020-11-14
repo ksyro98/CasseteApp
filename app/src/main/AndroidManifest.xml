@@ -16,13 +16,12 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SearchSongActivity"></activity>
+        <activity android:name=".SearchSongActivity"/>
         <activity android:name=".CreateCassetteActivity" />
         <activity android:name=".AboutActivity" />
         <activity android:name=".MainClasses.ProfileActivity" />
         <activity android:name=".viewCassette.CassetteViewerActivity" />
         <activity android:name=".ChatAndMessages.ChatActivity" />
-        <activity android:name=".MainClasses.CoreActivity" />
         <activity android:name=".TrackSearchFlow.SendTrackActivity" />
         <activity android:name=".TrackSearchFlow.SpotifyAlbumResultActivity" />
         <activity android:name=".LogInSignUp.CountrySelectSignUpActivity" />

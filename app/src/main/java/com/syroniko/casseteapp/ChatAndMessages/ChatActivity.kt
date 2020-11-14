@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.*
 import com.syroniko.casseteapp.R
@@ -56,7 +57,7 @@ class ChatActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            sendMessage(viewModel.uid, viewModel.displayedChat.userId, text)
+            sendMessage(viewModel.uid, viewModel.displayedChat.userId, text, lifecycleScope)
 
             type_message_edit_text_chat_activity.text.clear()
         }
