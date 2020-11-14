@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syroniko.casseteapp.MainClasses.*
-import com.syroniko.casseteapp.MainClasses.TOKEN_MAIN_EXTRA
 import com.syroniko.casseteapp.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_spotify_result.*

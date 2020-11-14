@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import com.syroniko.casseteapp.MainClasses.MainViewModel
-import com.syroniko.casseteapp.MainClasses.TOKEN_MAIN_EXTRA
 import com.syroniko.casseteapp.MainClasses.USER_MAIN_EXTRA
 import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.R

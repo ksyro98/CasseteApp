@@ -46,6 +46,14 @@ class MainActivity : AppCompatActivity() {
             CreateCassetteActivity.startActivity(this, viewModel.user)
         }
 
+        //TODO delete this, this is a temporary solution
+        fab.setOnLongClickListener {
+            selectedFragment = CassetteCaseFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_fragment_container, selectedFragment).commit()
+            return@setOnLongClickListener true
+        }
+
 
         selectedFragment = CassetteCaseFragment()
         supportFragmentManager.beginTransaction()

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.syroniko.casseteapp.MainClasses.TOKEN_MAIN_EXTRA
 import com.syroniko.casseteapp.MainClasses.USER_MAIN_EXTRA
 import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.R
