@@ -1,13 +1,12 @@
 package com.syroniko.casseteapp.TrackSearchFlow
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.syroniko.casseteapp.MainClasses.TOKEN_EXTRA_NAME
+import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyAlbum
 import dagger.hilt.android.qualifiers.ActivityContext
@@ -26,7 +25,7 @@ class AlbumAdapter @Inject constructor(
             field = value
             this.notifyDataSetChanged()
         }
-    var token: String? = null
+    lateinit var user: User
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.spotify_item_album, parent, false)
@@ -44,7 +43,7 @@ class AlbumAdapter @Inject constructor(
             val albumId = albumList[position].albumId
             val albumImageUrl = albumList[position].imageUrl
 
-            SpotifyAlbumResultActivity.startActivity(context, albumId, albumImageUrl, token)
+            SpotifyAlbumResultActivity.startActivity(context, albumId, albumImageUrl, user)
         }
     }
 

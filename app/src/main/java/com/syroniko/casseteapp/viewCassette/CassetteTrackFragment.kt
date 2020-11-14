@@ -21,21 +21,36 @@ import com.syroniko.casseteapp.MainClasses.redirectUri
 
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
+import kotlinx.android.synthetic.main.fragment_cassette_track.*
 
 class CassetteTrackFragment : Fragment(), CassetteData {
-    private var spotifyPlayButton: Button? = null
     private val viewModel by activityViewModels<CassetteViewerViewModel>()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_cassette_track, container, false)
 
-        spotifyPlayButton = view.findViewById(R.id.spotifyPlayButton)
-        spotifyPlayButton!!.isEnabled = viewModel.shouldEnableButton
+        val spotifyPlayButton: Button = view.findViewById(R.id.spotifyPlayButton)
+        val replyButton: Button = view.findViewById(R.id.replyButton)
+        val forwardButton: Button = view.findViewById(R.id.forwardButton)
 
-        spotifyPlayButton!!.setOnClickListener {
+        spotifyPlayButton.isEnabled = viewModel.shouldEnableButton
+
+        spotifyPlayButton.setOnClickListener {
             viewModel.spotifyConnect()
+        }
 
+        replyButton.setOnClickListener {
+            viewModel.sendReplyMessage()
+            viewModel.updateOnReply()
+
+            (activity as CassetteViewerActivity).finishWithResult(RESULT_RESPONSE)
+        }
+
+        forwardButton.setOnClickListener {
+            viewModel.updateOnForward()
+
+            (activity as CassetteViewerActivity).finishWithResult(RESULT_FORWARD)
         }
 
         return view

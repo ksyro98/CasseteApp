@@ -1,5 +1,6 @@
 package com.syroniko.casseteapp.viewCassette
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -63,5 +64,14 @@ class CassetteViewerActivity : AppCompatActivity() {
 
             return fragment
         }
+    }
+
+
+    fun finishWithResult(result: Int){
+        val resultIntent = Intent()
+        resultIntent.putExtra(cassetteIdExtraName, viewModel.cassetteId)
+        resultIntent.putExtra(userIdExtraName, viewModel.senderId)
+        setResult(result, resultIntent)
+        finish()
     }
 }

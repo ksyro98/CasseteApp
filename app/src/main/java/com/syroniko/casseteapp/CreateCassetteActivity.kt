@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.syroniko.casseteapp.MainClasses.TOKEN_MAIN_EXTRA
+import com.syroniko.casseteapp.MainClasses.USER_MAIN_EXTRA
+import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.R
 
 class CreateCassetteActivity : AppCompatActivity() {
@@ -16,13 +18,12 @@ class CreateCassetteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_cassette)
 
-        var token =intent.getStringExtra(TOKEN_MAIN_EXTRA)
-        Log.v("zapowa",token!!)
+        val user = intent.getParcelableExtra<User>(USER_MAIN_EXTRA)
 
         val searchSongButton: View =findViewById(R.id.pick_your_song_button_create_cassette)
         searchSongButton.setOnClickListener{
             val i = Intent(this, SearchSongActivity::class.java)
-            i.putExtra(TOKEN_MAIN_EXTRA, token)
+            i.putExtra(USER_MAIN_EXTRA, user)
             startActivity(i)
         }
         val tx = findViewById<TextView>(R.id.create_cassette_headline)
@@ -31,9 +32,9 @@ class CreateCassetteActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context, token: String){
+        fun startActivity(context: Context, user: User){
             val i = Intent(context, CreateCassetteActivity::class.java)
-            i.putExtra(TOKEN_MAIN_EXTRA, token)
+            i.putExtra(USER_MAIN_EXTRA, user)
             context.startActivity(i)
         }
     }

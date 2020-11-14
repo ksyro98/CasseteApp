@@ -7,22 +7,25 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.spotify.sdk.android.authentication.AuthenticationClient
+import com.spotify.sdk.android.authentication.AuthenticationRequest
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.syroniko.casseteapp.MainClasses.MainActivity
 import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.AuthCallback
 import com.syroniko.casseteapp.firebase.UserDB
+import com.syroniko.casseteapp.utils.*
 import com.ybs.countrypicker.CountryPicker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CountrySelectSignUpActivity : AppCompatActivity() {
 
-    //todo add auth functionality to a view model
     private val auth = Auth()
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +38,8 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
         val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
         tx.typeface = customFont
 
-        val user = intent.getParcelableExtra<User>(COUNTRY_USER_EXTRA) ?: return
+        user = intent.getParcelableExtra(COUNTRY_USER_EXTRA) ?: return
         val password = intent.getStringExtra(COUNTRY_PASSWORD_EXTRA) ?: return
-        val spotifyToken = intent.getStringExtra(SPOTIFY_TOKEN_EXTRA_NAME) ?: SPOTIFY_NO_TOKEN
 
         locationTextView.setOnClickListener {
             val picker = CountryPicker.newInstance("Select Country")
@@ -61,15 +63,11 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
                             toast("Sign Up Completed.")
 
                             if (uid != null) {
-                                Log.d(CountrySelectSignUpActivity::class.java.simpleName, "123")
                                 user.uid = uid
-                                Log.d(CountrySelectSignUpActivity::class.java.simpleName, uid)
                                 UserDB.insert(user)
-////                                TODO("What is that? :O")
-//                                val resultIntent = Intent()
-//                                setResult(Activity.RESULT_OK, resultIntent)
-//                                finish()
-                                MainActivity.startActivity(this@CountrySelectSignUpActivity, uid, user, spotifyToken)
+                                val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
+                                val request = builder.build()
+                                AuthenticationClient.openLoginActivity(this@CountrySelectSignUpActivity, SPOTIFY_REQUEST_CODE, request)
                             }
 
                         }
@@ -87,16 +85,27 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SPOTIFY_REQUEST_CODE){
+            val response = AuthenticationClient.getResponse(resultCode, data)
+            onSpotifyResponse(response) { token ->
+                user.spotifyToken = token
+                UserDB.insert(user)
+                MainActivity.startActivity(this, user.uid, user)
+                finish()
+            }
+        }
+    }
+
     companion object {
         private const val COUNTRY_USER_EXTRA = "genres user extra"
         private const val COUNTRY_PASSWORD_EXTRA = "genres password extra"
-        private const val SPOTIFY_TOKEN_EXTRA_NAME = "spotify token extra name"
 
-        fun startActivity(context: Context, user: User, password: String, spotifyToken: String){
+        fun startActivity(context: Context, user: User, password: String){
             val intent = Intent(context, CountrySelectSignUpActivity::class.java)
             intent.putExtra(COUNTRY_USER_EXTRA, user)
             intent.putExtra(COUNTRY_PASSWORD_EXTRA, password)
-            intent.putExtra(SPOTIFY_TOKEN_EXTRA_NAME, spotifyToken)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }

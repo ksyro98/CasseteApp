@@ -14,10 +14,7 @@ import com.syroniko.casseteapp.MainClasses.MainActivity
 import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.UserDB
-import com.syroniko.casseteapp.utils.CLIENT_ID
-import com.syroniko.casseteapp.utils.REDIRECT_URI
-import com.syroniko.casseteapp.utils.SPOTIFY_REQUEST_CODE
-import com.syroniko.casseteapp.utils.onSpotifyResponse
+import com.syroniko.casseteapp.utils.*
 
 
 val TAG: String = SplashActivity::class.java.simpleName
@@ -26,41 +23,13 @@ class SplashActivity: AppCompatActivity() {
 
     private var splashScreenDuration = 500L
     private val uid = Auth.getUid()
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        if (uid != null) splashScreenDuration = 0
-
-        val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
-        val request = builder.build()
-        AuthenticationClient.openLoginActivity(this, SPOTIFY_REQUEST_CODE, request)
-    }
-
-    private fun scheduleSplashScreen(spotifyToken: String) {
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                if (uid == null){
-                   WelcomingActivity.startActivity(this, spotifyToken)
-                    finish()
-                }
-                else{
-                    UserDB.getDocumentFromId(uid)
-                        .addOnSuccessListener { documentSnapshot ->
-                            val user = documentSnapshot.toObject(User::class.java)
-                            MainActivity.startActivity(this, uid, user, spotifyToken)
-                            finish()
-                        }
-                        .addOnFailureListener {
-                            MainActivity.startActivity(context = this, uid = uid, token = spotifyToken)
-                            finish()
-                        }
-                }
-
-            },
-            splashScreenDuration
-        )
+        loadAndStart()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -68,7 +37,41 @@ class SplashActivity: AppCompatActivity() {
 
         if (requestCode == SPOTIFY_REQUEST_CODE) {
             val response = AuthenticationClient.getResponse(resultCode, data)
-            onSpotifyResponse(response, ::scheduleSplashScreen)
+            onSpotifyResponse(response) { token ->
+                user.spotifyToken = token
+                if (uid != null) {
+                    UserDB.update(uid, hashMapOf(Pair("spotifyToken", token)))
+                }
+                MainActivity.startActivity(this, uid, user)
+                finish()
+            }
         }
+    }
+
+    private fun loadAndStart(){
+        if (uid == null){
+            WelcomingActivity.startActivity(this)
+            finish()
+        }
+        else{
+            UserDB.getDocumentFromId(uid)
+                .addOnSuccessListener { documentSnapshot ->
+                    user = documentSnapshot.toObject(User::class.java) ?: return@addOnSuccessListener
+                    user.uid = uid
+                    if (user.spotifyToken == SPOTIFY_NO_TOKEN){
+                        getSpotifyToken()
+                    }
+                    else {
+                        MainActivity.startActivity(this, uid, user)
+                        finish()
+                    }
+                }
+        }
+    }
+
+    private fun getSpotifyToken(){
+        val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
+        val request = builder.build()
+        AuthenticationClient.openLoginActivity(this, SPOTIFY_REQUEST_CODE, request)
     }
 }

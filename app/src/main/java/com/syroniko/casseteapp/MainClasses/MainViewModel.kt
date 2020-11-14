@@ -24,7 +24,6 @@ class MainViewModel @Inject constructor(
 ): AndroidViewModel(application) {
 
     var uid = Auth.getUid() ?: ""
-    var token = ""
     val cassettes: MutableLiveData<MutableList<Cassette>> by lazy {
         MutableLiveData<MutableList<Cassette>>()
     }
@@ -41,6 +40,7 @@ class MainViewModel @Inject constructor(
 
     init {
         retrieveCassettes()
+        Log.d(MainViewModel::class.simpleName, "1234567890")
     }
 
 
@@ -71,6 +71,14 @@ class MainViewModel @Inject constructor(
         }
 
         cassettes.value = tempValue
+    }
+
+    fun updateUserOnCassetteAction(senderId: String?, cassetteId: String?, userAccepted: Boolean){
+        if(senderId != null) user.friends.add(senderId)
+
+        if (cassetteId != null) user.cassettes.remove(cassetteId)
+
+        if(userAccepted) user.songsAccepted++
     }
 
     /**
@@ -173,40 +181,6 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
-
-//        ChatDB.getChatsThatIncludesUser(uid)
-//            .addOnSuccessListener { documentSnapshot ->
-//                val chatsList = mutableListOf<Chat>()
-//                documentSnapshot.map { document ->
-//                    chatsList.add(document.toObject(Chat::class.java))
-//                }
-//
-//                chatsList.map{ chat ->
-//                    val timestamp = chat.lastMessageSent
-//                    val lastMessageText = chat.messages.last().text
-//                    val lastMessageRead = chat.messages.last().read
-//                    val lastMessageSentByMe = chat.messages.last().senderId == uid
-//                    val chatId = chat.id
-//                    val otherUid = getTheOtherUid(chat.uids, uid) ?: return@addOnSuccessListener
-//
-//                    UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
-//                        val otherUser = document.toObject(User::class.java)
-//                        val displayedChat = DisplayedChat(
-//                            otherUser?.uid ?: "",
-//                            otherUser?.image ?: "",
-//                            otherUser?.name ?: "",
-//                            otherUser?.status ?: "",
-//                            lastMessageText,
-//                            lastMessageRead,
-//                            lastMessageSentByMe,
-//                            timestamp,
-//                            chatId
-//                        )
-//
-//                        chats.addAndUpdate(displayedChat)
-//                    }
-//                }
-//            }
     }
 
     fun stopListeningToChats(){

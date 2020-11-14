@@ -35,24 +35,18 @@ class CassetteMessageFragment : Fragment(), CassetteData {
         forwardButton.setOnClickListener {
             viewModel.updateOnForward()
 
-            finishWithResult(RESULT_FORWARD)
+            (activity as CassetteViewerActivity).finishWithResult(RESULT_FORWARD)
         }
 
         replyButton.setOnClickListener {
             viewModel.sendReplyMessage()
             viewModel.updateOnReply()
 
-            finishWithResult(RESULT_RESPONSE)
+            (activity as CassetteViewerActivity).finishWithResult(RESULT_RESPONSE)
         }
 
         return view
     }
 
-    private fun finishWithResult(result: Int){
-        val resultIntent = Intent()
-        resultIntent.putExtra(cassetteIdExtraName, viewModel.cassetteId)
-        activity?.setResult(result, resultIntent)
-        activity?.finish()
-    }
 
 }

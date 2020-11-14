@@ -21,25 +21,21 @@ class WelcomingActivity : AppCompatActivity() {
         val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
         tx.typeface = customFont
 
-        val spotifyToken = intent.getStringExtra(SPOTIFY_TOKEN_EXTRA_NAME) ?: SPOTIFY_NO_TOKEN
 
         loginButWelcAct.setOnClickListener {
-            LoginActivity.startActivity(this, spotifyToken)
+            LoginActivity.startActivity(this)
             finish()
         }
 
         signUpButWelcAct.setOnClickListener {
-            SignUpActivity.startActivity(this, spotifyToken)
+            SignUpActivity.startActivity(this)
             finish()
         }
     }
 
     companion object {
-        private const val SPOTIFY_TOKEN_EXTRA_NAME = "spotify token extra name"
-
-        fun startActivity(context: Context, spotifyToken: String){
+        fun startActivity(context: Context){
             val intent = Intent(context, WelcomingActivity::class.java)
-            intent.putExtra(SPOTIFY_TOKEN_EXTRA_NAME, spotifyToken)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }

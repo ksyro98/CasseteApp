@@ -28,8 +28,6 @@ class SignUpActivity : AppCompatActivity() {
         val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
         tx.typeface = customFont
 
-        val spotifyToken = intent.getStringExtra(SPOTIFY_TOKEN_EXTRA_NAME) ?: SPOTIFY_NO_TOKEN
-
         next.setOnClickListener {
             val pass = password.text.toString()
 
@@ -50,18 +48,15 @@ class SignUpActivity : AppCompatActivity() {
                     uid = null
                 )
 
-                PickGenresSignUpActivity.startActivity(this, userInstance, pass, spotifyToken)
+                PickGenresSignUpActivity.startActivity(this, userInstance, pass)
                 finish()
             }
         }
     }
 
     companion object {
-        private const val SPOTIFY_TOKEN_EXTRA_NAME = "spotify token extra name"
-
-        fun startActivity(context: Context, spotifyToken: String){
+        fun startActivity(context: Context){
             val intent = Intent(context, SignUpActivity::class.java)
-            intent.putExtra(SPOTIFY_TOKEN_EXTRA_NAME, spotifyToken)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }

@@ -1,6 +1,7 @@
 package com.syroniko.casseteapp.MainClasses
 
 import android.os.Parcelable
+import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
 import kotlinx.android.parcel.Parcelize
 import kotlin.collections.ArrayList
 
@@ -21,7 +22,8 @@ data class User(
     val favoriteArtists: ArrayList<String> = arrayListOf(),
     var bio: String = "",
     val interests: ArrayList<String> = arrayListOf(),
-    val cassettesAccepted: ArrayList<String> = arrayListOf()
+    val cassettesAccepted: ArrayList<String> = arrayListOf(),
+    var spotifyToken: String = SPOTIFY_NO_TOKEN
 ): Parcelable
 
 

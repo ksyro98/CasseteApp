@@ -3,22 +3,16 @@ package com.syroniko.casseteapp.TrackSearchFlow
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.syroniko.casseteapp.MainClasses.*
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
 import com.syroniko.casseteapp.SpotifyClasses.GENRES
 import com.syroniko.casseteapp.SpotifyClasses.mapGenres
 import com.syroniko.casseteapp.firebase.Auth
-import com.syroniko.casseteapp.firebase.CassetteDB
-import com.syroniko.casseteapp.firebase.UserDB
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_send_track.*
 
@@ -38,7 +32,7 @@ class SendTrackActivity : AppCompatActivity() {
         }
 
         viewModel.track = intent.getParcelableExtra(SPOTIFY_TRACK_RESULT_EXTRA_NAME) ?: return
-        viewModel.token = intent.getStringExtra(TOKEN_EXTRA_NAME) ?: return
+        viewModel.user = intent.getParcelableExtra(USER_EXTRA_NAME) ?: return
 
         viewModel.getGenre(::updateGenreTextView)
 
@@ -88,17 +82,17 @@ class SendTrackActivity : AppCompatActivity() {
 
             sendButton.isEnabled = true
 
-            MainActivity.startActivity(this, Auth.getUid())
+            MainActivity.startActivity(this, Auth.getUid(), viewModel.user)
             finish()
         }
     }
 
 
     companion object {
-        fun startActivity(context: Context, track: SpotifyTrack, token: String?){
+        fun startActivity(context: Context, track: SpotifyTrack, user: User){
             val trackIntent = Intent(context, SendTrackActivity::class.java)
             trackIntent.putExtra(SPOTIFY_TRACK_RESULT_EXTRA_NAME, track)
-            trackIntent.putExtra(TOKEN_EXTRA_NAME, token)
+            trackIntent.putExtra(USER_EXTRA_NAME, user)
             trackIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(trackIntent)
         }

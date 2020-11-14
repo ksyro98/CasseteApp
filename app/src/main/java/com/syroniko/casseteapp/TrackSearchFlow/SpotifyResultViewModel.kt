@@ -4,9 +4,12 @@ import android.app.Application
 import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.Volley
+import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyResult
 import com.syroniko.casseteapp.SpotifyClasses.SpotifySeparator
+import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
 import javax.inject.Inject
 
 
@@ -20,22 +23,22 @@ class SpotifyResultViewModel @Inject constructor(
     private val artists = arrayListOf<SpotifyResult>()
     private val queue = Volley.newRequestQueue(application)
     var searchQuery: String = ""
-    var token: String = ""
+    var user: User = User()
 
 
 
     fun getSpotifyData(callback: (ArrayList<SpotifyResult>) -> Unit){
-        if (searchQuery == "" || token == ""){
+        if (searchQuery == "" || user.spotifyToken == SPOTIFY_NO_TOKEN){
             return
         }
 
         val trackQuery = prepareTrackQuery(searchQuery)
-        searchTrack(trackQuery, queue, token, tracks) {
+        searchTrack(trackQuery, queue, user.spotifyToken, tracks) {
             updateResultsList(callback)
         }
 
         val artistQuery = prepareArtistQuery(searchQuery)
-        searchArtist(artistQuery, queue, token, artists) {
+        searchArtist(artistQuery, queue, user.spotifyToken, artists) {
             updateResultsList(callback)
         }
     }

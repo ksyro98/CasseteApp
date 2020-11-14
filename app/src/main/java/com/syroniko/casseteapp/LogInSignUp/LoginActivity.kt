@@ -16,6 +16,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.spotify.sdk.android.authentication.AuthenticationClient
+import com.spotify.sdk.android.authentication.AuthenticationRequest
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.MainClasses.MainActivity
 import com.syroniko.casseteapp.MainClasses.User
@@ -23,7 +26,7 @@ import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.AuthCallback
 import com.syroniko.casseteapp.firebase.UserDB
-import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
+import com.syroniko.casseteapp.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
 
 const val RC_SIGN_IN = 543
@@ -31,7 +34,7 @@ const val RC_SIGN_IN = 543
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var spotifyToken: String
+    private lateinit var user: User
 
     //add auth functionality to a view model
     private val auth = Auth(object : AuthCallback{
@@ -51,8 +54,6 @@ class LoginActivity : AppCompatActivity() {
         val tx = findViewById<TextView>(R.id.login_to_account_string)
         val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
         tx.typeface = customFont
-
-        spotifyToken = intent.getStringExtra(SPOTIFY_TOKEN_EXTRA_NAME) ?: SPOTIFY_NO_TOKEN
 
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -103,8 +104,16 @@ class LoginActivity : AppCompatActivity() {
 
         UserDB.getDocumentFromId(uid)
             .addOnSuccessListener { documentSnapshot ->
-                val user = documentSnapshot.toObject(User::class.java)
-                MainActivity.startActivity(this, uid, user, spotifyToken)
+                user = documentSnapshot.toObject(User::class.java) ?: return@addOnSuccessListener
+                user.uid = uid
+                if (user.spotifyToken == SPOTIFY_NO_TOKEN) {
+                    val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
+                    val request = builder.build()
+                    AuthenticationClient.openLoginActivity(this, SPOTIFY_REQUEST_CODE, request)
+                }
+                else {
+                    MainActivity.startActivity(this, uid, user)
+                }
             }
     }
 
@@ -132,6 +141,17 @@ class LoginActivity : AppCompatActivity() {
                 Log.e("TAG", "Google sign in failed", e)
             }
         }
+        else if(requestCode == SPOTIFY_REQUEST_CODE){
+            val response = AuthenticationClient.getResponse(resultCode, data)
+            onSpotifyResponse(response) { token ->
+                user.spotifyToken = token
+                if (user.uid != null) {
+                    UserDB.update(user.uid!!, hashMapOf(Pair("spotifyToken", token)))
+                }
+                MainActivity.startActivity(this, user.uid, user)
+                finish()
+            }
+        }
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
@@ -140,11 +160,8 @@ class LoginActivity : AppCompatActivity() {
 
 
     companion object{
-        private const val SPOTIFY_TOKEN_EXTRA_NAME = "spotify token extra name"
-
-        fun startActivity(context: Context, spotifyToken: String){
+        fun startActivity(context: Context){
             val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra(SPOTIFY_TOKEN_EXTRA_NAME, spotifyToken)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }

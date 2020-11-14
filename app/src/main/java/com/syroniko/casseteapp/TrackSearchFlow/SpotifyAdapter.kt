@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.SpotifyClasses.*
 import dagger.hilt.android.qualifiers.ActivityContext
@@ -24,7 +24,7 @@ class SpotifyAdapter @Inject constructor(
             field = value
             this.notifyDataSetChanged()
         }
-    var token: String? = null
+    lateinit var user: User
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpotifyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.spotify_item, parent, false)
@@ -44,7 +44,7 @@ class SpotifyAdapter @Inject constructor(
                 Glide.with(context).load(track.imageUrl).into(holder.itemView.spotifyImageView)
 
                 holder.itemView.setOnClickListener {
-                    SendTrackActivity.startActivity(context, track, token)
+                    SendTrackActivity.startActivity(context, track, user)
                 }
 
             }
@@ -57,7 +57,7 @@ class SpotifyAdapter @Inject constructor(
                 Glide.with(context).load(artist.imageUrl).apply(RequestOptions.circleCropTransform()).into(holder.itemView.spotifyImageView)
 
                 holder.itemView.setOnClickListener {
-                    SpotifyArtistResultActivity.startActivity(context, artist.artistName, token)
+                    SpotifyArtistResultActivity.startActivity(context, artist.artistName, user)
                 }
 
             }

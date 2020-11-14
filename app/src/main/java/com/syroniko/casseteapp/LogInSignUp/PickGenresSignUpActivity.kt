@@ -34,7 +34,6 @@ class PickGenresSignUpActivity : AppCompatActivity() {
 
         val user = intent.getParcelableExtra<User>(GENRES_USER_EXTRA) ?: return
         val password = intent.getStringExtra(GENRES_PASSWORD_EXTRA) ?: return
-        val spotifyToken = intent.getStringExtra(SPOTIFY_TOKEN_EXTRA_NAME) ?: SPOTIFY_NO_TOKEN
 
         val genreAdapter = GenrePickSignupAdapter(list) { clickedItemPosition ->
             if (!list[clickedItemPosition].isClicked) {
@@ -60,7 +59,7 @@ class PickGenresSignUpActivity : AppCompatActivity() {
             }
             else {
                 user.genres = genreList
-                CountrySelectSignUpActivity.startActivity(this, user, password, spotifyToken)
+                CountrySelectSignUpActivity.startActivity(this, user, password)
                 finish()
             }
         }
@@ -69,14 +68,11 @@ class PickGenresSignUpActivity : AppCompatActivity() {
     companion object {
         private const val GENRES_USER_EXTRA = "genres user extra"
         private const val GENRES_PASSWORD_EXTRA = "genres password extra"
-        private const val SPOTIFY_TOKEN_EXTRA_NAME = "spotify token extra name"
 
-
-        fun startActivity(context: Context, user: User, password: String, spotifyToken: String){
+        fun startActivity(context: Context, user: User, password: String){
             val intent = Intent(context, PickGenresSignUpActivity::class.java)
             intent.putExtra(GENRES_USER_EXTRA, user)
             intent.putExtra(GENRES_PASSWORD_EXTRA, password)
-            intent.putExtra(SPOTIFY_TOKEN_EXTRA_NAME, spotifyToken)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             context.startActivity(intent)
         }

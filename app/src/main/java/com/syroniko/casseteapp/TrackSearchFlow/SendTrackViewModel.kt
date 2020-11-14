@@ -8,6 +8,7 @@ import com.android.volley.toolbox.Volley
 import com.google.firebase.firestore.FieldValue
 import com.syroniko.casseteapp.MainClasses.Cassette
 import com.syroniko.casseteapp.MainClasses.MainActivity
+import com.syroniko.casseteapp.MainClasses.User
 import com.syroniko.casseteapp.MainClasses.toast
 import com.syroniko.casseteapp.SpotifyClasses.SpotifyTrack
 import com.syroniko.casseteapp.firebase.Auth
@@ -22,14 +23,14 @@ class SendTrackViewModel @Inject constructor(
 ): AndroidViewModel(application) {
 
     lateinit var track: SpotifyTrack
-    lateinit var token: String
+    lateinit var user: User
     private val queue = Volley.newRequestQueue(application)
     private val uid = Auth.getUid()
     private val restrictedReceivers = arrayListOf(uid)
 
 
     fun getGenre(callback: (String?) -> Unit){
-        track.getGenreFromArtists(queue, token, callback)
+        track.getGenreFromArtists(queue, user.spotifyToken, callback)
     }
 
 
@@ -43,6 +44,7 @@ class SendTrackViewModel @Inject constructor(
                 possibleReceivers,
                 restrictedReceivers)
 
+            user.songsSent++
             CassetteDB.insert(cassette)
             if(uid != null) {
                 UserDB.update(uid, hashMapOf(Pair("songsSent", FieldValue.increment(1))))
