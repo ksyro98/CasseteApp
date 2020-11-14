@@ -1,9 +1,7 @@
 package com.syroniko.casseteapp.MainClasses
 
-import android.graphics.Bitmap
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 import kotlin.collections.ArrayList
 
 @Parcelize

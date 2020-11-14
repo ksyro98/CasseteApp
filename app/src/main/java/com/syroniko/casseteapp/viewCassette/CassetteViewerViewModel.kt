@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -106,7 +107,8 @@ class CassetteViewerViewModel @Inject constructor(
 
         UserDB.update(uid, hashMapOf(
             Pair("friends", FieldValue.arrayUnion(senderId)),
-            Pair("cassettes", FieldValue.arrayRemove(cassetteId))
+            Pair("cassettes", FieldValue.arrayRemove(cassetteId)),
+            Pair("songsAccepted", FieldValue.increment(1))
         ))
     }
 
@@ -116,11 +118,11 @@ class CassetteViewerViewModel @Inject constructor(
             return
         }
 
-        //TODO change that to server time
         sendFirstMessage(
             uid,
             senderId,
-            "Hello, I received your cassette with $trackName and I loved it!"
+            "Hello, I received your cassette with $trackName and I loved it!",
+            viewModelScope
         )
     }
 

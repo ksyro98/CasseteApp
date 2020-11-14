@@ -25,8 +25,6 @@ class SpotifyResultActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spotify_result)
-        Log.v("ZAZAZAZA", "1234567890")
-        Log.v("ZAZAZAZA", viewModel.token.toString())
 
         viewModel.searchQuery = intent.getStringExtra(spotifyQueryExtraName) ?: return
         viewModel.token = intent.getStringExtra(TOKEN_EXTRA_NAME) ?: return

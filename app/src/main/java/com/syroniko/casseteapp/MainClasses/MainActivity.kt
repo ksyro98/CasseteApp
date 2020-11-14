@@ -62,6 +62,12 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.main_fragment_container, selectedFragment).commit()
         }
 
+        profileBottomNavigationIcon.setOnClickListener {
+            selectedFragment = ProfileFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_fragment_container, selectedFragment).commit()
+        }
+
         viewModel.startListeningToChats()
         viewModel.setUserOnline()
     }

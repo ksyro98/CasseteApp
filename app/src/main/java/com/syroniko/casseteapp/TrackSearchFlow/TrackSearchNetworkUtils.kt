@@ -24,7 +24,7 @@ fun searchTrack(
         Request.Method.GET,
         searchQueryUrl,
         token,
-        Response.Listener { response ->
+        { response ->
             val jsonObject = Gson().fromJson(response.toString(), JsonObject::class.java)
             val items = (jsonObject.get("tracks") as JsonObject).get("items") as JsonArray
 
@@ -33,7 +33,7 @@ fun searchTrack(
             if (searchDone) callback() else searchDone = true
 
         },
-        Response.ErrorListener { error ->
+        { error ->
             Log.e(TAG, "Volley Error", error);
         })
 

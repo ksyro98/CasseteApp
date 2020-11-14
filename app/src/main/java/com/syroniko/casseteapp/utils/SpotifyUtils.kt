@@ -14,6 +14,7 @@ fun onSpotifyResponse(response: AuthenticationResponse, callback: (String) -> Un
         AuthenticationResponse.Type.TOKEN -> {
             Log.d(TAG, "token")
             callback(response.accessToken)
+            return
         }
         AuthenticationResponse.Type.ERROR -> {
             Log.d(TAG, "error")
@@ -24,4 +25,6 @@ fun onSpotifyResponse(response: AuthenticationResponse, callback: (String) -> Un
         AuthenticationResponse.Type.UNKNOWN -> Log.d(TAG, "unknown")
         else -> Log.d(TAG, "null")
     }
+
+    callback(SPOTIFY_NO_TOKEN)
 }
