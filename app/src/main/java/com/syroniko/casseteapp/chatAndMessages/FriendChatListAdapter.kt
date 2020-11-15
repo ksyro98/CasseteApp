@@ -9,9 +9,14 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.signature.MediaStoreSignature
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.firebase.ChatDB
+import com.syroniko.casseteapp.utils.addImage
 import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
@@ -89,6 +94,15 @@ class FriendChatListAdapter @Inject constructor(
             return@setOnLongClickListener true
         }
 
+
+//        val profileRef = Firebase.storage.reference.child("images/${displayedChats[position].userId}.jpg")
+//        Glide.with(context)
+//            .load(profileRef)
+//            .circleCrop()
+//            .placeholder(R.drawable.boxicon)
+//            .into(holder.userImage)
+
+        addImage(context, displayedChats[position].userId, holder.userImage)
     }
 
     override fun getItemCount() = displayedChats.size

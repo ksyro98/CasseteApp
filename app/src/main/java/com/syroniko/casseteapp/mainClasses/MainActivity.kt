@@ -70,16 +70,20 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_fragment_container, selectedFragment).commit()
         }
+    }
 
+    override fun onStart() {
+        super.onStart()
         viewModel.startListeningToChats()
         viewModel.setUserOnline()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.stopListeningToChats()
+    override fun onStop() {
+        super.onStop()
         viewModel.setUserOffline()
+        viewModel.stopListeningToChats()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.utils.addImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_chat.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -27,10 +28,11 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        viewModel.displayedChat = intent.getParcelableExtra<DisplayedChat>(CHAT_DETAILS_EXTRA_NAME) ?: return
+        viewModel.displayedChat = intent.getParcelableExtra(CHAT_DETAILS_EXTRA_NAME) ?: return
         viewModel.startListeningToMessages()
 
         name_text_view.text = viewModel.displayedChat.userName
+        addImage(this, viewModel.displayedChat.userId, profile_image_view)
 
         if (viewModel.messages.value != null){
             chatAdapter.messages = viewModel.messages.value!!

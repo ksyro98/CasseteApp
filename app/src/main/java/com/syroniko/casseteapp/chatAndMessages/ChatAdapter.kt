@@ -10,9 +10,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.firebase.Auth
+import com.syroniko.casseteapp.utils.addImage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,35 +80,14 @@ class ChatAdapter @Inject constructor(
             return@setOnLongClickListener false
         }
 
+//        val profileRef = Firebase.storage.reference.child("images/${messages[position].senderId}.jpg")
+//        Glide.with(context)
+//            .load(profileRef)
+//            .circleCrop()
+//            .placeholder(R.drawable.boxicon)
+//            .into(holder.userImage)
 
-//        Chat chat =mChat.get(position);
-//        holder.show_message.setText(chat.message);
-//        holder.timestampTv.setVisibility(View.INVISIBLE);
-//        if(imageUrl.equals("default")){
-//         //   holder.userImage.setImageResource(R.mipmap.ic_launcher);
-//        }
-//        else{
-//      //      Glide.with(mContext).load(imageUrl).into(holder.userImage);
-//        }
-//        if(position==mChat.size()-1){
-////            Log.d("cmoon",String.valueOf(chat.isSeen()));
-////            if(chat.isSeen()){
-////                holder.messageSeen.setText("Seen");
-////            }
-////            else{
-////                holder.messageSeen.setText("Delivered");
-////
-////
-////            }
-////        }
-//        else{
-//            holder.messageSeen.setVisibility(View.INVISIBLE);
-//        }
-//        String time= chat.timestamp;
-//        Calendar cal=Calendar.getInstance(Locale.ENGLISH);
-//        cal.setTimeInMillis(Long.parseLong(time));
-//        String dateTime= DateFormat.format("hh:mm",cal).toString();
-//        holder.timestampTv.setText(dateTime);
+        addImage(context, messages[position].senderId, holder.userImage)
     }
 
     override fun getItemCount() = messages.size
