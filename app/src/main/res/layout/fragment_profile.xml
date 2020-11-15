@@ -6,23 +6,14 @@
 
     <data>
         <variable
-                name="userName"
-                type="String" />
-        <variable
-                name="userFriendsNumber"
-                type="String" />
-        <variable
-                name="userSongsReceivedNumber"
-                type="String" />
-        <variable
-                name="userSongSentNumber"
-                type="String" />
+                name="viewModel"
+                type="com.syroniko.casseteapp.mainClasses.MainViewModel" />
     </data>
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".MainClasses.ProfileFragment"
+            tools:context=".mainClasses.ProfileFragment"
             android:id="@+id/profile_relative_layout">
 
 
@@ -54,7 +45,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/activity_profile_image"
                     android:paddingTop="10dp"
-                    android:text="@{userName}"
+                    android:text="@{viewModel.user.name}"
                     />
 
             <LinearLayout
@@ -73,7 +64,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                     <TextView
-                            android:text="@{userSongSentNumber}"
+                            android:text="@{Integer.toString(viewModel.user.songsSent)}"
                             android:gravity="center_horizontal"
                             android:textSize="24sp"
                             android:layout_width="wrap_content"
@@ -98,7 +89,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                     <TextView
-                            android:text="@{userSongsReceivedNumber}"
+                            android:text="@{Integer.toString(viewModel.user.songsAccepted)}"
                             android:gravity="center_horizontal"
                             android:textSize="24sp"
                             android:layout_width="wrap_content"
@@ -122,7 +113,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
                     <TextView
-                            android:text="@{userFriendsNumber}"
+                            android:text="@{Integer.toString(viewModel.user.friends.size())}"
                             android:gravity="center_horizontal"
                             android:textSize="24sp"
                             android:layout_width="wrap_content"
@@ -192,7 +183,7 @@
                     android:layout_height="50dp"
                     android:id="@+id/about_user_tv"
                     android:background="@color/white"
-                    android:text='@{"About " + userName}'
+                    android:text='@{"About " + viewModel.user.name}'
                     android:gravity="center_vertical"
                     android:paddingLeft="51dp"
                     />

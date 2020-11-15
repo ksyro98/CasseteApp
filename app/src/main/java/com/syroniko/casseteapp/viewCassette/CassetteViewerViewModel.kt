@@ -18,11 +18,11 @@ import com.google.firebase.firestore.FieldValue
 import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
-import com.syroniko.casseteapp.ChatAndMessages.sendFirstMessage
-import com.syroniko.casseteapp.MainClasses.clientId
-import com.syroniko.casseteapp.MainClasses.redirectUri
-import com.syroniko.casseteapp.MainClasses.toast
-import com.syroniko.casseteapp.TrackSearchFlow.NO_PREVIEW_URL
+import com.syroniko.casseteapp.chatAndMessages.sendFirstMessage
+import com.syroniko.casseteapp.mainClasses.clientId
+import com.syroniko.casseteapp.mainClasses.redirectUri
+import com.syroniko.casseteapp.mainClasses.toast
+import com.syroniko.casseteapp.trackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.CassetteDB
 import com.syroniko.casseteapp.firebase.UserDB

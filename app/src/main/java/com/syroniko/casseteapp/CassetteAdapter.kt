@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.syroniko.casseteapp.MainClasses.Cassette
+import com.syroniko.casseteapp.mainClasses.Cassette
 import com.syroniko.casseteapp.viewCassette.CASSETTE_VIEWER_REQUEST_CODE
 import com.syroniko.casseteapp.viewCassette.CassetteViewerActivity
 import dagger.hilt.android.qualifiers.ActivityContext

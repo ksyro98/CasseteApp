@@ -5,12 +5,10 @@ import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
-import com.syroniko.casseteapp.MainClasses.USER_MAIN_EXTRA
-import com.syroniko.casseteapp.MainClasses.User
-import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.mainClasses.USER_MAIN_EXTRA
+import com.syroniko.casseteapp.mainClasses.User
 
 class CreateCassetteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

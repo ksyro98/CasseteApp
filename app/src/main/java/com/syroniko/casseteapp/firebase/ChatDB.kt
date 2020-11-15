@@ -4,8 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import com.syroniko.casseteapp.ChatAndMessages.Chat
-import com.syroniko.casseteapp.ChatAndMessages.getChatIdFromUids
+import com.syroniko.casseteapp.chatAndMessages.Chat
 import com.syroniko.casseteapp.firebasefirebase.CHATS
 
 object ChatDB: FirestoreDB(CHATS) {

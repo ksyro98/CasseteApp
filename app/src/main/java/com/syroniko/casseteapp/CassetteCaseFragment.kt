@@ -1,8 +1,6 @@
 package com.syroniko.casseteapp
 
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.syroniko.casseteapp.MainClasses.Cassette
-import com.syroniko.casseteapp.MainClasses.MainViewModel
+import com.syroniko.casseteapp.mainClasses.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

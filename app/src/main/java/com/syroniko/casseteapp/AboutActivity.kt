@@ -1,10 +1,8 @@
 package com.syroniko.casseteapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.syroniko.casseteapp.ChatAndMessages.ChatActivity
 import kotlinx.android.synthetic.main.activity_about.*
 
 const val UID_NAME = "uid name"

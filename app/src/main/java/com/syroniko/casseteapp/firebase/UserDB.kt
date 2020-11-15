@@ -1,13 +1,9 @@
 package com.syroniko.casseteapp.firebase
 
 import android.util.Log
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentReference
-import com.syroniko.casseteapp.LogInSignUp.CountrySelectSignUpActivity
-import com.syroniko.casseteapp.MainClasses.User
-import com.syroniko.casseteapp.TrackSearchFlow.SendTrackActivity
+import com.syroniko.casseteapp.logInSignUp.CountrySelectSignUpActivity
+import com.syroniko.casseteapp.mainClasses.User
 import com.syroniko.casseteapp.firebasefirebase.USERS
-import javax.inject.Inject
 
 const val STATUS_ONLINE = "online"
 const val STATUS_OFFLINE = "offline"

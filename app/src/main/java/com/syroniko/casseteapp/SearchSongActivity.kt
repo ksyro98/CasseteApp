@@ -1,18 +1,12 @@
 package com.syroniko.casseteapp
 
-import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.activity.viewModels
-import androidx.fragment.app.activityViewModels
-import com.syroniko.casseteapp.MainClasses.MainViewModel
-import com.syroniko.casseteapp.MainClasses.USER_MAIN_EXTRA
-import com.syroniko.casseteapp.MainClasses.User
-import com.syroniko.casseteapp.R
-import com.syroniko.casseteapp.TrackSearchFlow.SpotifyResultActivity
+import com.syroniko.casseteapp.mainClasses.USER_MAIN_EXTRA
+import com.syroniko.casseteapp.mainClasses.User
+import com.syroniko.casseteapp.trackSearchFlow.SpotifyResultActivity
 
 class SearchSongActivity : AppCompatActivity() {
 
