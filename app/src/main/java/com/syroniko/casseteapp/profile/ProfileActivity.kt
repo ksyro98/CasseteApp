@@ -41,6 +41,10 @@ class ProfileActivity : AppCompatActivity() {
                 binding.invalidateAll()
             }
         }
+
+        activity_profile_image.setOnClickListener {
+            FullScreenImageActivity.startActivity(this, viewModel.uid)
+        }
     }
 
     companion object {
