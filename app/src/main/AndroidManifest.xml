@@ -22,7 +22,7 @@
         <activity android:name=".SearchSongActivity"/>
         <activity android:name=".CreateCassetteActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".mainClasses.ProfileActivity" />
+        <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".viewCassette.CassetteViewerActivity" />
         <activity android:name=".chatAndMessages.ChatActivity" />
         <activity android:name=".trackSearchFlow.SendTrackActivity" />

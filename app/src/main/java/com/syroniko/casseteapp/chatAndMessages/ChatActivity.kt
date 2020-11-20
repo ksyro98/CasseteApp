@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.profile.ProfileActivity
 import com.syroniko.casseteapp.utils.addImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_chat.*
@@ -70,6 +71,11 @@ class ChatActivity : AppCompatActivity() {
                 }
             }
         )
+
+
+        info_linear_layout.setOnClickListener {
+            ProfileActivity.startActivity(this, viewModel.displayedChat.userId, viewModel.uid)
+        }
 
     }
 

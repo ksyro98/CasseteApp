@@ -23,7 +23,6 @@ import com.google.firebase.storage.ktx.storage
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.databinding.FragmentProfileBinding
 import java.io.*
-import java.util.*
 
 const val REQUEST_IMAGE_CAPTURE = 1
 const val FILE_NAME = "versions.txt"
@@ -46,7 +45,7 @@ class ProfileFragment : Fragment() {
         val view: View = binding.root
         binding.lifecycleOwner = this.viewLifecycleOwner
 
-        imageView = view.findViewById(R.id.activity_profile_image)
+        imageView = view.findViewById(R.id.fragment_profile_image)
 
         binding.viewModel = viewModel
 
