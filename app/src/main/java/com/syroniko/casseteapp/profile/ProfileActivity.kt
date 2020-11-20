@@ -45,6 +45,11 @@ class ProfileActivity : AppCompatActivity() {
         activity_profile_image.setOnClickListener {
             FullScreenImageActivity.startActivity(this, viewModel.uid)
         }
+
+        activity_about_user_tv.setOnClickListener {
+            val bottomSheet = BioBottomSheetFragment()
+            bottomSheet.show(supportFragmentManager, "ModalBottomSheet")
+        }
     }
 
     companion object {

@@ -1,10 +1,11 @@
-package com.syroniko.casseteapp.mainClasses
+package com.syroniko.casseteapp.profile
 
 import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,9 +24,13 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.databinding.FragmentProfileBinding
+import com.syroniko.casseteapp.mainClasses.MainViewModel
+import com.syroniko.casseteapp.mainClasses.longToast
+import com.syroniko.casseteapp.mainClasses.toast
 import java.io.*
 
 const val REQUEST_IMAGE_CAPTURE = 1
+const val REQUEST_FILE = 2
 const val FILE_NAME = "versions.txt"
 
 class ProfileFragment : Fragment() {
@@ -32,6 +38,7 @@ class ProfileFragment : Fragment() {
     private val viewModel by activityViewModels<MainViewModel>()
     private lateinit var imageView: ImageView
     private lateinit var profileRef: StorageReference
+    private lateinit var aboutUserTextView: TextView
     private var version: Int = 0
 
     override fun onCreateView(
@@ -46,6 +53,7 @@ class ProfileFragment : Fragment() {
         binding.lifecycleOwner = this.viewLifecycleOwner
 
         imageView = view.findViewById(R.id.fragment_profile_image)
+        aboutUserTextView = view.findViewById(R.id.about_user_tv)
 
         binding.viewModel = viewModel
 
@@ -59,37 +67,33 @@ class ProfileFragment : Fragment() {
             .into(imageView)
 
         imageView.setOnClickListener {
-            dispatchTakePictureIntent()
+            openFile()
+//            dispatchTakePictureIntent()
+        }
+
+        aboutUserTextView.setOnClickListener {
+            val bottomSheet = BioBottomSheetFragment()
+            bottomSheet.show(requireActivity().supportFragmentManager, "ModalBottomSheet")
         }
 
         return view
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultIntent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultIntent)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            val imageBitmap = data?.extras?.get("data") as Bitmap
+            val imageBitmap = resultIntent?.extras?.get("data") as Bitmap
+            updateUserImage(imageBitmap)
+        }
+        else if (requestCode == REQUEST_FILE && resultCode == RESULT_OK){
+            val uri = resultIntent?.data ?: return
 
-            val baos = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
-            val bitmapData = baos.toByteArray()
-            val uploadTask = profileRef.putBytes(bitmapData)
-            uploadTask
-                .addOnSuccessListener {
-                    activity?.toast("Your profile image was updated successfully.")
+            val pfd = requireActivity().contentResolver.openFileDescriptor(uri, "r")
+            val fd = pfd?.fileDescriptor
+            val bitmap = BitmapFactory.decodeFileDescriptor(fd)
+            pfd?.close()
 
-                    version++
-                    writeToVersionFile(version)
-
-                    Glide.with(requireContext())
-                        .load(imageBitmap)
-                        .circleCrop()
-                        .signature(MediaStoreSignature("image/jpeg", version.toLong(), 0))
-                        .into(imageView)
-                }
-                .addOnFailureListener {
-                    activity?.toast("A problem occurred while updating your profile image.")
-                }
+            updateUserImage(bitmap)
         }
     }
 
@@ -105,7 +109,41 @@ class ProfileFragment : Fragment() {
         }
     }
 
+    private fun openFile(){
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
+        }
 
+        startActivityForResult(intent, REQUEST_FILE)
+    }
+
+    private fun updateUserImage(imageBitmap: Bitmap){
+        val baos = ByteArrayOutputStream()
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
+
+        val bitmapData = baos.toByteArray()
+        val uploadTask = profileRef.putBytes(bitmapData)
+
+        uploadTask
+            .addOnSuccessListener {
+                activity?.toast("Your profile image was updated successfully.")
+
+                version++
+                writeToVersionFile(version)
+
+                Glide.with(requireContext())
+                    .load(imageBitmap)
+                    .circleCrop()
+                    .signature(MediaStoreSignature("image/jpeg", version.toLong(), 0))
+                    .into(imageView)
+            }
+            .addOnFailureListener {
+                activity?.toast("A problem occurred while updating your profile image.")
+            }
+    }
+
+    //MOVE THOSE FUNCTIONS TO ANOTHER FILE
     private fun writeToVersionFile(version: Int){
         try {
             val outputStreamWriter = OutputStreamWriter(

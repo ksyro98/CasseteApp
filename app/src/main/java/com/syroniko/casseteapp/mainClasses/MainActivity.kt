@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.chatAndMessages.MessagesFragment
+import com.syroniko.casseteapp.profile.ProfileFragment
 import com.syroniko.casseteapp.viewCassette.CASSETTE_VIEWER_REQUEST_CODE
 import com.syroniko.casseteapp.viewCassette.RESULT_FORWARD
 import com.syroniko.casseteapp.viewCassette.RESULT_RESPONSE
