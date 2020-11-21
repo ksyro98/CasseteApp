@@ -77,15 +77,8 @@ class ChatAdapter @Inject constructor(
             val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
             clipboard?.setPrimaryClip(clip)
             context.toast("Message copied to clipboard.")
-            return@setOnLongClickListener false
+            return@setOnLongClickListener true
         }
-
-//        val profileRef = Firebase.storage.reference.child("images/${messages[position].senderId}.jpg")
-//        Glide.with(context)
-//            .load(profileRef)
-//            .circleCrop()
-//            .placeholder(R.drawable.boxicon)
-//            .into(holder.userImage)
 
         addImage(context, messages[position].senderId, holder.userImage)
     }

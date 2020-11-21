@@ -27,6 +27,7 @@ import com.syroniko.casseteapp.databinding.FragmentProfileBinding
 import com.syroniko.casseteapp.mainClasses.MainViewModel
 import com.syroniko.casseteapp.mainClasses.longToast
 import com.syroniko.casseteapp.mainClasses.toast
+import com.syroniko.casseteapp.utils.addImage
 import java.io.*
 
 const val REQUEST_IMAGE_CAPTURE = 1
@@ -58,17 +59,16 @@ class ProfileFragment : Fragment() {
         binding.viewModel = viewModel
 
         version = readFromVersionFile()
-
-        profileRef = Firebase.storage.reference.child("images/${viewModel.uid}.jpg")
-        Glide.with(requireContext())
-            .load(profileRef)
-            .circleCrop()
-            .signature(MediaStoreSignature("image/jpeg", version.toLong(), 0))
-            .into(imageView)
+        addImage(requireContext(), viewModel.uid, imageView, cropCircle = true, useSignature = true, version = version.toLong())
 
         imageView.setOnClickListener {
-            openFile()
-//            dispatchTakePictureIntent()
+            val bottomSheet = PhotoPickerBottomSheetFragment { which ->
+                when (which) {
+                    0 -> openFile()
+                    1 -> dispatchTakePictureIntent()
+                }
+            }
+            bottomSheet.show(requireActivity().supportFragmentManager, "ModalBottomSheet")
         }
 
         aboutUserTextView.setOnClickListener {

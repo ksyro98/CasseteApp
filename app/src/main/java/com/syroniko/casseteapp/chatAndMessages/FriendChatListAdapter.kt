@@ -2,6 +2,7 @@ package com.syroniko.casseteapp.chatAndMessages
 
 import android.content.Context
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,7 +84,16 @@ class FriendChatListAdapter @Inject constructor(
 
             ChatDB.getDocumentFromId(displayedChats[position].chatId).addOnSuccessListener { document ->
                 val chat = document.toObject(Chat::class.java) ?: return@addOnSuccessListener
-                chat.messages[chat.messages.lastIndex].read = false
+                for (i in chat.messages.size-1 downTo 0){
+                    //the current user received this message
+                    if (chat.messages[i].senderId == displayedChats[position].userId){
+                        chat.messages[i].read = false
+                    }
+                    //The current user sent this message
+                    else {
+                        break
+                    }
+                }
                 ChatDB.update(displayedChats[position].chatId, hashMapOf(Pair("messages", chat.messages)))
             }
 
@@ -108,6 +118,14 @@ class FriendChatListAdapter @Inject constructor(
     override fun getItemCount() = displayedChats.size
 
     fun sortListFromSearch(s: String){
+        if(s == ""){
+            displayedChats.sortByDescending { displayedChat ->
+                displayedChat.timestamp
+            }
+            notifyDataSetChanged()
+            return
+        }
+
         displayedChats.sortBy { displayedChat ->
             if (displayedChat.userName.startsWith(s, true)){
                 displayedChat.userName

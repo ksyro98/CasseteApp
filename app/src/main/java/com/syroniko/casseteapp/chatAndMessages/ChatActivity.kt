@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.profile.FullScreenImageActivity
 import com.syroniko.casseteapp.profile.ProfileActivity
 import com.syroniko.casseteapp.utils.addImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,20 +62,24 @@ class ChatActivity : AppCompatActivity() {
             type_message_edit_text_chat_activity.text.clear()
         }
 
-        KeyboardVisibilityEvent.setEventListener(
-            this,
-            object : KeyboardVisibilityEventListener {
-                override fun onVisibilityChanged(isOpen: Boolean) {
-                    if (isOpen) {
-                        chat_activity_recycler.scrollToPosition(chatAdapter.itemCount - 1)
-                    }
-                }
-            }
-        )
+//        KeyboardVisibilityEvent.setEventListener(
+//            this,
+//            object : KeyboardVisibilityEventListener {
+//                override fun onVisibilityChanged(isOpen: Boolean) {
+//                    if (isOpen) {
+//                        chat_activity_recycler.scrollToPosition(chatAdapter.itemCount - 1)
+//                    }
+//                }
+//            }
+//        )
 
 
         info_linear_layout.setOnClickListener {
             ProfileActivity.startActivity(this, viewModel.displayedChat.userId, viewModel.uid)
+        }
+
+        profile_image_view.setOnClickListener {
+            FullScreenImageActivity.startActivity(this, viewModel.displayedChat.userId)
         }
 
     }

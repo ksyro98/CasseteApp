@@ -17,8 +17,6 @@ import com.syroniko.casseteapp.mainClasses.MainViewModel
 
 class BioBottomSheetFragment : BottomSheetDialogFragment() {
 
-//    lateinit var viewModel by activityViewModels<MainViewModel>()
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding: FragmentBioBottomSheetBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_bio_bottom_sheet, container, false
