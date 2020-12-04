@@ -47,13 +47,16 @@
             app:maxImageSize="56dp"
             app:srcCompat="@drawable/ic_boxplussignnavigation" />
 
+
     <ImageView
             android:id="@+id/chatBottomNavigationIcon"
             android:layout_width="32dp"
+            android:layout_gravity="center"
             android:layout_height="32dp"
-            android:layout_marginEnd="50dp"
-            android:layout_marginBottom="12dp"
+
             android:background="@drawable/ic_chatbubbles"
+
+            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/bottom_navigation_bar"
             app:layout_constraintHorizontal_bias="1.0"
@@ -62,6 +65,7 @@
             app:layout_constraintVertical_bias="1.0"
             tools:srcCompat="@drawable/ic_chatbubbles" />
 
+
     <ImageView
             android:id="@+id/profileBottomNavigationIcon"
             android:layout_width="32dp"
@@ -69,6 +73,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/ic_profileicon"
+            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

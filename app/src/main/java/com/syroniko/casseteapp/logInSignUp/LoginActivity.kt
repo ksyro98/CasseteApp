@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
        
         val tx = findViewById<TextView>(R.id.login_to_account_string)
-        val customFont = Typeface.createFromAsset(assets, "fonts/montsextrathic.ttf")
+        val customFont = Typeface.createFromAsset(assets, "font/opensansregular.tff")
         tx.typeface = customFont
 
         val gso =

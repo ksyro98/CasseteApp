@@ -9,6 +9,7 @@
     </data>
 
     <ScrollView
+            android:background="@drawable/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".profile.BioBottomSheetFragment">

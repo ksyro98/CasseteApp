@@ -1,5 +1,6 @@
 package com.syroniko.casseteapp.profile
 
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,9 +19,12 @@ import com.syroniko.casseteapp.mainClasses.MainViewModel
 class BioBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         val binding: FragmentBioBottomSheetBinding = DataBindingUtil.inflate(
+
             inflater, R.layout.fragment_bio_bottom_sheet, container, false
         )
+
         val view: View = binding.root
         binding.lifecycleOwner = this.viewLifecycleOwner
 
@@ -35,6 +39,17 @@ class BioBottomSheetFragment : BottomSheetDialogFragment() {
 
 
         return view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogTheme);
+
+
+    }
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+
     }
 
 }
