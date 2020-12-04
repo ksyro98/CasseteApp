@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.firebase.UserDB
+import com.syroniko.casseteapp.mainClasses.MainActivity
+import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.profile.FullScreenImageActivity
 import com.syroniko.casseteapp.profile.ProfileActivity
 import com.syroniko.casseteapp.utils.addImage
@@ -31,6 +34,8 @@ class ChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat)
 
         viewModel.displayedChat = intent.getParcelableExtra(CHAT_DETAILS_EXTRA_NAME) ?: return
+        viewModel.fromNotification = intent.getBooleanExtra(FROM_NOTIFICATION_EXTRA_NAME, false)
+
         viewModel.startListeningToMessages()
 
         name_text_view.text = viewModel.displayedChat.userName
@@ -91,12 +96,24 @@ class ChatActivity : AppCompatActivity() {
     }
 
 
+    override fun onBackPressed() {
+        if (viewModel.fromNotification){
+            MainActivity.startActivity(this, viewModel.uid)
+            finish()
+        }
+        else{
+            super.onBackPressed()
+        }
+    }
+
     companion object {
         private const val CHAT_DETAILS_EXTRA_NAME = "chat details extra name"
+        private const val FROM_NOTIFICATION_EXTRA_NAME = "from notification extra name"
 
-        fun startActivity(context: Context, p: Parcelable) {
+        fun startActivity(context: Context, p: Parcelable, fromNotification: Boolean = false) {
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra(CHAT_DETAILS_EXTRA_NAME, p)
+            intent.putExtra(FROM_NOTIFICATION_EXTRA_NAME, fromNotification)
             context.startActivity(intent)
         }
     }

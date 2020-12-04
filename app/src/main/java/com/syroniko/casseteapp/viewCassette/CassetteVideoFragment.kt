@@ -12,9 +12,7 @@ import com.bumptech.glide.Glide
 
 import com.syroniko.casseteapp.R
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class CassetteVideoFragment : Fragment(), CassetteData {
 
     private val viewModel by activityViewModels<CassetteViewerViewModel>()

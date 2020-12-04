@@ -106,6 +106,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnSuccessListener { documentSnapshot ->
                 user = documentSnapshot.toObject(User::class.java) ?: return@addOnSuccessListener
                 user.uid = uid
+                addFCMTokenWhenNeeded(user)
                 if (user.spotifyToken == SPOTIFY_NO_TOKEN) {
                     val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
                     val request = builder.build()

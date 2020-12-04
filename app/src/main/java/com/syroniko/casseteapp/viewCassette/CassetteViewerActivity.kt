@@ -42,7 +42,6 @@ class CassetteViewerActivity : AppCompatActivity() {
             cassetteViewPager.adapter = pagerAdapter
         }
 
-
     }
 
 

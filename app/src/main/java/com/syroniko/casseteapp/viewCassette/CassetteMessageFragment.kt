@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.cassetteIdExtraName
+import com.syroniko.casseteapp.utils.addImage
 
 
 class CassetteMessageFragment : Fragment(), CassetteData {
@@ -25,8 +27,11 @@ class CassetteMessageFragment : Fragment(), CassetteData {
         val replyButton = view.findViewById<Button>(R.id.replyButton)
         val cassetteCommentTextView = view.findViewById<TextView>(R.id.cassetteCommentTextView)
         val senderNameTextView = view.findViewById<TextView>(R.id.senderNameTextView)
+        val senderImageView = view.findViewById<ImageView>(R.id.senderImageView)
 
         cassetteCommentTextView.text = viewModel.cassetteComment
+
+        addImage(requireContext(), viewModel.senderId, senderImageView)
 
         viewModel.getSender { senderName ->
             senderNameTextView.text = senderName

@@ -4,6 +4,7 @@ import android.util.Log
 import com.syroniko.casseteapp.logInSignUp.CountrySelectSignUpActivity
 import com.syroniko.casseteapp.mainClasses.User
 import com.syroniko.casseteapp.firebasefirebase.USERS
+import com.syroniko.casseteapp.utils.addFCMToken
 
 const val STATUS_ONLINE = "online"
 const val STATUS_OFFLINE = "offline"
@@ -17,6 +18,7 @@ object UserDB: FirestoreDB(USERS) {
         dbCollection.document(item.uid!!).set(item)
             .addOnSuccessListener {
                 Log.d(CountrySelectSignUpActivity::class.java.simpleName, "success")
+                addFCMToken(item.uid!!)
             }
     }
 

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.chatAndMessages.MessagesFragment
+import com.syroniko.casseteapp.firebase.UserDB
 import com.syroniko.casseteapp.profile.ProfileFragment
 import com.syroniko.casseteapp.viewCassette.CASSETTE_VIEWER_REQUEST_CODE
 import com.syroniko.casseteapp.viewCassette.RESULT_FORWARD
@@ -39,6 +40,19 @@ class MainActivity : AppCompatActivity() {
 
         if(intent.hasExtra(USER_MAIN_EXTRA) && intent.getParcelableExtra<User>(USER_MAIN_EXTRA) != null){
             viewModel.user = intent.getParcelableExtra(USER_MAIN_EXTRA)!!
+        }
+        else{
+            UserDB.getDocumentFromId(viewModel.uid)
+                .addOnSuccessListener { documentSnapshot ->
+                    val user = documentSnapshot.toObject(User::class.java)
+                    if(user == null) {
+                        toast("An unexpected error occurred. Please try entering the app again.")
+                        finish()
+                    }
+                    else{
+                        viewModel.user = user
+                    }
+                }
         }
 
 

@@ -20,6 +20,7 @@ class ChatViewModel  @Inject constructor(
     val messages: MutableLiveData<MutableList<Message>> by lazy {
         MutableLiveData<MutableList<Message>>()
     }
+    var fromNotification = false
 
     fun startListeningToMessages(){
         ChatDB.listenToMessages(displayedChat.chatId) { document ->
