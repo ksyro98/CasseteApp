@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View.OnFocusChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -52,8 +53,9 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
        
         val tx = findViewById<TextView>(R.id.login_to_account_string)
-        val customFont = Typeface.createFromAsset(assets, "font/opensansregular.tff")
-        tx.typeface = customFont
+      //  tv.setTypeface(ResourcesCompat.getFont(this, R.font.opensansregular))
+
+
 
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

@@ -51,11 +51,13 @@
     <ImageView
             android:id="@+id/chatBottomNavigationIcon"
             android:layout_width="32dp"
-            android:layout_gravity="center"
             android:layout_height="32dp"
+            android:layout_gravity="center"
 
+            android:layout_marginEnd="50dp"
+
+            android:layout_marginBottom="12dp"
             android:background="@drawable/ic_chatbubbles"
-
             android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/bottom_navigation_bar"
