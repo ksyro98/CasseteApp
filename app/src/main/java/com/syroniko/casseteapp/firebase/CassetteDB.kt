@@ -1,6 +1,7 @@
 package com.syroniko.casseteapp.firebase
 
 import com.syroniko.casseteapp.firebasefirebase.CASSETTES
+import com.syroniko.casseteapp.mainClasses.Cassette
 
 object CassetteDB: FirestoreDB(CASSETTES) {
 
@@ -14,5 +15,16 @@ object CassetteDB: FirestoreDB(CASSETTES) {
             .whereEqualTo("received", false)
             .limit(1)
             .get()
+
+    override fun insert(item: Any) {
+        if (item !is Cassette){
+            return
+        }
+
+        dbCollection.add(item)
+            .addOnSuccessListener { documentReference ->
+                update(documentReference.id, hashMapOf(Pair("id", documentReference.id)))
+            }
+    }
 
 }

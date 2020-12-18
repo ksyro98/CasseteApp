@@ -6,9 +6,13 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.library.baseAdapters.BR
 import com.bumptech.glide.Glide
 import com.syroniko.casseteapp.mainClasses.*
 import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.databinding.ActivityProfileBinding
+import com.syroniko.casseteapp.databinding.ActivitySendTrackBinding
 import com.syroniko.casseteapp.spotifyClasses.SpotifyTrack
 import com.syroniko.casseteapp.spotifyClasses.GENRES
 import com.syroniko.casseteapp.spotifyClasses.mapGenres
@@ -25,7 +29,10 @@ class SendTrackActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_send_track)
+        val binding: ActivitySendTrackBinding = DataBindingUtil.setContentView(this, R.layout.activity_send_track)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         if(intent == null){
             return
@@ -37,8 +44,6 @@ class SendTrackActivity : AppCompatActivity() {
         viewModel.getGenre(::updateGenreTextView)
 
         Glide.with(this).load(viewModel.track.imageUrl).into(trackImageView)
-        trackTitleTextView.text = viewModel.track.trackName
-        artistNameTextView.text = viewModel.track.artistNames.toString()
 
         if (viewModel.track.previewUrl == NO_PREVIEW_URL){
             longToast("This track has no available preview, so only people who use Spotify premium will be able to listen to it.")
@@ -56,6 +61,7 @@ class SendTrackActivity : AppCompatActivity() {
 
     private fun updateGenreTextView(genre: String?){
         val updatedGenre = mapGenres(genre)
+        viewModel.track.genre = updatedGenre
         genreTextView.text = updatedGenre
     }
 

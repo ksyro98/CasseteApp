@@ -25,8 +25,15 @@ data class User(
     val interests: ArrayList<String> = arrayListOf(),
     val cassettesAccepted: ArrayList<String> = arrayListOf(),
     var spotifyToken: String = SPOTIFY_NO_TOKEN,
-    var fcmTokens: ArrayList<String> = arrayListOf()
-): Parcelable
+    var fcmTokens: ArrayList<String> = arrayListOf(),
+    var lastOnline: Long = 0
+): Parcelable {
+
+//    fun getLastOnline(): Double {
+//        return 1.0
+//    }
+
+}
 
 
 // var cassettes: ArrayList<Cassette>?)

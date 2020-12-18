@@ -22,8 +22,10 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.signature.MediaStoreSignature
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageMetadata
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.ktx.storageMetadata
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.databinding.FragmentProfileBinding
 import com.syroniko.casseteapp.mainClasses.MainViewModel
@@ -60,6 +62,8 @@ class ProfileFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        profileRef = Firebase.storage.reference.child("images/${viewModel.uid}.jpg")
+
         version = readFromVersionFile()
         addImage(requireContext(), viewModel.uid, imageView, cropCircle = true, useSignature = true, version = version.toLong())
 
@@ -85,7 +89,7 @@ class ProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, resultIntent)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             val imageBitmap = resultIntent?.extras?.get("data") as Bitmap
-            updateUserImage(imageBitmap)
+            updateUserImage(imageBitmap, viewModel.user.name)
         }
         else if (requestCode == REQUEST_FILE && resultCode == RESULT_OK){
             val uri = resultIntent?.data ?: return
@@ -95,7 +99,7 @@ class ProfileFragment : Fragment() {
             val bitmap = BitmapFactory.decodeFileDescriptor(fd)
             pfd?.close()
 
-            updateUserImage(bitmap)
+            updateUserImage(bitmap, viewModel.user.name)
         }
     }
 
@@ -120,12 +124,17 @@ class ProfileFragment : Fragment() {
         startActivityForResult(intent, REQUEST_FILE)
     }
 
-    private fun updateUserImage(imageBitmap: Bitmap){
+    private fun updateUserImage(imageBitmap: Bitmap, userName: String?){
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
 
         val bitmapData = baos.toByteArray()
         val uploadTask = profileRef.putBytes(bitmapData)
+
+        val metadata = storageMetadata {
+            contentType = "image/jpg"
+            setCustomMetadata("name", userName)
+        }
 
         uploadTask
             .addOnSuccessListener {
@@ -139,6 +148,8 @@ class ProfileFragment : Fragment() {
                     .circleCrop()
                     .signature(MediaStoreSignature("image/jpeg", version.toLong(), 0))
                     .into(imageView)
+
+                profileRef.updateMetadata(metadata)
             }
             .addOnFailureListener {
                 activity?.toast("A problem occurred while updating your profile image.")

@@ -47,7 +47,12 @@ class MainViewModel @Inject constructor(
      * MainActivity Functions
      */
     fun setUserOnline(){
-        UserDB.update(uid, hashMapOf(Pair("status", STATUS_ONLINE)))
+        getTime(viewModelScope){ time ->
+            UserDB.update(uid, hashMapOf(
+                Pair("status", STATUS_ONLINE),
+                Pair("lastOnline", time)
+            ))
+        }
     }
 
     fun setUserOffline(){
@@ -58,12 +63,12 @@ class MainViewModel @Inject constructor(
         val tempValue = cassettes.value ?: return
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             tempValue.removeIf {
-                it.getId() == cassetteId
+                it.id == cassetteId
             }
         }
         else{
             for (cassette in tempValue){
-                if (cassette.getId() == cassetteId){
+                if (cassette.id == cassetteId){
                     tempValue.remove(cassette)
                 }
             }
@@ -94,7 +99,7 @@ class MainViewModel @Inject constructor(
                     CassetteDB.getDocumentFromId(userCassette.toString())
                         .addOnSuccessListener { cassetteDocument ->
                             val cassette = cassetteDocument.toObject(Cassette::class.java)
-                            cassette?.setId(cassetteDocument.id)
+                            cassette?.id = cassetteDocument.id
 
                             if (cassette != null) cassettes.addAndUpdate(cassette)
                         }
@@ -113,18 +118,18 @@ class MainViewModel @Inject constructor(
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
                         val newCassette = document.toObject(Cassette::class.java)
-                        newCassette.setId(document.id)
+                        newCassette.id = document.id
 
                         cassettes.addAndUpdate(newCassette)
 
-                        CassetteDB.update(newCassette.getId(), hashMapOf(Pair("received", true)))
+                        CassetteDB.update(newCassette.id, hashMapOf(Pair("received", true)))
 
                         UserDB.update(
                             uid, hashMapOf(
-                                Pair("cassettes", FieldValue.arrayUnion(newCassette.getId())),
+                                Pair("cassettes", FieldValue.arrayUnion(newCassette.id)),
                                 Pair(
                                     "cassettesAccepted",
-                                    FieldValue.arrayUnion(newCassette.getId())
+                                    FieldValue.arrayUnion(newCassette.id)
                                 ),
                                 Pair("receivedLastCassetteAt", time)
                             )

@@ -22,6 +22,7 @@ object UserDB: FirestoreDB(USERS) {
             }
     }
 
+    @Deprecated("This function should no longer be used. Use getUsersForPossibleReceivers instead.")
     fun getPossibleReceivers(
         genre: String,
         restrictedReceivers: ArrayList<String?>,
@@ -39,6 +40,34 @@ object UserDB: FirestoreDB(USERS) {
                     val userId = document.data["uid"].toString()
                     if (!restrictedReceivers.contains(userId)){
                         possibleReceivers.add(userId)
+                    }
+                }
+
+                successCallback(possibleReceivers)
+
+            }
+            .addOnFailureListener { e ->
+                Log.e(UserDB::class.java.simpleName, "Retrieving Data Error", e)
+            }
+    }
+
+    fun getUsersForPossibleReceivers(
+        genre: String,
+        restrictedReceivers: ArrayList<String?>,
+        successCallback: (ArrayList<User>) -> Unit
+    ){
+        dbCollection
+            .orderBy("receivedLastCassetteAt")
+            .whereArrayContains("genres", genre)
+            .limit(10)
+            .get()
+            .addOnSuccessListener { documents ->
+                val possibleReceivers = arrayListOf<User>()
+
+                documents.map { document ->
+                    val userId = document.data["uid"].toString()
+                    if (!restrictedReceivers.contains(userId)){
+                        possibleReceivers.add(document.toObject(User::class.java))
                     }
                 }
 

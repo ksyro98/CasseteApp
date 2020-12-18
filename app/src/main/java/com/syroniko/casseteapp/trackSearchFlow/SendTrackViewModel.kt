@@ -12,6 +12,8 @@ import com.syroniko.casseteapp.spotifyClasses.SpotifyTrack
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.CassetteDB
 import com.syroniko.casseteapp.firebase.UserDB
+import com.syroniko.casseteapp.mainClasses.NO_RECEIVER_YET
+import com.syroniko.casseteapp.utils.startCassetteSendingAlgorithm
 import javax.inject.Inject
 
 class SendTrackViewModel @Inject constructor(
@@ -32,22 +34,15 @@ class SendTrackViewModel @Inject constructor(
 
 
     fun sendCassette(comment: String, callback: () -> Unit){
-        UserDB.getPossibleReceivers(track.genre!!, restrictedReceivers) { possibleReceivers ->
-            val cassette = Cassette(
-                uid,
-                track,
-                comment,
-                track.genre,
-                possibleReceivers,
-                restrictedReceivers)
+        val cassette = Cassette(
+            uid,
+            track,
+            comment,
+            track.genre,
+            NO_RECEIVER_YET,
+            restrictedReceivers
+        )
 
-            user.songsSent++
-            CassetteDB.insert(cassette)
-            if(uid != null) {
-                UserDB.update(uid, hashMapOf(Pair("songsSent", FieldValue.increment(1))))
-            }
-
-            callback()
-        }
+        startCassetteSendingAlgorithm(cassette, callback)
     }
 }

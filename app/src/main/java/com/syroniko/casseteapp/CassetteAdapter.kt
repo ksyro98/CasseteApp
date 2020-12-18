@@ -40,7 +40,7 @@ class CassetteAdapter @Inject constructor(@ActivityContext private val context: 
 
         holder.textView.setOnClickListener {
             val intent = Intent(context, CassetteViewerActivity::class.java)
-            intent.putExtra(cassetteIdExtraName, cassettes[position].getId())
+            intent.putExtra(cassetteIdExtraName, cassettes[position].id)
             intent.putExtra(userIdExtraName, cassettes[position].senderId)
 
             (context as AppCompatActivity).startActivityForResult(intent, CASSETTE_VIEWER_REQUEST_CODE)

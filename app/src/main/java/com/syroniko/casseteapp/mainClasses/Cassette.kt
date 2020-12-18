@@ -8,23 +8,26 @@ import java.util.*
 
 //import java.time.LocalDateTime
 
+const val NO_RECEIVER_YET = "no_receiver_yet"
+
 @Parcelize
 data class Cassette(
     val senderId: String? = "",
     val track: SpotifyTrack = SpotifyTrack(),
     val comment: String = "",
     val genre: String? = "",
-    val possibleReceivers: ArrayList<String> = arrayListOf(),
+//    val possibleReceivers: ArrayList<String> = arrayListOf(),
+    var receiver: String = "",
     val restrictedReceivers: ArrayList<String?> = arrayListOf(),
-    var received: Boolean = false
+    var received: Boolean = false,
+    var id: String = ""
 ) : Parcelable{
 
-    @IgnoredOnParcel
-    private var cassetteId: String = ""
-
-    fun getId() = cassetteId
-    fun setId(id: String) {
-        cassetteId = id
-    }
-
+//    @IgnoredOnParcel
+//    private var cassetteId: String = ""
+//
+//    fun getId() = cassetteId
+//    fun setId(id: String) {
+//        cassetteId = id
+//    }
 }
