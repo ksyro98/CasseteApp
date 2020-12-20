@@ -1,5 +1,6 @@
 package com.syroniko.casseteapp.utils
 
+import android.util.Log
 import com.google.common.math.IntMath.pow
 import com.google.firebase.firestore.FieldValue
 import com.syroniko.casseteapp.chatAndMessages.getTime
@@ -59,20 +60,31 @@ class CassetteSender(
     }
 
     private fun f(input: Long): Double {
-        var returnValue = 0.0
+        val scaledInput = input / pow(10, 5)
+        val scaledCurrentTime = System.currentTimeMillis() / pow(10, 5)
+        val difference = scaledCurrentTime - scaledInput
 
-        returnValue = when {
-            input <= oneDay -> {
+        val returnValue = when {
+            difference <= oneDay -> {
+                Log.d("CassetteSender", "1")
                 7500.0
             }
-            input <= oneWeek -> {
-                -0.675 * input + 8083
+            difference <= oneWeek -> {
+                Log.d("CassetteSender", "2")
+                -0.675 * difference + 8083
             }
-            input <= oneMonth -> {
-                -0.148 * input + 4896
+            difference <= oneMonth -> {
+                Log.d("CassetteSender", "3")
+                -0.148 * difference + 4896
             }
             else -> {
-                26298000 / (input.toDouble())
+                Log.d("CassetteSender", "4")
+                if (input == 0.toLong()){
+                    0.toDouble()
+                }
+                else{
+                    26298000 / (difference.toDouble())
+                }
             }
         }
 
