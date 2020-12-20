@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import com.android.volley.toolbox.Volley
 import com.google.firebase.firestore.FieldValue
 import com.syroniko.casseteapp.mainClasses.Cassette
@@ -13,7 +14,7 @@ import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.CassetteDB
 import com.syroniko.casseteapp.firebase.UserDB
 import com.syroniko.casseteapp.mainClasses.NO_RECEIVER_YET
-import com.syroniko.casseteapp.utils.startCassetteSendingAlgorithm
+import com.syroniko.casseteapp.utils.CassetteSender
 import javax.inject.Inject
 
 class SendTrackViewModel @Inject constructor(
@@ -43,6 +44,7 @@ class SendTrackViewModel @Inject constructor(
             restrictedReceivers
         )
 
-        startCassetteSendingAlgorithm(cassette, callback)
+        val cassetteSender = CassetteSender(cassette, viewModelScope, callback)
+        cassetteSender.startCassetteSendingAlgorithm()
     }
 }

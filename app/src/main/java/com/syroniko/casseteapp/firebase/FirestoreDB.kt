@@ -26,6 +26,13 @@ abstract class FirestoreDB(private val collectionName: String){
         db.collection(collectionName).add(item)
     }
 
+    open fun insertWithCallback(item: Any, callback: (String) -> Unit){
+        db.collection(collectionName).add(item)
+            .addOnSuccessListener {
+                callback(it.id)
+            }
+    }
+
     open fun delete(id: String) {
         db.collection(collectionName).document(id).delete()
     }

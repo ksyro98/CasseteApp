@@ -16,7 +16,6 @@ import com.syroniko.casseteapp.firebase.*
 import com.syroniko.casseteapp.utils.addAndUpdate
 import javax.inject.Inject
 
-private const val THIRTY_MINS = 1800000
 
 class MainViewModel @Inject constructor(
     application: Application,
@@ -31,11 +30,11 @@ class MainViewModel @Inject constructor(
         MutableLiveData<MutableList<DisplayedChat>>()
     }
     var user: User = User()
-        set(value) {
-            field = value
-
-            getNewCassette()
-        }
+//        set(value) {
+//            field = value
+//
+//            getNewCassette()
+//        }
 
 
     init {
@@ -105,42 +104,6 @@ class MainViewModel @Inject constructor(
                         }
                 }
             }
-    }
-
-
-    private fun getNewCassette() {
-        getTime(viewModelScope) { time ->
-            if (time - user.receivedLastCassetteAt < THIRTY_MINS) {
-                return@getTime
-            }
-
-            CassetteDB.getOneCassetteForUser(uid)
-                .addOnSuccessListener { documents ->
-                    for (document in documents) {
-                        val newCassette = document.toObject(Cassette::class.java)
-                        newCassette.id = document.id
-
-                        cassettes.addAndUpdate(newCassette)
-
-                        CassetteDB.update(newCassette.id, hashMapOf(Pair("received", true)))
-
-                        UserDB.update(
-                            uid, hashMapOf(
-                                Pair("cassettes", FieldValue.arrayUnion(newCassette.id)),
-                                Pair(
-                                    "cassettesAccepted",
-                                    FieldValue.arrayUnion(newCassette.id)
-                                ),
-                                Pair("receivedLastCassetteAt", time)
-                            )
-                        )
-
-                    }
-                }
-                .addOnFailureListener {
-                    Log.e(MainActivity::class.java.simpleName, "Retrieving Data Error", it)
-                }
-        }
     }
 
 

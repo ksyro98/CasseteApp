@@ -16,7 +16,18 @@ object CassetteDB: FirestoreDB(CASSETTES) {
             .limit(1)
             .get()
 
-    override fun insert(item: Any) {
+//    override fun insert(item: Any) {
+//        if (item !is Cassette){
+//            return
+//        }
+//
+//        dbCollection.add(item)
+//            .addOnSuccessListener { documentReference ->
+//                update(documentReference.id, hashMapOf(Pair("id", documentReference.id)))
+//            }
+//    }
+
+    override fun insertWithCallback(item: Any, callback: (String) -> Unit) {
         if (item !is Cassette){
             return
         }
@@ -24,7 +35,7 @@ object CassetteDB: FirestoreDB(CASSETTES) {
         dbCollection.add(item)
             .addOnSuccessListener { documentReference ->
                 update(documentReference.id, hashMapOf(Pair("id", documentReference.id)))
+                callback(documentReference.id)
             }
     }
-
 }
