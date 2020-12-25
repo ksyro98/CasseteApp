@@ -1,8 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/cassetteTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"/>
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:layout_height="120dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/cassette_main_feed_curvy_background"
+        android:orientation="horizontal">
+
+    <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="32dp"
+            android:id="@+id/profile_image_recent_cassettes_main_recycler"/>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_height="wrap_content"
+            android:id="@+id/profile_song_name_textview_recent_cassettes_main_recycler"
+                android:textColor="#000000"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"
+            android:id="@+id/profile_song_artist_textview_recent_cassettes_main_recycler"
+                android:textColor="@color/darkGrayLetter"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="24dp"
+            android:textColor="@color/darkGrayLetter"
+            android:id="@+id/profile_cassette_note_textview_recent_cassettes_main_recycler"/>
+</LinearLayout>
+</LinearLayout>

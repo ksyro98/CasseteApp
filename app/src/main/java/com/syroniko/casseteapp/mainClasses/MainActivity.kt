@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.chatAndMessages.MessagesFragment
 import com.syroniko.casseteapp.firebase.UserDB
@@ -35,7 +37,6 @@ const val USER_MAIN_EXTRA = "user main extra"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     private lateinit var selectedFragment: Fragment
     private val viewModel by viewModels<MainViewModel>()
 
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity() {
             selectedFragment = ProfileFragment()
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_fragment_container, selectedFragment).commit()
+
         }
 
         if(!SpotifyAuthRequest.isAuthorized(this) && !hasDeniedSpotifyConnection(this)){
@@ -97,6 +99,22 @@ class MainActivity : AppCompatActivity() {
         if (isFirstTime(this)){
             markFirstTime(this)
         }
+        //
+        //
+        //
+        //
+        //
+
+
+
+
+        //
+        //
+        //
+        //
+        //
+        //
+        //
     }
 
     override fun onStart() {

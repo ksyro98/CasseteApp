@@ -29,6 +29,9 @@ class MainViewModel @Inject constructor(
     val chats: MutableLiveData<MutableList<DisplayedChat>> by lazy {
         MutableLiveData<MutableList<DisplayedChat>>()
     }
+    val friends: MutableLiveData<MutableList<User>> by lazy {
+        MutableLiveData<MutableList<User>>()
+    }
     var user: User = User()
 //        set(value) {
 //            field = value
@@ -106,6 +109,14 @@ class MainViewModel @Inject constructor(
             }
     }
 
+    private fun getFriendsForStories(){
+
+
+            }
+
+
+
+    
 
     /**
      * MessagesFragment functions

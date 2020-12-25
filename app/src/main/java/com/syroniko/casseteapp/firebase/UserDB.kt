@@ -12,7 +12,7 @@ const val STATUS_OFFLINE = "offline"
 object UserDB: FirestoreDB(USERS) {
 
     override fun insert(item: Any) {
-        if (item !is User || item.uid == null){
+        if (item !is User || item.uid == null) {
             return
         }
         dbCollection.document(item.uid!!).set(item)
@@ -27,7 +27,7 @@ object UserDB: FirestoreDB(USERS) {
         genre: String,
         restrictedReceivers: ArrayList<String?>,
         successCallback: (ArrayList<String>) -> Unit
-    ){
+    ) {
         dbCollection
             .orderBy("receivedLastCassetteAt")
             .whereArrayContains("genres", genre)
@@ -38,7 +38,7 @@ object UserDB: FirestoreDB(USERS) {
 
                 documents.map { document ->
                     val userId = document.data["uid"].toString()
-                    if (!restrictedReceivers.contains(userId)){
+                    if (!restrictedReceivers.contains(userId)) {
                         possibleReceivers.add(userId)
                     }
                 }
@@ -78,6 +78,18 @@ object UserDB: FirestoreDB(USERS) {
                 Log.e(UserDB::class.java.simpleName, "Retrieving Data Error", e)
             }
     }
+
+    fun getFriends(
+        successCallback: (ArrayList<*>) -> Unit
+    ) {
+        UserDB.getDocumentFromId(Auth.getUid().toString())
+            .addOnSuccessListener { documentSnapshot ->
+                val userFriends = documentSnapshot["friends"] as ArrayList<*>
+                successCallback(userFriends)
+            }
+
+    }
+
 
     override fun getId(): String {
         return USERS
