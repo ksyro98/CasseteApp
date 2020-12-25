@@ -64,9 +64,8 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
                             if (uid != null) {
                                 user.uid = uid
                                 UserDB.insert(user)
-                                val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
-                                val request = builder.build()
-                                AuthenticationClient.openLoginActivity(this@CountrySelectSignUpActivity, SPOTIFY_REQUEST_CODE, request)
+                                MainActivity.startActivity(this@CountrySelectSignUpActivity, user.uid, user)
+                                finish()
                             }
 
                         }
@@ -84,18 +83,6 @@ class CountrySelectSignUpActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SPOTIFY_REQUEST_CODE){
-            val response = AuthenticationClient.getResponse(resultCode, data)
-            onSpotifyResponse(response) { token ->
-                user.spotifyToken = token
-                UserDB.insert(user)
-                MainActivity.startActivity(this, user.uid, user)
-                finish()
-            }
-        }
-    }
 
     companion object {
         private const val COUNTRY_USER_EXTRA = "genres user extra"

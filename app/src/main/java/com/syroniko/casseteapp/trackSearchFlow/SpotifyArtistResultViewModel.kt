@@ -7,7 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.android.volley.toolbox.Volley
 import com.syroniko.casseteapp.mainClasses.User
 import com.syroniko.casseteapp.spotifyClasses.SpotifyAlbum
-import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
+import com.syroniko.casseteapp.utils.SpotifyAuthRequest
+import net.openid.appauth.AuthorizationService
 import javax.inject.Inject
 
 class SpotifyArtistResultViewModel @Inject constructor(
@@ -21,12 +22,14 @@ class SpotifyArtistResultViewModel @Inject constructor(
     var user: User = User()
 
     fun getSpotifyAlbums(callback: (albumList: ArrayList<SpotifyAlbum>) -> Unit){
-        if (query == "" || user.spotifyToken == SPOTIFY_NO_TOKEN){
+        if (query == ""){
             return
         }
 
-        searchAlbum(query, user.spotifyToken, queue, albumList){
-            callback(albumList)
+        SpotifyAuthRequest.getToken(getApplication()){ accessToken ->
+            searchAlbum(query, accessToken, queue, albumList){
+                callback(albumList)
+            }
         }
     }
 }

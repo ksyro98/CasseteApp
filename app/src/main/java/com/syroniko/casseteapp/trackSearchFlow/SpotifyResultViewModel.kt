@@ -1,6 +1,7 @@
 package com.syroniko.casseteapp.trackSearchFlow
 
 import android.app.Application
+import android.util.Log
 import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
@@ -8,7 +9,11 @@ import com.android.volley.toolbox.Volley
 import com.syroniko.casseteapp.mainClasses.User
 import com.syroniko.casseteapp.spotifyClasses.SpotifyResult
 import com.syroniko.casseteapp.spotifyClasses.SpotifySeparator
-import com.syroniko.casseteapp.utils.SPOTIFY_NO_TOKEN
+import com.syroniko.casseteapp.utils.SpotifyAuthRequest
+import net.openid.appauth.AuthState
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationService
+import net.openid.appauth.AuthorizationService.TokenResponseCallback
 import javax.inject.Inject
 
 
@@ -27,18 +32,20 @@ class SpotifyResultViewModel @Inject constructor(
 
 
     fun getSpotifyData(callback: (ArrayList<SpotifyResult>) -> Unit){
-        if (searchQuery == "" || user.spotifyToken == SPOTIFY_NO_TOKEN){
+        if (searchQuery == ""){
             return
         }
 
-        val trackQuery = prepareTrackQuery(searchQuery)
-        searchTrack(trackQuery, queue, user.spotifyToken, tracks) {
-            updateResultsList(callback)
-        }
+        SpotifyAuthRequest.getToken(getApplication()) { accessToken ->
+            val trackQuery = prepareTrackQuery(searchQuery)
+            searchTrack(trackQuery, queue, accessToken, tracks) {
+                updateResultsList(callback)
+            }
 
-        val artistQuery = prepareArtistQuery(searchQuery)
-        searchArtist(artistQuery, queue, user.spotifyToken, artists) {
-            updateResultsList(callback)
+            val artistQuery = prepareArtistQuery(searchQuery)
+            searchArtist(artistQuery, queue, accessToken, artists) {
+                updateResultsList(callback)
+            }
         }
     }
 

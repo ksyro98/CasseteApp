@@ -1,25 +1,21 @@
 package com.syroniko.casseteapp.logInSignUp
 
+import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.View.OnFocusChangeListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.spotify.sdk.android.authentication.AuthenticationClient
-import com.spotify.sdk.android.authentication.AuthenticationRequest
-import com.spotify.sdk.android.authentication.AuthenticationResponse
 import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.mainClasses.MainActivity
 import com.syroniko.casseteapp.mainClasses.User
@@ -29,6 +25,7 @@ import com.syroniko.casseteapp.firebase.AuthCallback
 import com.syroniko.casseteapp.firebase.UserDB
 import com.syroniko.casseteapp.utils.*
 import kotlinx.android.synthetic.main.activity_login.*
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 const val RC_SIGN_IN = 543
 
@@ -66,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         loginTextViewButton.setOnClickListener {
+            hideKeyboard(it)
             if (loginEmail.text.toString() == "" || loginPassword.text.toString() == "") {
                 toast("Please fill your account details.")
                 return@setOnClickListener
@@ -76,6 +74,7 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInButton.setOnClickListener {
             signInWithGoogle()
+            hideKeyboard(it)
         }
 
         forgotPasswordTextView.setOnClickListener {
@@ -109,14 +108,8 @@ class LoginActivity : AppCompatActivity() {
                 user = documentSnapshot.toObject(User::class.java) ?: return@addOnSuccessListener
                 user.uid = uid
                 addFCMTokenWhenNeeded(user)
-                if (user.spotifyToken == SPOTIFY_NO_TOKEN) {
-                    val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
-                    val request = builder.build()
-                    AuthenticationClient.openLoginActivity(this, SPOTIFY_REQUEST_CODE, request)
-                }
-                else {
-                    MainActivity.startActivity(this, uid, user)
-                }
+                MainActivity.startActivity(this, uid, user)
+                finish()
             }
     }
 
@@ -142,17 +135,6 @@ class LoginActivity : AppCompatActivity() {
             }
             catch (e: ApiException) {
                 Log.e("TAG", "Google sign in failed", e)
-            }
-        }
-        else if(requestCode == SPOTIFY_REQUEST_CODE){
-            val response = AuthenticationClient.getResponse(resultCode, data)
-            onSpotifyResponse(response) { token ->
-                user.spotifyToken = token
-                if (user.uid != null) {
-                    UserDB.update(user.uid!!, hashMapOf(Pair("spotifyToken", token)))
-                }
-                MainActivity.startActivity(this, user.uid, user)
-                finish()
             }
         }
     }

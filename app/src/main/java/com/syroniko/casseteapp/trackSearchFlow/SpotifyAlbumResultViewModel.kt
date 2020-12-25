@@ -7,6 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.android.volley.toolbox.Volley
 import com.syroniko.casseteapp.mainClasses.User
 import com.syroniko.casseteapp.spotifyClasses.SpotifyResult
+import com.syroniko.casseteapp.utils.SpotifyAuthRequest
+import net.openid.appauth.AuthorizationService
 import javax.inject.Inject
 
 class SpotifyAlbumResultViewModel @Inject constructor(
@@ -26,8 +28,10 @@ class SpotifyAlbumResultViewModel @Inject constructor(
     private val queue = Volley.newRequestQueue(application)
 
     fun getSpotifyData(callback: (ArrayList<SpotifyResult>) -> Unit){
-        searchTracksFromAlbum(query, queue, user.spotifyToken, albumImageUrl, trackList) {
-            callback(trackList)
+        SpotifyAuthRequest.getToken(getApplication()) { accessToken ->
+            searchTracksFromAlbum(query, queue, accessToken, albumImageUrl, trackList) {
+                callback(trackList)
+            }
         }
     }
 }

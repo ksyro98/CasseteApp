@@ -149,6 +149,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
+    implementation 'net.openid:appauth:0.7.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

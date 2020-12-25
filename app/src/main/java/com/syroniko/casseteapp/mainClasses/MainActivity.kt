@@ -3,6 +3,7 @@ package com.syroniko.casseteapp.mainClasses
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -12,11 +13,15 @@ import com.syroniko.casseteapp.*
 import com.syroniko.casseteapp.chatAndMessages.MessagesFragment
 import com.syroniko.casseteapp.firebase.UserDB
 import com.syroniko.casseteapp.profile.ProfileFragment
+import com.syroniko.casseteapp.utils.*
 import com.syroniko.casseteapp.viewCassette.CASSETTE_VIEWER_REQUEST_CODE
 import com.syroniko.casseteapp.viewCassette.RESULT_FORWARD
 import com.syroniko.casseteapp.viewCassette.RESULT_RESPONSE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationResponse
+import net.openid.appauth.AuthorizationService
 
 
 const val spotifyQueryExtraName = "Spotify Query Extra Name"
@@ -55,7 +60,6 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
-
         val fab: View=findViewById(R.id.mainFab)
         fab.setOnClickListener{
             CreateCassetteActivity.startActivity(this, viewModel.user)
@@ -84,6 +88,14 @@ class MainActivity : AppCompatActivity() {
             selectedFragment = ProfileFragment()
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_fragment_container, selectedFragment).commit()
+        }
+
+        if(!SpotifyAuthRequest.isAuthorized(this) && !hasDeniedSpotifyConnection(this)){
+            SpotifyDialogFragment().show(supportFragmentManager, SPOTIFY_FRAGMENT_TAG)
+        }
+
+        if (isFirstTime(this)){
+            markFirstTime(this)
         }
     }
 
@@ -119,6 +131,27 @@ class MainActivity : AppCompatActivity() {
                 val cassetteId = data.getStringExtra(cassetteIdExtraName)
 
                 viewModel.updateUserOnCassetteAction(null, cassetteId, false)
+            }
+        }
+        else if(requestCode == AUTH_REQUEST_CODE && data != null){
+            val response = AuthorizationResponse.fromIntent(data)
+            val ex = AuthorizationException.fromIntent(data)
+
+            if (response != null){
+                SpotifyAuthRequest.updateAuth(this, response, ex)
+
+                val authService = AuthorizationService(this)
+
+                authService.performTokenRequest(response.createTokenExchangeRequest()){ resp, ex2 ->
+                    if (resp != null) {
+                        SpotifyAuthRequest.updateAuth(this, resp, ex2)
+                    }
+                }
+
+            }
+
+            if(ex != null){
+                Log.e(MainActivity::class.java.simpleName, "Auth exception", ex)
             }
         }
     }

@@ -2,7 +2,6 @@ package com.syroniko.casseteapp.startingActivities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
@@ -56,22 +55,6 @@ class SplashActivity: AppCompatActivity() {
         loadAndStart()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SPOTIFY_REQUEST_CODE) {
-            val response = AuthenticationClient.getResponse(resultCode, data)
-            onSpotifyResponse(response) { token ->
-                user.spotifyToken = token
-                if (uid != null) {
-                    UserDB.update(uid, hashMapOf(Pair("spotifyToken", token)))
-                }
-                MainActivity.startActivity(this, uid, user)
-                finish()
-            }
-        }
-    }
-
     private fun loadAndStart(){
         if (uid == null){
             WelcomingActivity.startActivity(this)
@@ -83,25 +66,15 @@ class SplashActivity: AppCompatActivity() {
                     user = documentSnapshot.toObject(User::class.java) ?: return@addOnSuccessListener
                     user.uid = uid
                     addFCMTokenWhenNeeded(user)
-                    if (user.spotifyToken == SPOTIFY_NO_TOKEN){
-                        getSpotifyToken()
+                    if(::displaedChat.isInitialized){
+                        ChatActivity.startActivity(this, displaedChat, true)
                     }
-                    else {
-                        if(::displaedChat.isInitialized){
-                            ChatActivity.startActivity(this, displaedChat, true)
-                        }
-                        else{
-                            MainActivity.startActivity(this, uid, user)
-                        }
-                        finish()
+                    else{
+                        MainActivity.startActivity(this, uid, user)
                     }
+                    finish()
                 }
         }
     }
 
-    private fun getSpotifyToken(){
-        val builder = AuthenticationRequest.Builder(CLIENT_ID, AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
-        val request = builder.build()
-        AuthenticationClient.openLoginActivity(this, SPOTIFY_REQUEST_CODE, request)
-    }
 }
