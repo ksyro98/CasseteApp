@@ -36,6 +36,7 @@ class CassetteAdapter @Inject constructor(@ActivityContext private val context: 
         val artistNameTextView: TextView = view.findViewById(R.id.profile_song_artist_textview_recent_cassettes_main_recycler)
         val noteTextView: TextView = view.findViewById(R.id.profile_cassette_note_textview_recent_cassettes_main_recycler)
         val profileimageView: ImageView = view.findViewById(R.id.profile_image_recent_cassettes_main_recycler)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CassetteViewHolder {
@@ -52,18 +53,20 @@ class CassetteAdapter @Inject constructor(@ActivityContext private val context: 
             stringBuilderName.setCharAt(82, '.')
             stringBuilderName.setCharAt(83, '.')
             stringBuilderName.setCharAt(81, '.')
-            stringBuilderName.delete(84,stringBuilderName.length)
+            stringBuilderName.delete(84, stringBuilderName.length)
+        }
             holder.noteTextView.text = stringBuilderName.toString()
             Glide.with(context).load(cassettes[position].track.imageUrl)
                 .into(holder.profileimageView)
-//        holder.textView.setOnClickListener {
-//            val intent = Intent(context, CassetteViewerActivity::class.java)
-//            intent.putExtra(cassetteIdExtraName, cassettes[position].getId())
-//            intent.putExtra(userIdExtraName, cassettes[position].senderId)
-//
-//            (context as AppCompatActivity).startActivityForResult(intent, CASSETTE_VIEWER_REQUEST_CODE)
-//        }
+        holder.profileimageView.setOnClickListener {
+            val intent = Intent(context, CassetteViewerActivity::class.java)
+            intent.putExtra(cassetteIdExtraName, cassettes[position].id)
+            intent.putExtra(userIdExtraName, cassettes[position].senderId)
+
+            (context as AppCompatActivity).startActivityForResult(intent, CASSETTE_VIEWER_REQUEST_CODE)
         }
-    }
+        }
+
+
     override fun getItemCount() = cassettes.size
 }

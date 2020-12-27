@@ -1,5 +1,7 @@
 package com.syroniko.casseteapp
 
+import com.syroniko.casseteapp.CassetteAdapter
+import com.syroniko.casseteapp.R
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater

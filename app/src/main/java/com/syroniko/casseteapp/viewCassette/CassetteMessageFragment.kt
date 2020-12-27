@@ -23,8 +23,8 @@ class CassetteMessageFragment : Fragment(), CassetteData {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_cassette_message, container, false)
 
-        val forwardButton = view.findViewById<Button>(R.id.forwardButton)
-        val replyButton = view.findViewById<Button>(R.id.replyButton)
+        val forwardButton = view.findViewById<TextView>(R.id.forwardButton)
+        val replyButton = view.findViewById<TextView>(R.id.replyButton)
         val cassetteCommentTextView = view.findViewById<TextView>(R.id.cassetteCommentTextView)
         val senderNameTextView = view.findViewById<TextView>(R.id.senderNameTextView)
         val senderImageView = view.findViewById<ImageView>(R.id.senderImageView)

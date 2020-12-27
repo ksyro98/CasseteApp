@@ -1,60 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:background="@color/lightGray"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".viewCassette.CassetteMessageFragment">
+    <androidx.core.widget.NestedScrollView
+    android:id="@+id/nestedScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.060000002">
+   <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+           android:background="@color/white"
+           android:layout_marginTop="16dp"
+           android:paddingBottom="64dp"
+android:layout_margin="16dp"   android:orientation="vertical">
+       <RelativeLayout
+               android:layout_width="match_parent"
+               android:id="@+id/relativehelperfragmentcassetttemessage"
+               android:layout_height="match_parent">
 
-    <ImageView
-            android:id="@+id/senderImageView"
-            android:layout_width="266dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="64dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+       <ImageView
+               android:id="@+id/senderImageView"
+               android:layout_width="64dp"
+               android:layout_height="64dp"
+               android:layout_marginTop="16dp"
+               android:layout_marginRight="16dp"
+               android:layout_toLeftOf="@id/helper_linear_fragment_cassette"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent" />
+           <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:id="@+id/helper_linear_fragment_cassette"
+                   android:layout_height="wrap_content"
+               android:orientation="vertical"
+                   android:layout_marginTop="32dp"
+               android:layout_alignParentRight="true"
+               android:layout_marginRight="64dp">
 
-    <TextView
-            android:id="@+id/senderNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/senderImageView" />
 
-    <TextView
-            android:id="@+id/cassetteCommentTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+               <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:textColor="@color/darkGrayLetter"
+                       android:textSize="16sp"
+                   android:id="@+id/senderNameTextView"/>
+               <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                   android:textSize="14sp"
+                   android:layout_marginTop="4dp"
+                   android:text="13 13 13 13 "/>
 
-    <Button
-            android:id="@+id/replyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Reply"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+           </LinearLayout>
 
-    <Button
-            android:id="@+id/forwardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Forward"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+<FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@id/helper_linear_fragment_cassette"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="24dp">
+       <TextView
+               android:id="@+id/cassetteCommentTextView"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:paddingBottom="480dp"
+               android:layout_marginTop="64dp"
+               android:layout_margin="8dp"
+               android:layout_below="@id/helper_linear_fragment_cassette"
+               android:textColor="@color/darkGrayLetter"
+               android:textSize="20sp"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent" />
+
+</FrameLayout>
+       <TextView
+               android:id="@+id/replyButton"
+               android:layout_width="100dp"
+               android:background="@drawable/bluegreenbutton"
+               android:gravity="center"
+               android:textColor="@color/white"
+               android:layout_height="40dp"
+               android:layout_alignParentBottom="true"
+               android:layout_marginStart="32dp"
+               android:layout_marginEnd="32dp"
+               android:layout_below="@+id/cassetteCommentTextView"
+               android:layout_marginBottom="48dp"
+               android:text="Reply"
+               />
+
+       <TextView
+               android:id="@+id/forwardButton"
+               android:layout_width="100dp"
+               android:layout_height="40dp"
+               android:layout_alignParentEnd="true"
+               android:layout_alignParentBottom="true"
+               android:layout_marginEnd="32dp"
+               android:layout_marginRight="32dp"
+               android:background="@drawable/bluegreenbutton"
+               android:gravity="center"
+               android:text="Forward"
+               android:layout_below="@id/cassetteCommentTextView"
+               android:textColor="@color/white" />
+       </RelativeLayout>
+   </RelativeLayout>
+      </androidx.core.widget.NestedScrollView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

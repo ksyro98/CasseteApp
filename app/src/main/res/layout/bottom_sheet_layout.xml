@@ -26,7 +26,10 @@
               app:layout_constraintTop_toTopOf="parent"
               app:layout_constraintVertical_bias="0.060000002">
 
-
+<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+>
          <EditText
                  android:id="@+id/leave_a_message_edit_text_bottom_sheet"
                  android:layout_width="match_parent"
@@ -36,26 +39,26 @@
                  android:hint="Tap here to type"
                  android:paddingBottom="240dp" />
 
+         <TextView
+         android:id="@+id/message_create_cassette_is_done_tv"
+         android:layout_width="100dp"
+         android:layout_height="40dp"
+         android:layout_marginTop="32dp"
+         android:layout_marginEnd="32dp"
+         android:layout_marginBottom="32dp"
+         android:background="@drawable/bluegreenbutton"
+                 android:layout_alignParentRight="true"
+         android:gravity="center"
+                 android:layout_below="@+id/leave_a_message_edit_text_bottom_sheet"
+         android:text="Done"
+         android:textColor="@color/white"
+         android:textSize="16sp"
+
+         android:textStyle="bold"
+         />
+</RelativeLayout>
       </androidx.core.widget.NestedScrollView>
 
-      <TextView
-              android:id="@+id/message_create_cassette_is_done_tv"
-              android:layout_width="100dp"
-              android:layout_height="40dp"
-              android:layout_marginTop="32dp"
-              android:layout_marginEnd="32dp"
-              android:layout_marginBottom="32dp"
-              android:background="@drawable/bluegreenbutton"
-              android:gravity="center"
-              android:text="Done"
-              android:textColor="@color/white"
-              android:textSize="16sp"
-              android:textStyle="bold"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintHorizontal_bias="1.0"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintTop_toBottomOf="@+id/nestedScrollView"
-              app:layout_constraintVertical_bias="0.0" />
+
    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

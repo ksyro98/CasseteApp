@@ -30,6 +30,7 @@ class StoryAdapter  internal constructor(
     private val friendIds :ArrayList<String>
 ) : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
     init{
+        Log.v("POUTZAROZAAAA",friendIds.toString())
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): StoryViewHolder {
