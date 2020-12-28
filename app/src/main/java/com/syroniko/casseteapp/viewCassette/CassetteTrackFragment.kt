@@ -18,27 +18,27 @@ class CassetteTrackFragment : Fragment(), CassetteData {
         val view = inflater.inflate(R.layout.fragment_cassette_track, container, false)
 
         val spotifyPlayButton: Button = view.findViewById(R.id.spotifyPlayButton)
-        val replyButton: Button = view.findViewById(R.id.replyButton)
-        val forwardButton: Button = view.findViewById(R.id.forwardButton)
+    //    val replyButton: Button = view.findViewById(R.id.replyButton)
+      //  val forwardButton: Button = view.findViewById(R.id.forwardButton)
 
         spotifyPlayButton.isEnabled = viewModel.shouldEnableButton
 
         spotifyPlayButton.setOnClickListener {
             viewModel.spotifyConnect()
         }
-
-        replyButton.setOnClickListener {
-            viewModel.sendReplyMessage()
-            viewModel.updateOnReply()
-
-            (activity as CassetteViewerActivity).finishWithResult(RESULT_RESPONSE)
-        }
-
-        forwardButton.setOnClickListener {
-            viewModel.updateOnForward()
-
-            (activity as CassetteViewerActivity).finishWithResult(RESULT_FORWARD)
-        }
+//
+//        replyButton.setOnClickListener {
+//            viewModel.sendReplyMessage()
+//            viewModel.updateOnReply()
+//
+//            (activity as CassetteViewerActivity).finishWithResult(RESULT_RESPONSE)
+//        }
+//
+//        forwardButton.setOnClickListener {
+//            viewModel.updateOnForward()
+//
+//            (activity as CassetteViewerActivity).finishWithResult(RESULT_FORWARD)
+//        }
 
         return view
     }
