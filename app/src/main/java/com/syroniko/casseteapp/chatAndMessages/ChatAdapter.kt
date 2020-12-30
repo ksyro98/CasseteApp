@@ -48,7 +48,8 @@ class ChatAdapter @Inject constructor(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.showMessage.text = messages[position].text
-        holder.timestampTv.visibility = View.INVISIBLE
+        holder.timestampTv.visibility = View.GONE
+        Glide.with(context).load("").into(holder.userImage)
 
         val sdf = SimpleDateFormat("hh:mm dd/MM/yyyy")
         val netDate = Date(messages[position].timestamp)
@@ -62,13 +63,13 @@ class ChatAdapter @Inject constructor(
         }
 
         holder.showMessage.setOnClickListener {
-            if (holder.timestampTv.visibility == View.INVISIBLE) {
+            if (holder.timestampTv.visibility == View.GONE) {
                 holder.timestampTv.visibility = View.VISIBLE
                 holder.messageSeen.visibility = View.VISIBLE
             }
             else {
-                holder.timestampTv.visibility = View.INVISIBLE
-                holder.messageSeen.visibility = View.INVISIBLE
+                holder.timestampTv.visibility = View.GONE
+                holder.messageSeen.visibility = View.GONE
             }
         }
 
@@ -80,7 +81,14 @@ class ChatAdapter @Inject constructor(
             return@setOnLongClickListener true
         }
 
-        addImage(context, messages[position].senderId, holder.userImage)
+        if (position < messages.size - 1){
+            if (messages[position].senderId != messages[position+1].senderId){
+                addImage(context, messages[position].senderId, holder.userImage)
+            }
+        }
+        else{
+            addImage(context, messages[position].senderId, holder.userImage)
+        }
     }
 
     override fun getItemCount() = messages.size
@@ -106,6 +114,8 @@ class ChatAdapter @Inject constructor(
             MESSAGE_LEFT;
         }
     }
+
+
 
     companion object {
         const val MESSAGE_RIGHT = 0

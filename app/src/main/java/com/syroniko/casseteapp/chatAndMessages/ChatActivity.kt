@@ -67,18 +67,6 @@ class ChatActivity : AppCompatActivity() {
             type_message_edit_text_chat_activity.text.clear()
         }
 
-//        KeyboardVisibilityEvent.setEventListener(
-//            this,
-//            object : KeyboardVisibilityEventListener {
-//                override fun onVisibilityChanged(isOpen: Boolean) {
-//                    if (isOpen) {
-//                        chat_activity_recycler.scrollToPosition(chatAdapter.itemCount - 1)
-//                    }
-//                }
-//            }
-//        )
-
-
         info_linear_layout.setOnClickListener {
             ProfileActivity.startActivity(this, viewModel.displayedChat.userId, viewModel.uid)
         }
@@ -87,6 +75,9 @@ class ChatActivity : AppCompatActivity() {
             FullScreenImageActivity.startActivity(this, viewModel.displayedChat.userId)
         }
 
+        back_button.setOnClickListener {
+            onBackPressed()
+        }
     }
 
 

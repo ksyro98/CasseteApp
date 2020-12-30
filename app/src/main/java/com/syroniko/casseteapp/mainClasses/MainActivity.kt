@@ -29,8 +29,8 @@ import net.openid.appauth.AuthorizationService
 const val spotifyQueryExtraName = "Spotify Query Extra Name"
 const val USER_EXTRA_NAME = "User Extra Name"
 
-const val clientId = "846a7d470725449994155b664cb7959b"
-const val redirectUri = "https://duckduckgo.com"
+//const val clientId = "846a7d470725449994155b664cb7959b"
+//const val redirectUri = "https://duckduckgo.com"
 
 const val UID_MAIN_EXTRA = "uid main extra"
 const val USER_MAIN_EXTRA = "user main extra"

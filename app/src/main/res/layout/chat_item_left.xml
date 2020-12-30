@@ -2,19 +2,23 @@
 <RelativeLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_margin="2dp">
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="4dp">
 
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
         android:layout_width="200dp"
-        android:id="@+id/inner_relativelayoutchat" android:layout_height="wrap_content"
+        android:id="@+id/inner_relativelayoutchat"
+        android:layout_height="wrap_content"
         >
 
     <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
             android:id="@+id/profile_image_chat_activity"
-            android:src="@mipmap/ic_launcher"/>
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -22,7 +26,10 @@
             android:background="@drawable/chat_left_element"
             android:text="Hello"
             android:layout_toRightOf="@id/profile_image_chat_activity"
-            android:padding="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:id="@+id/chat_item_textView_bubble"
             android:textSize="18sp"
             android:layout_marginLeft="5dp"/>
@@ -35,7 +42,7 @@
             android:id="@+id/message_seen_text"
             android:layout_toEndOf="@id/profile_image_chat_activity"
             android:layout_below="@id/chat_item_textView_bubble"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
 
 

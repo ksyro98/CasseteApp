@@ -8,8 +8,8 @@ import net.openid.appauth.*
 
 
 const val AUTH_REQUEST_CODE = 999
-private const val SPOTIFY_CLIENT_ID = "846a7d470725449994155b664cb7959b"
-private const val SPOTIFY_REDIRECT_URI = "com.syroniko.casseteapp://auth"
+public const val SPOTIFY_CLIENT_ID = "846a7d470725449994155b664cb7959b"
+public const val SPOTIFY_REDIRECT_URI = "com.syroniko.casseteapp://auth"
 
 object SpotifyAuthRequest{
 

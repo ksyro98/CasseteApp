@@ -19,13 +19,14 @@ import com.spotify.android.appremote.api.ConnectionParams
 import com.spotify.android.appremote.api.Connector
 import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.syroniko.casseteapp.chatAndMessages.sendFirstMessage
-import com.syroniko.casseteapp.mainClasses.clientId
-import com.syroniko.casseteapp.mainClasses.redirectUri
 import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.trackSearchFlow.NO_PREVIEW_URL
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.CassetteDB
 import com.syroniko.casseteapp.firebase.UserDB
+import com.syroniko.casseteapp.utils.SPOTIFY_CLIENT_ID
+import com.syroniko.casseteapp.utils.SPOTIFY_REDIRECT_URI
+import com.syroniko.casseteapp.utils.SpotifyAuthRequest
 import org.json.JSONArray
 import javax.inject.Inject
 
@@ -136,8 +137,8 @@ class CassetteViewerViewModel @Inject constructor(
     /**
      * CassetteTrackFragment Functions
      */
-    private fun connectParams(): ConnectionParams = ConnectionParams.Builder(clientId)
-        .setRedirectUri(redirectUri)
+    private fun connectParams(): ConnectionParams = ConnectionParams.Builder(SPOTIFY_CLIENT_ID)
+        .setRedirectUri(SPOTIFY_REDIRECT_URI)
         .showAuthView(true)
         .build()
 
