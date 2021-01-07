@@ -1,9 +1,8 @@
 package com.syroniko.casseteapp.firebase
 
 import android.util.Log
-import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -31,6 +30,10 @@ abstract class FirestoreDB(private val collectionName: String){
             .addOnSuccessListener {
                 callback(it.id)
             }
+    }
+
+    open fun insertWithId(id: String, item: Any) {
+        dbCollection.document(id).set(item)
     }
 
     open fun delete(id: String) {
@@ -67,5 +70,11 @@ abstract class FirestoreDB(private val collectionName: String){
         dbCollection.document(id).update(updateMap)
 
     abstract fun getId(): String
+
+    companion object{
+        fun getTime(): Long{
+            return Timestamp.now().seconds
+        }
+    }
 
 }

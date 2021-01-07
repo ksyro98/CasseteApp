@@ -11,10 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.chatAndMessages.entities.Message
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.utils.addImage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -47,48 +46,49 @@ class ChatAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.showMessage.text = messages[position].text
-        holder.timestampTv.visibility = View.GONE
-        Glide.with(context).load("").into(holder.userImage)
-
-        val sdf = SimpleDateFormat("hh:mm dd/MM/yyyy")
-        val netDate = Date(messages[position].timestamp)
-        holder.timestampTv.text = sdf.format(netDate)
-
-        holder.messageSeen.text = if (messages[position].read){
-            "Seen"
-        }
-        else{
-            "Sent"
-        }
-
-        holder.showMessage.setOnClickListener {
-            if (holder.timestampTv.visibility == View.GONE) {
-                holder.timestampTv.visibility = View.VISIBLE
-                holder.messageSeen.visibility = View.VISIBLE
-            }
-            else {
-                holder.timestampTv.visibility = View.GONE
-                holder.messageSeen.visibility = View.GONE
-            }
-        }
-
-        holder.showMessage.setOnLongClickListener {
-            val clipboard: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
-            clipboard?.setPrimaryClip(clip)
-            context.toast("Message copied to clipboard.")
-            return@setOnLongClickListener true
-        }
-
-        if (position < messages.size - 1){
-            if (messages[position].senderId != messages[position+1].senderId){
-                addImage(context, messages[position].senderId, holder.userImage)
-            }
-        }
-        else{
-            addImage(context, messages[position].senderId, holder.userImage)
-        }
+        //TODO CHANGE
+//        holder.showMessage.text = messages[position].text
+//        holder.timestampTv.visibility = View.GONE
+//        Glide.with(context).load("").into(holder.userImage)
+//
+//        val sdf = SimpleDateFormat("hh:mm dd/MM/yyyy")
+//        val netDate = Date(messages[position].timestamp)
+//        holder.timestampTv.text = sdf.format(netDate)
+//
+//        holder.messageSeen.text = if (messages[position].read){
+//            "Seen"
+//        }
+//        else{
+//            "Sent"
+//        }
+//
+//        holder.showMessage.setOnClickListener {
+//            if (holder.timestampTv.visibility == View.GONE) {
+//                holder.timestampTv.visibility = View.VISIBLE
+//                holder.messageSeen.visibility = View.VISIBLE
+//            }
+//            else {
+//                holder.timestampTv.visibility = View.GONE
+//                holder.messageSeen.visibility = View.GONE
+//            }
+//        }
+//
+//        holder.showMessage.setOnLongClickListener {
+//            val clipboard: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+//            val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
+//            clipboard?.setPrimaryClip(clip)
+//            context.toast("Message copied to clipboard.")
+//            return@setOnLongClickListener true
+//        }
+//
+//        if (position < messages.size - 1){
+//            if (messages[position].senderId != messages[position+1].senderId){
+//                addImage(context, messages[position].senderId, holder.userImage)
+//            }
+//        }
+//        else{
+//            addImage(context, messages[position].senderId, holder.userImage)
+//        }
     }
 
     override fun getItemCount() = messages.size

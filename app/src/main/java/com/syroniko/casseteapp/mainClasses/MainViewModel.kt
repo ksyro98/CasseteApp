@@ -11,7 +11,6 @@ import com.google.firebase.firestore.FieldValue
 import com.syroniko.casseteapp.chatAndMessages.Chat
 import com.syroniko.casseteapp.chatAndMessages.DisplayedChat
 import com.syroniko.casseteapp.chatAndMessages.getTheOtherUid
-import com.syroniko.casseteapp.chatAndMessages.getTime
 import com.syroniko.casseteapp.firebase.*
 import com.syroniko.casseteapp.utils.addAndUpdate
 import javax.inject.Inject
@@ -49,11 +48,17 @@ class MainViewModel @Inject constructor(
      * MainActivity Functions
      */
     fun setUserOnline(){
-        getTime(viewModelScope){ time ->
-            UserDB.update(uid, hashMapOf(
-                Pair("status", STATUS_ONLINE),
-                Pair("lastOnline", time)
-            ))
+        try {
+            val time = FirestoreDB.getTime()
+            UserDB.update(
+                uid, hashMapOf(
+                    Pair("status", STATUS_ONLINE),
+                    Pair("lastOnline", time)
+                )
+            )
+        }
+        catch (e: Exception){
+            Log.e("MainViewModel", "Exception from getTime", e)
         }
     }
 
@@ -123,6 +128,9 @@ class MainViewModel @Inject constructor(
      */
     fun startListeningToChats(){
 
+//        TODO CHANGE
+//        return
+
         ChatDB.listenToChat(uid) { querySnapshot ->
 
             chats.value = mutableListOf()
@@ -134,8 +142,9 @@ class MainViewModel @Inject constructor(
             }
 
             chatsList.map { chat ->
-                val timestamp = chat.lastMessageSent
-                val lastMessageText = chat.messages.last().text
+                val timestamp = chat.lastMessageSentAt
+                //TODO CHANGE
+                val lastMessageText = "" //chat.messages.last().text
                 val lastMessageRead = chat.messages.last().read
                 val lastMessageSentByMe = chat.messages.last().senderId == uid
                 val chatId = chat.id

@@ -5,6 +5,7 @@ import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.syroniko.casseteapp.chatAndMessages.entities.Message
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.firebase.ChatDB
 import com.syroniko.casseteapp.utils.addAndUpdate

@@ -44,7 +44,7 @@ class SendTrackViewModel @Inject constructor(
             restrictedReceivers
         )
 
-        val cassetteSender = CassetteSender(cassette, viewModelScope, callback)
+        val cassetteSender = CassetteSender(cassette, callback)
         cassetteSender.startCassetteSendingAlgorithm()
     }
 }

@@ -3,8 +3,8 @@ package com.syroniko.casseteapp.trackSearchFlow
 import android.util.Log
 import com.google.common.math.IntMath.pow
 import com.google.firebase.firestore.FieldValue
-import com.syroniko.casseteapp.chatAndMessages.getTime
 import com.syroniko.casseteapp.firebase.CassetteDB
+import com.syroniko.casseteapp.firebase.FirestoreDB
 import com.syroniko.casseteapp.firebase.UserDB
 import com.syroniko.casseteapp.mainClasses.Cassette
 import com.syroniko.casseteapp.mainClasses.User
@@ -14,7 +14,6 @@ import kotlin.random.Random
 
 class CassetteSender(
     private val cassette: Cassette,
-    private val scope: CoroutineScope,
     private val callback: () -> Unit
 ) {
 
@@ -49,12 +48,11 @@ class CassetteSender(
         cassette.receiver = receiverId
         cassette.received = true
         CassetteDB.insertWithCallback(cassette) { id ->
-            getTime(scope) { time ->
-                UserDB.update(receiverId, hashMapOf(
-                    Pair("cassettes", FieldValue.arrayUnion(id)),
-                    Pair("receivedLastCassetteAt", time)
-                ))
-            }
+            val time = FirestoreDB.getTime()
+            UserDB.update(receiverId, hashMapOf(
+                Pair("cassettes", FieldValue.arrayUnion(id)),
+                Pair("receivedLastCassetteAt", time)
+            ))
             callback()
         }
     }
