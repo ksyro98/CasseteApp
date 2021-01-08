@@ -82,20 +82,28 @@ class FriendChatListAdapter @Inject constructor(
                 return@setOnLongClickListener true
             }
 
-            ChatDB.getDocumentFromId(displayedChats[position].chatId).addOnSuccessListener { document ->
-                val chat = document.toObject(Chat::class.java) ?: return@addOnSuccessListener
-                for (i in chat.messages.size-1 downTo 0){
-                    //the current user received this message
-                    if (chat.messages[i].senderId == displayedChats[position].userId){
-                        chat.messages[i].read = false
-                    }
-                    //The current user sent this message
-                    else {
-                        break
-                    }
-                }
-                ChatDB.update(displayedChats[position].chatId, hashMapOf(Pair("messages", chat.messages)))
-            }
+            ChatDB.update(displayedChats[position].chatId, hashMapOf(Pair("lastMessageSent.read", false)))
+
+//            old code
+//            ChatDB.getDocumentFromId(displayedChats[position].chatId).addOnSuccessListener { document ->
+//
+//                Log.d("FriendChatListAdapter", document.get("messages").toString())
+//                return@addOnSuccessListener
+//
+//                val chat = document.toObject(Chat::class.java) ?: return@addOnSuccessListener
+//
+//                for (i in chat.messages.size-1 downTo 0){
+//                    //the current user received this message
+//                    if (chat.messages[i].senderId == displayedChats[position].userId){
+//                        chat.messages[i].read = false
+//                    }
+//                    //The current user sent this message
+//                    else {
+//                        break
+//                    }
+//                }
+//                ChatDB.update(displayedChats[position].chatId, hashMapOf(Pair("messages", chat.messages)))
+//            }
 
             style = Typeface.BOLD
             holder.userName.setTypeface(null, style)

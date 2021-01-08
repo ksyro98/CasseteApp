@@ -35,13 +35,14 @@ fun sendMessage(senderUid: String, receiverUid: String, text: String, scope: Cor
         text
     )
 
-    ChatDB.update(
-        chatId, hashMapOf(
-            Pair("messages", FieldValue.arrayUnion(message)),
-            Pair("lastMessageSentAt", message.timestamp),
-            Pair("lastMessageSent", message)
+    ChatDB.insertMessageWithCallback(chatId, message){
+        ChatDB.update(
+            chatId, hashMapOf(
+                Pair("lastMessageSentAt", message.timestamp),
+                Pair("lastMessageSent", message)
+            )
         )
-    )
+    }
 
 }
 

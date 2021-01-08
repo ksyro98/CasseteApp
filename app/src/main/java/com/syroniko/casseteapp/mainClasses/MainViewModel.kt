@@ -6,11 +6,7 @@ import androidx.hilt.Assisted
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
-import com.google.firebase.firestore.FieldValue
-import com.syroniko.casseteapp.chatAndMessages.Chat
 import com.syroniko.casseteapp.chatAndMessages.DisplayedChat
-import com.syroniko.casseteapp.chatAndMessages.getTheOtherUid
 import com.syroniko.casseteapp.firebase.*
 import com.syroniko.casseteapp.utils.addAndUpdate
 import javax.inject.Inject
@@ -128,46 +124,50 @@ class MainViewModel @Inject constructor(
      */
     fun startListeningToChats(){
 
-//        TODO CHANGE
-//        return
-
-        ChatDB.listenToChat(uid) { querySnapshot ->
-
-            chats.value = mutableListOf()
-
-            val chatsList = mutableListOf<Chat>()
-
-            querySnapshot.map { document ->
-                chatsList.add(document.toObject(Chat::class.java))
-            }
-
-            chatsList.map { chat ->
-                val timestamp = chat.lastMessageSentAt
-                //TODO CHANGE
-                val lastMessageText = "" //chat.messages.last().text
-                val lastMessageRead = chat.messages.last().read
-                val lastMessageSentByMe = chat.messages.last().senderId == uid
-                val chatId = chat.id
-                val otherUid = getTheOtherUid(chat.uids, uid) ?: return@listenToChat
-
-                UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
-                    val otherUser = document.toObject(User::class.java)
-                    val displayedChat = DisplayedChat(
-                        otherUser?.uid ?: "",
-                        otherUser?.image ?: "",
-                        otherUser?.name ?: "",
-                        otherUser?.status ?: "",
-                        lastMessageText,
-                        lastMessageRead,
-                        lastMessageSentByMe,
-                        timestamp,
-                        chatId
-                    )
-
-                    chats.addAndUpdate(displayedChat)
-                }
-            }
+        ChatDB.listenToChat(uid,
+            onStart = { chats.value = mutableListOf() }
+        ){ displayedChat ->
+            chats.addAndUpdate(displayedChat)
         }
+
+//        Old code, keep it until we're sure that the new code works
+//        ChatDB.listenToChat(uid) { querySnapshot ->
+//
+//            chats.value = mutableListOf()
+//
+//            val chatsList = mutableListOf<Chat>()
+//
+//            querySnapshot.map { document ->
+//                chatsList.add(document.toObject(Chat::class.java))
+//            }
+//
+//            chatsList.map { chat ->
+//                val timestamp = chat.lastMessageSentAt
+//                //TODO CHANGE
+//                val lastMessageText = "" //chat.messages.last().text
+//                val lastMessageRead = chat.messages.last().read
+//                val lastMessageSentByMe = chat.messages.last().senderId == uid
+//                val chatId = chat.id
+//                val otherUid = getTheOtherUid(chat.uids, uid) ?: return@listenToChat
+//
+//                UserDB.getDocumentFromId(otherUid).addOnSuccessListener { document ->
+//                    val otherUser = document.toObject(User::class.java)
+//                    val displayedChat = DisplayedChat(
+//                        otherUser?.uid ?: "",
+//                        otherUser?.image ?: "",
+//                        otherUser?.name ?: "",
+//                        otherUser?.status ?: "",
+//                        lastMessageText,
+//                        lastMessageRead,
+//                        lastMessageSentByMe,
+//                        timestamp,
+//                        chatId
+//                    )
+//
+//                    chats.addAndUpdate(displayedChat)
+//                }
+//            }
+//        }
     }
 
     fun stopListeningToChats(){

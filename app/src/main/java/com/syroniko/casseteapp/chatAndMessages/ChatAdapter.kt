@@ -7,13 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.R
+import com.syroniko.casseteapp.chatAndMessages.entities.ImageMessage
 import com.syroniko.casseteapp.chatAndMessages.entities.Message
+import com.syroniko.casseteapp.chatAndMessages.entities.TextMessage
 import com.syroniko.casseteapp.firebase.Auth
 import com.syroniko.casseteapp.utils.addImage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 class ChatAdapter @Inject constructor(
     @ApplicationContext val context: Context
-) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ChatViewHolder>() {
 
     var messages: MutableList<Message> = mutableListOf()
         set(value) {
@@ -34,92 +34,107 @@ class ChatAdapter @Inject constructor(
 
     lateinit var imageUrl: String
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType == MESSAGE_RIGHT) {
-            val view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false)
-            ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
+        val view = when (viewType) {
+            MESSAGE_TEXT_RIGHT -> {
+                LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false)
+            }
+            MESSAGE_TEXT_LEFT -> {
+                LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false)
+            }
+            MESSAGE_IMAGE -> {
+                LayoutInflater.from(context).inflate(R.layout.chat_item_image, parent, false)
+            }
+            else -> {
+                LayoutInflater.from(context).inflate(R.layout.chat_item_spotify_track, parent, false)
+            }
         }
-        else {
-            val view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false)
-            ViewHolder(view)
-        }
+
+        return ChatViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         //TODO CHANGE
-//        holder.showMessage.text = messages[position].text
-//        holder.timestampTv.visibility = View.GONE
-//        Glide.with(context).load("").into(holder.userImage)
-//
-//        val sdf = SimpleDateFormat("hh:mm dd/MM/yyyy")
-//        val netDate = Date(messages[position].timestamp)
-//        holder.timestampTv.text = sdf.format(netDate)
-//
-//        holder.messageSeen.text = if (messages[position].read){
-//            "Seen"
-//        }
-//        else{
-//            "Sent"
-//        }
-//
-//        holder.showMessage.setOnClickListener {
-//            if (holder.timestampTv.visibility == View.GONE) {
-//                holder.timestampTv.visibility = View.VISIBLE
-//                holder.messageSeen.visibility = View.VISIBLE
-//            }
-//            else {
-//                holder.timestampTv.visibility = View.GONE
-//                holder.messageSeen.visibility = View.GONE
-//            }
-//        }
-//
-//        holder.showMessage.setOnLongClickListener {
-//            val clipboard: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-//            val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
-//            clipboard?.setPrimaryClip(clip)
-//            context.toast("Message copied to clipboard.")
-//            return@setOnLongClickListener true
-//        }
-//
-//        if (position < messages.size - 1){
-//            if (messages[position].senderId != messages[position+1].senderId){
-//                addImage(context, messages[position].senderId, holder.userImage)
-//            }
-//        }
-//        else{
-//            addImage(context, messages[position].senderId, holder.userImage)
-//        }
+        if (messages[position] !is TextMessage) return
+        holder.showMessage.text = (messages[position] as TextMessage).text
+        holder.timestampTv.visibility = View.GONE
+        Glide.with(context).load("").into(holder.userImage)
+
+        val sdf = SimpleDateFormat("hh:mm dd/MM/yyyy")
+        val netDate = Date(messages[position].timestamp)
+        holder.timestampTv.text = sdf.format(netDate)
+
+        holder.messageSeen.text = if (messages[position].read){
+            "Seen"
+        }
+        else{
+            "Sent"
+        }
+
+        holder.showMessage.setOnClickListener {
+            if (holder.timestampTv.visibility == View.GONE) {
+                holder.timestampTv.visibility = View.VISIBLE
+                holder.messageSeen.visibility = View.VISIBLE
+            }
+            else {
+                holder.timestampTv.visibility = View.GONE
+                holder.messageSeen.visibility = View.GONE
+            }
+        }
+
+        holder.showMessage.setOnLongClickListener {
+            val clipboard: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
+            clipboard?.setPrimaryClip(clip)
+            context.toast("Message copied to clipboard.")
+            return@setOnLongClickListener true
+        }
+
+        if (position < messages.size - 1){
+            if (messages[position].senderId != messages[position+1].senderId){
+                addImage(context, messages[position].senderId, holder.userImage)
+            }
+        }
+        else{
+            addImage(context, messages[position].senderId, holder.userImage)
+        }
     }
 
     override fun getItemCount() = messages.size
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        val showMessage: TextView = itemView.findViewById(R.id.chat_item_textView_bubble)
-        val userImage: ImageView = itemView.findViewById(R.id.profile_image_chat_activity)
-        val messageSeen: TextView = itemView.findViewById(R.id.message_seen_text)
-        val timestampTv: TextView = itemView.findViewById(R.id.timestamptextviewchat)
-//        val messageSeenTv: TextView = itemView.findViewById(R.id.message_read_text_view)
-
-    }
+//    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//        val showMessage: TextView = itemView.findViewById(R.id.chat_item_textView_bubble)
+//        val userImage: ImageView = itemView.findViewById(R.id.profile_image_chat_activity)
+//        val messageSeen: TextView = itemView.findViewById(R.id.message_seen_text)
+//        val timestampTv: TextView = itemView.findViewById(R.id.timestamptextviewchat)
+//    }
 
     override fun getItemViewType(position: Int): Int {
         val uid = Auth.getUid()
-        return if(messages[position].senderId == uid){
+        val message = messages[position]
+        return if((message is TextMessage) && message.senderId == uid){
             Log.d(ChatAdapter::class.simpleName, "RIGHT")
-            MESSAGE_RIGHT;
+            MESSAGE_TEXT_RIGHT;
         }
-        else{
+        else if((message is TextMessage) && message.senderId != uid){
             Log.d(ChatAdapter::class.simpleName, uid ?: "LEFT")
-            MESSAGE_LEFT;
+            MESSAGE_TEXT_LEFT;
+        }
+        else if(message is ImageMessage){
+            MESSAGE_IMAGE
+        }
+        else {
+            MESSAGE_SPOTIFY_TRACK
         }
     }
 
 
 
     companion object {
-        const val MESSAGE_RIGHT = 0
-        const val MESSAGE_LEFT = 1
+        const val MESSAGE_TEXT_RIGHT = 0
+        const val MESSAGE_TEXT_LEFT = 1
+        const val MESSAGE_IMAGE = 2
+        const val MESSAGE_SPOTIFY_TRACK = 3
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -35,8 +36,6 @@ class ChatActivity : AppCompatActivity() {
 
         viewModel.displayedChat = intent.getParcelableExtra(CHAT_DETAILS_EXTRA_NAME) ?: return
         viewModel.fromNotification = intent.getBooleanExtra(FROM_NOTIFICATION_EXTRA_NAME, false)
-
-        viewModel.startListeningToMessages()
 
         name_text_view.text = viewModel.displayedChat.userName
         addImage(this, viewModel.displayedChat.userId, profile_image_view)
@@ -80,6 +79,10 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.startListeningToMessages()
+    }
 
     override fun onStop() {
         super.onStop()

@@ -3,7 +3,34 @@ package com.syroniko.casseteapp.chatAndMessages.entities
 enum class MessageType{
     TEXT,
     IMAGE,
-    SPOTIFY_TRACK
+    SPOTIFY_TRACK;
+
+    companion object {
+        fun getFromString(stringType: String): MessageType? {
+            return when(stringType){
+                "TEXT" -> TEXT
+                "IMAGE" -> IMAGE
+                "SPOTIFY_TRACK" -> SPOTIFY_TRACK
+                else -> null
+            }
+        }
+    }
+
+    fun getMessageClass(): Class<*>{
+        return when(this) {
+            TEXT -> TextMessage::class.java
+            IMAGE -> ImageMessage::class.java
+            SPOTIFY_TRACK -> SpotifyTrackMessage::class.java
+        }
+    }
+
+    fun getMessageText(senderName: String): String?{
+        return when(this) {
+            TEXT -> null
+            IMAGE -> "$senderName sent an image."
+            SPOTIFY_TRACK -> "$senderName name sent a track."
+        }
+    }
 }
 
 abstract class Message(
@@ -12,7 +39,7 @@ abstract class Message(
     val receiverId: String = "",
     val timestamp: Long = 0,
     var read: Boolean = false,
-    val type: MessageType
+    val type: MessageType = MessageType.TEXT
 ){
     companion object {
         fun getMessageId(chatId: String, timestamp: Long): String{
