@@ -7,16 +7,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".viewCassette.CassetteMessageFragment">
-    <androidx.core.widget.NestedScrollView
-    android:id="@+id/nestedScrollView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="1.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintVertical_bias="0.060000002">
+
    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -68,13 +59,14 @@ android:layout_margin="16dp"   android:orientation="vertical">
         android:layout_width="wrap_content"
         android:layout_below="@id/helper_linear_fragment_cassette"
         android:layout_height="wrap_content"
+        android:id="@+id/relativehelperthethethethethe"
         android:layout_marginTop="32dp"
         android:layout_marginLeft="24dp">
        <TextView
                android:id="@+id/cassetteCommentTextView"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:paddingBottom="480dp"
+               android:paddingBottom="360dp"
                android:layout_marginTop="64dp"
                android:layout_margin="8dp"
                android:layout_below="@id/helper_linear_fragment_cassette"
@@ -92,11 +84,9 @@ android:layout_margin="16dp"   android:orientation="vertical">
                android:gravity="center"
                android:textColor="@color/white"
                android:layout_height="40dp"
-               android:layout_alignParentBottom="true"
                android:layout_marginStart="32dp"
                android:layout_marginEnd="32dp"
-               android:layout_below="@+id/cassetteCommentTextView"
-               android:layout_marginBottom="48dp"
+               android:layout_below="@+id/relativehelperthethethethethe"
                android:text="Reply"
                />
 
@@ -105,17 +95,15 @@ android:layout_margin="16dp"   android:orientation="vertical">
                android:layout_width="100dp"
                android:layout_height="40dp"
                android:layout_alignParentEnd="true"
-               android:layout_alignParentBottom="true"
                android:layout_marginEnd="32dp"
                android:layout_marginRight="32dp"
                android:background="@drawable/bluegreenbutton"
                android:gravity="center"
                android:text="Forward"
-               android:layout_below="@id/cassetteCommentTextView"
+               android:layout_below="@id/relativehelperthethethethethe"
                android:textColor="@color/white" />
        </RelativeLayout>
    </RelativeLayout>
-      </androidx.core.widget.NestedScrollView>
 
 
 

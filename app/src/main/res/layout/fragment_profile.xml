@@ -20,7 +20,7 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:paddingTop="24dp"
-                android:layout_height="360dp"
+                android:layout_height="332dp"
                 android:background="#FFFFFF"
                 android:id="@+id/gray_frame_profile"
                 >
@@ -32,7 +32,7 @@
                     android:layout_height="130dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="48dp"
+                    android:layout_marginTop="40dp"
                     android:layout_marginEnd="8dp"
 
                     tools:srcCompat="@tools:sample/avatars" />
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:paddingBottom="48dp"
+                    android:paddingBottom="16dp"
                     android:weightSum="3"
 
                     android:orientation="horizontal"
@@ -67,6 +67,7 @@
                             android:text="@{Integer.toString(viewModel.user.songsSent)}"
                             android:gravity="center_horizontal"
                             android:textSize="24sp"
+                            android:fontFamily="@font/opensanssemibold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -74,6 +75,8 @@
                             />
                     <TextView
                             android:text="Songs Sent"
+                            android:fontFamily="@font/opensanssemibold"
+
                             android:gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -92,6 +95,8 @@
                             android:text="@{Integer.toString(viewModel.user.songsAccepted)}"
                             android:gravity="center_horizontal"
                             android:textSize="24sp"
+                            android:fontFamily="@font/opensanssemibold"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -100,6 +105,8 @@
                     <TextView
                             android:text="Songs Received"
                             android:gravity="center"
+                            android:fontFamily="@font/opensanssemibold"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -116,6 +123,8 @@
                             android:text="@{Integer.toString(viewModel.user.friends.size())}"
                             android:gravity="center_horizontal"
                             android:textSize="24sp"
+                            android:fontFamily="@font/opensanssemibold"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -123,6 +132,8 @@
                             />
                     <TextView
                             android:text="Friends"
+                            android:fontFamily="@font/opensanssemibold"
+
                             android:gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -138,68 +149,80 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2"
-                android:id="@+id/friend_chat_linear"
-                android:orientation="horizontal"
-                android:layout_below="@id/gray_frame_profile"
 
-                >
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="#D3D3D3"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Send a message"
-                    android:id="@+id/send_message_tv"
-                    />
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:id="@+id/add_friend_tv"
-                    android:background="#0FA59B"
-                    android:layout_weight="1"
-                    android:text="Already Friends"
-                    android:layout_gravity="center"
-                    android:textColor="#f4f4f4"
-                    android:gravity="center"
-                    />
-
-        </LinearLayout>
-
+=
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/friend_chat_linear"
+                android:layout_below="@id/gray_frame_profile"
                 android:paddingTop="8dp"
                 android:id="@+id/frame_about_user"
                 >
             <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="72dp"
                     android:id="@+id/about_user_tv"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkGrayLetter"
                     android:background="@color/white"
-                    android:text='@{"About " + viewModel.user.name}'
+                    android:fontFamily="@font/opensanssemibold"
+                    android:text="Your bio"
                     android:gravity="center_vertical"
                     android:paddingLeft="51dp"
                     />
         </FrameLayout>
         <FrameLayout
+                android:layout_below="@+id/frame_about_user"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/gray_line_of_destruction_for_fragment_profile"
+                android:background="@android:color/transparent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+            />
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:id="@+id/see_collection_name_frame"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/frame_about_user"
-                android:paddingTop="8dp"
+                android:layout_below="@id/gray_line_of_destruction_for_fragment_profile"
                 >
 
             <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="72dp"
                     android:text="See collection"
                     android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkGrayLetter"
+                    android:fontFamily="@font/opensanssemibold"
+                    android:background="@color/white"
+                    android:id="@+id/see_collection_name"
+                    android:paddingLeft="51dp"
+                    />
+        </FrameLayout>
+        <FrameLayout
+                android:layout_below="@+id/see_collection_name_frame"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:id="@+id/gray_line_of_destruction_for_fragment_profile2"
+                android:background="@android:color/transparent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                />
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gray_line_of_destruction_for_fragment_profile2"
+                >
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:text="Edit Profile"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textColor="@color/darkGrayLetter"
+                    android:fontFamily="@font/opensanssemibold"
                     android:background="@color/white"
                     android:id="@+id/see_collection_tv"
                     android:paddingLeft="51dp"

@@ -83,14 +83,14 @@ class SendTrackActivity : AppCompatActivity() {
         }
         sendButton.isEnabled = false
 
-        viewModel.sendCassette(commentEditText.text.toString()){
-            toast("Cassette sent successfully!")
-
-            sendButton.isEnabled = true
-
-            MainActivity.startActivity(this, Auth.getUid(), viewModel.user)
-            finish()
-        }
+//        viewModel.sendCassette(commentEditText.text.toString()){
+//            toast("Cassette sent successfully!")
+//
+//            sendButton.isEnabled = true
+//
+//            MainActivity.startActivity(this, Auth.getUid(), viewModel.user)
+//            finish()
+//        }
     }
 
 

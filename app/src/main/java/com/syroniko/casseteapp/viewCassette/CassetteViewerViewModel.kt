@@ -26,7 +26,6 @@ import com.syroniko.casseteapp.firebase.CassetteDB
 import com.syroniko.casseteapp.firebase.UserDB
 import com.syroniko.casseteapp.utils.SPOTIFY_CLIENT_ID
 import com.syroniko.casseteapp.utils.SPOTIFY_REDIRECT_URI
-import com.syroniko.casseteapp.utils.SpotifyAuthRequest
 import org.json.JSONArray
 import javax.inject.Inject
 
