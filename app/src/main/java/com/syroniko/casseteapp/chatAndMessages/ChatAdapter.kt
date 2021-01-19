@@ -1,21 +1,28 @@
+
 package com.syroniko.casseteapp.chatAndMessages
 
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.R
 import com.syroniko.casseteapp.chatAndMessages.entities.ImageMessage
 import com.syroniko.casseteapp.chatAndMessages.entities.Message
+import com.syroniko.casseteapp.chatAndMessages.entities.MessageType
 import com.syroniko.casseteapp.chatAndMessages.entities.TextMessage
 import com.syroniko.casseteapp.firebase.Auth
-import com.syroniko.casseteapp.utils.addImage
+import com.syroniko.casseteapp.utils.*
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,72 +39,79 @@ class ChatAdapter @Inject constructor(
             notifyDataSetChanged()
         }
 
+    private val uid = Auth.getUid()
     lateinit var imageUrl: String
 
+    private var maxWidth: Double = 0.0
+    private var maxHeight: Double = 0.0
+
+    init {
+        val maxWidthAndHeight = getMaxWidthAndHeight(context)
+        maxWidth = maxWidthAndHeight[0]
+        maxHeight = maxWidthAndHeight[1]
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        val view = when (viewType) {
+        val view: View
+        val type: MessageType
+
+        when (viewType) {
             MESSAGE_TEXT_RIGHT -> {
-                LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false)
+                view = LayoutInflater.from(context).inflate(R.layout.chat_item_text_right, parent, false)
+                type = MessageType.TEXT
             }
             MESSAGE_TEXT_LEFT -> {
-                LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false)
+                view = LayoutInflater.from(context).inflate(R.layout.chat_item_text_left, parent, false)
+                type = MessageType.TEXT
             }
-            MESSAGE_IMAGE -> {
-                LayoutInflater.from(context).inflate(R.layout.chat_item_image, parent, false)
+            MESSAGE_IMAGE_RIGHT -> {
+                view = LayoutInflater.from(context).inflate(R.layout.chat_item_image_right, parent, false)
+                type = MessageType.IMAGE
+            }
+            MESSAGE_IMAGE_LEFT -> {
+                view = LayoutInflater.from(context).inflate(R.layout.chat_item_image_left, parent, false)
+                type = MessageType.IMAGE
             }
             else -> {
-                LayoutInflater.from(context).inflate(R.layout.chat_item_spotify_track, parent, false)
+                view = LayoutInflater.from(context).inflate(R.layout.chat_item_spotify_track, parent, false)
+                type = MessageType.SPOTIFY_TRACK
             }
         }
 
-        return ChatViewHolder(view)
+        return ChatViewHolder(view, type)
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        //TODO CHANGE
-        if (messages[position] !is TextMessage) return
-        holder.showMessage.text = (messages[position] as TextMessage).text
-        holder.timestampTv.visibility = View.GONE
-        Glide.with(context).load("").into(holder.userImage)
-
-        val sdf = SimpleDateFormat("hh:mm dd/MM/yyyy")
-        val netDate = Date(messages[position].timestamp)
-        holder.timestampTv.text = sdf.format(netDate)
-
-        holder.messageSeen.text = if (messages[position].read){
-            "Seen"
+        if (holder.messageType == MessageType.TEXT) {
+            holder.bindTextMessage(context, messages[position] as TextMessage)
         }
-        else{
-            "Sent"
+        else if (holder.messageType == MessageType.IMAGE){
+            holder.bindImageMessage(context, messages[position] as ImageMessage, maxWidth, maxHeight)
         }
-
-        holder.showMessage.setOnClickListener {
-            if (holder.timestampTv.visibility == View.GONE) {
-                holder.timestampTv.visibility = View.VISIBLE
-                holder.messageSeen.visibility = View.VISIBLE
-            }
-            else {
-                holder.timestampTv.visibility = View.GONE
-                holder.messageSeen.visibility = View.GONE
-            }
-        }
-
-        holder.showMessage.setOnLongClickListener {
-            val clipboard: ClipboardManager? = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            val clip = ClipData.newPlainText("Selected Message", holder.showMessage.text.toString())
-            clipboard?.setPrimaryClip(clip)
-            context.toast("Message copied to clipboard.")
-            return@setOnLongClickListener true
+        else if (holder.messageType == MessageType.SPOTIFY_TRACK){
+            //do nothing
         }
 
         if (position < messages.size - 1){
             if (messages[position].senderId != messages[position+1].senderId){
                 addImage(context, messages[position].senderId, holder.userImage)
+                holder.userImage.visibility = View.VISIBLE
+            }
+            else{
+                if (messages[position].senderId != uid){
+                    holder.userImage.visibility = View.INVISIBLE
+                }
             }
         }
         else{
             addImage(context, messages[position].senderId, holder.userImage)
+            holder.userImage.visibility = View.VISIBLE
         }
+
+        if (messages[position].senderId == uid){
+            holder.userImage.visibility = View.GONE
+        }
+
     }
 
     override fun getItemCount() = messages.size
@@ -120,8 +134,11 @@ class ChatAdapter @Inject constructor(
             Log.d(ChatAdapter::class.simpleName, uid ?: "LEFT")
             MESSAGE_TEXT_LEFT;
         }
-        else if(message is ImageMessage){
-            MESSAGE_IMAGE
+        else if(message is ImageMessage && message.senderId == uid){
+            MESSAGE_IMAGE_RIGHT
+        }
+        else if(message is ImageMessage && message.senderId != uid){
+            MESSAGE_IMAGE_LEFT
         }
         else {
             MESSAGE_SPOTIFY_TRACK
@@ -133,8 +150,9 @@ class ChatAdapter @Inject constructor(
     companion object {
         const val MESSAGE_TEXT_RIGHT = 0
         const val MESSAGE_TEXT_LEFT = 1
-        const val MESSAGE_IMAGE = 2
-        const val MESSAGE_SPOTIFY_TRACK = 3
+        const val MESSAGE_IMAGE_RIGHT = 2
+        const val MESSAGE_IMAGE_LEFT = 3
+        const val MESSAGE_SPOTIFY_TRACK = 4
     }
 
 }

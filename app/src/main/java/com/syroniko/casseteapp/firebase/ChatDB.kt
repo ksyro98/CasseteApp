@@ -125,6 +125,7 @@ object ChatDB: FirestoreDB(CHATS) {
                         val uids = (document.get("uids") as ArrayList<*>)
                             .map { obj -> obj.toString() } as ArrayList<String>
                         val otherId = getTheOtherUid(uids, uid) ?: return@addSnapshotListener
+                        val senderId = lastMessage["senderId"].toString()
 
                         UserDB.getDocumentFromId(otherId).addOnSuccessListener {
                             val user = it.toObject(User::class.java) ?: return@addOnSuccessListener
@@ -134,7 +135,7 @@ object ChatDB: FirestoreDB(CHATS) {
                                 user.image ?: "",
                                 user.name ?: "",
                                 user.status,
-                                lastMessageType?.getMessageText(user.name ?: "") ?: lastMessage["text"].toString(),
+                                lastMessageType?.getMessageText(uid == senderId,user.name ?: "") ?: lastMessage["text"].toString(),
                                 lastMessage["read"] as Boolean,
                                 lastMessage["senderId"].toString() == uid,
                                 lastMessage["timestamp"] as Long,

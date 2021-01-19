@@ -2,6 +2,8 @@ package com.syroniko.casseteapp.chatAndMessages
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
@@ -14,8 +16,9 @@ import com.syroniko.casseteapp.firebase.UserDB
 import com.syroniko.casseteapp.mainClasses.MainActivity
 import com.syroniko.casseteapp.mainClasses.toast
 import com.syroniko.casseteapp.profile.FullScreenImageActivity
+import com.syroniko.casseteapp.profile.PhotoPickerBottomSheetFragment
 import com.syroniko.casseteapp.profile.ProfileActivity
-import com.syroniko.casseteapp.utils.addImage
+import com.syroniko.casseteapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_chat.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -77,6 +80,16 @@ class ChatActivity : AppCompatActivity() {
         back_button.setOnClickListener {
             onBackPressed()
         }
+
+        chat_send_image_button.setOnClickListener {
+            val bottomSheet = PhotoPickerBottomSheetFragment { which ->
+                when (which) {
+                    0 -> openImageFile(this)
+                    1 -> dispatchTakePictureIntent(this)
+                }
+            }
+            bottomSheet.show(supportFragmentManager, "ModalBottomSheet")
+        }
     }
 
     override fun onStart() {
@@ -97,6 +110,25 @@ class ChatActivity : AppCompatActivity() {
         }
         else{
             super.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultIntent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultIntent)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            val imageBitmap = resultIntent?.extras?.get("data") as Bitmap
+
+            sendImageMessage(viewModel.uid, viewModel.displayedChat.userId, imageBitmap)
+        }
+        else if (requestCode == REQUEST_FILE && resultCode == RESULT_OK){
+            val uri = resultIntent?.data ?: return
+
+            val pfd = contentResolver.openFileDescriptor(uri, "r")
+            val fd = pfd?.fileDescriptor
+            val bitmap = BitmapFactory.decodeFileDescriptor(fd)
+            pfd?.close()
+
+            sendImageMessage(viewModel.uid, viewModel.displayedChat.userId, bitmap)
         }
     }
 

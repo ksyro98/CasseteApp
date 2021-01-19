@@ -31,11 +31,9 @@ import com.syroniko.casseteapp.databinding.FragmentProfileBinding
 import com.syroniko.casseteapp.mainClasses.MainViewModel
 import com.syroniko.casseteapp.mainClasses.longToast
 import com.syroniko.casseteapp.mainClasses.toast
-import com.syroniko.casseteapp.utils.addImage
+import com.syroniko.casseteapp.utils.*
 import java.io.*
 
-const val REQUEST_IMAGE_CAPTURE = 1
-const val REQUEST_FILE = 2
 const val FILE_NAME = "versions.txt"
 
 class ProfileFragment : Fragment() {
@@ -70,8 +68,8 @@ class ProfileFragment : Fragment() {
         imageView.setOnClickListener {
             val bottomSheet = PhotoPickerBottomSheetFragment { which ->
                 when (which) {
-                    0 -> openFile()
-                    1 -> dispatchTakePictureIntent()
+                    0 -> openImageFile(requireActivity())
+                    1 -> dispatchTakePictureIntent(requireActivity())
                 }
             }
             bottomSheet.show(requireActivity().supportFragmentManager, "ModalBottomSheet")
@@ -103,26 +101,26 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            activity?.longToast(
-                "A problem occurred while opening your camera. " +
-                        "Please make sure you have granted camera permissions to the app."
-            )
-        }
-    }
-
-    private fun openFile(){
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "image/*"
-        }
-
-        startActivityForResult(intent, REQUEST_FILE)
-    }
+//    private fun dispatchTakePictureIntent() {
+//        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        try {
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+//        } catch (e: ActivityNotFoundException) {
+//            activity?.longToast(
+//                "A problem occurred while opening your camera. " +
+//                        "Please make sure you have granted camera permissions to the app."
+//            )
+//        }
+//    }
+//
+//    private fun openFile(){
+//        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+//            addCategory(Intent.CATEGORY_OPENABLE)
+//            type = "image/*"
+//        }
+//
+//        startActivityForResult(intent, REQUEST_FILE)
+//    }
 
     private fun updateUserImage(imageBitmap: Bitmap, userName: String?){
         val baos = ByteArrayOutputStream()

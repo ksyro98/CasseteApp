@@ -24,11 +24,11 @@ enum class MessageType{
         }
     }
 
-    fun getMessageText(senderName: String): String?{
+    fun getMessageText(sentByUser: Boolean, senderName: String): String?{
         return when(this) {
             TEXT -> null
-            IMAGE -> "$senderName sent an image."
-            SPOTIFY_TRACK -> "$senderName name sent a track."
+            IMAGE -> if (!sentByUser) "$senderName sent an image." else "You sent an image."
+            SPOTIFY_TRACK -> if (!sentByUser) "$senderName name sent a track." else "You name sent a track."
         }
     }
 }
