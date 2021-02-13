@@ -6,5 +6,6 @@
     <color name="darkGrayLetter">#424242</color>
     <color name="white">#FFFFFF</color>
     <color name="lightGray">#EEEEEE</color>
+    <color name="darkGray">#2E312E</color>
 
 </resources>
